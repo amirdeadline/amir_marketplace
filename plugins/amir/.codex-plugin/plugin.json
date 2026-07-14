@@ -1,0 +1,6 @@
+{
+  "name": "amir",
+  "version": "0.1.0",
+  "description": "Portable multi-agent project-execution harness for Codex: skills, AGENTS.md guidance, JSON state tools.",
+  "skills": "./skills/"
+}

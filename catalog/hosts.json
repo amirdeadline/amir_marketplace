@@ -1,0 +1,99 @@
+{
+  "marketplace": "amir-marketplace",
+  "version": "0.1.0",
+  "updated_at": "2026-07-14",
+  "plugins": [
+    {
+      "name": "amir",
+      "path": "./plugins/amir",
+      "source_of_truth": "../Amir",
+      "pack": "node scripts/pack-amir.js"
+    },
+    {
+      "name": "amir-asana",
+      "path": "./plugins/amir-asana",
+      "source_of_truth": "../asana/Amir_Asana_Claude",
+      "pack": "node scripts/pack-amir-asana.js"
+    }
+  ],
+  "plugin": {
+    "name": "amir",
+    "path": "./plugins/amir",
+    "source_of_truth": "../Amir"
+  },
+  "hosts": [
+    {
+      "id": "claude-code",
+      "display_name": "Claude Code",
+      "marketplace_manifest": ".claude-plugin/marketplace.json",
+      "plugin_manifest": "plugins/amir/.claude-plugin/plugin.json",
+      "install": [
+        "/plugin marketplace add <path-or-owner/repo>",
+        "/plugin install amir@amir-marketplace",
+        "/plugin install amir-asana@amir-marketplace"
+      ],
+      "supports": {
+        "native_subagents": true,
+        "btw": false,
+        "hooks": true,
+        "slash_commands": true
+      },
+      "notes": "/btw intentionally absent — no true zero-pollution ephemeral session."
+    },
+    {
+      "id": "cursor",
+      "display_name": "Cursor",
+      "marketplace_manifest": ".cursor-plugin/marketplace.json",
+      "plugin_manifest": "plugins/amir/.cursor-plugin/plugin.json",
+      "install": [
+        "Local: junction ~/.cursor/plugins/local/<plugin> → plugins/<plugin>",
+        "Or add this marketplace repo via Team Marketplace / cursor.com/marketplace/publish",
+        "Install plugins: amir, amir-asana"
+      ],
+      "supports": {
+        "native_subagents": false,
+        "btw": true,
+        "hooks": "limited",
+        "slash_commands": true
+      },
+      "notes": "Subagents degrade to sequential simulated roles. /btw uses closest read-only primitive. Local plugins: ~/.cursor/plugins/local/"
+    },
+    {
+      "id": "codex",
+      "display_name": "OpenAI Codex CLI / ChatGPT Codex",
+      "marketplace_manifest": ".agents/plugins/marketplace.json",
+      "plugin_manifest": "plugins/amir/.codex-plugin/plugin.json",
+      "install": [
+        "codex plugin marketplace add <path-or-owner/repo>",
+        "codex plugin add amir",
+        "codex plugin add amir-asana"
+      ],
+      "supports": {
+        "native_subagents": false,
+        "btw": true,
+        "hooks": "limited",
+        "slash_commands": "deprecated — use skills"
+      },
+      "notes": "AGENTS.md + skills wrappers; sequential simulated roles."
+    },
+    {
+      "id": "agent-skills",
+      "display_name": "Agent Skills compatible hosts (Windsurf, Continue, Gemini CLI, others)",
+      "marketplace_manifest": "catalog/hosts.json",
+      "plugin_manifest": null,
+      "install": [
+        "Copy or symlink plugins/amir/skills/*/SKILL.md into the host skills directory",
+        "Copy plugins/amir/core, tools, schemas, templates, skill-specs alongside so wrappers resolve",
+        "For Asana: register MCP via plugins/amir-asana/scripts/run-mcp.js and copy skills/",
+        "Or run: node scripts/pack-amir.js && use install/install.sh from packaged plugin"
+      ],
+      "supports": {
+        "native_subagents": "host-dependent",
+        "btw": "host-dependent",
+        "hooks": "host-dependent",
+        "slash_commands": "host-dependent"
+      },
+      "notes": "No universal marketplace API. Distribution uses Agent Skills (SKILL.md) layout plus amir tools/core. See README."
+    }
+  ]
+}

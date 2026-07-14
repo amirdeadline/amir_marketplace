@@ -1,0 +1,6 @@
+{
+  "name": "amir-asana",
+  "version": "0.2.0",
+  "description": "Asana connector (MCP, 17 tools) + task skills: priorities, review, standup, triage, create/edit/complete, report sync.",
+  "skills": "./skills/"
+}

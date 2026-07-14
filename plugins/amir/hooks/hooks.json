@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/../../tools/secrets_scan.js\" ."
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"amir: secrets PreToolUse hook active on Bash; primary gate is git commit via security_scan / git_commit skill flow.\""
+          }
+        ]
+      }
+    ]
+  }
+}

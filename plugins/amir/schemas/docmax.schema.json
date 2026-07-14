@@ -1,0 +1,390 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://amir.plugin/schemas/docmax.schema.json",
+  "title": "amir docmax state",
+  "description": "Document_max sprint state for ai/state/docmax-<doc-id>.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "doc_id",
+    "title",
+    "mode",
+    "out_path",
+    "scope_statement",
+    "non_goals",
+    "glossary",
+    "outline",
+    "coverage_matrix",
+    "budget",
+    "phases",
+    "document_complete",
+    "unknowns_register"
+  ],
+  "properties": {
+    "doc_id": {
+      "type": "string",
+      "pattern": "^D[0-9]{3,}$",
+      "description": "Documentation task identifier (e.g. D001)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Document title."
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "full",
+        "update"
+      ],
+      "description": "Whether this sprint creates a new doc or updates an existing one."
+    },
+    "out_path": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Output path for the generated document."
+    },
+    "scope_statement": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What this document must cover."
+    },
+    "non_goals": {
+      "type": "array",
+      "description": "Explicit exclusions from scope.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "glossary": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Term-to-definition map."
+        },
+        {
+          "type": "array",
+          "description": "Ordered glossary entries.",
+          "items": {
+            "$ref": "#/definitions/glossaryEntry"
+          }
+        }
+      ]
+    },
+    "outline": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Section outline for the document sprint.",
+      "items": {
+        "$ref": "#/definitions/outlineSection"
+      }
+    },
+    "coverage_matrix": {
+      "type": "array",
+      "description": "Traceability matrix linking sections to sources and verification status.",
+      "items": {
+        "$ref": "#/definitions/coverageRow"
+      }
+    },
+    "budget": {
+      "$ref": "#/definitions/docBudget"
+    },
+    "phases": {
+      "type": "array",
+      "description": "document_max workflow phases and their completion state.",
+      "items": {
+        "$ref": "#/definitions/phase"
+      }
+    },
+    "document_complete": {
+      "type": "boolean",
+      "description": "True when all sections are complete and verifier has signed off."
+    },
+    "unknowns_register": {
+      "type": "array",
+      "description": "Open questions and unresolved facts discovered during writing.",
+      "items": {
+        "$ref": "#/definitions/unknownEntry"
+      }
+    }
+  },
+  "definitions": {
+    "glossaryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "term",
+        "definition"
+      ],
+      "properties": {
+        "term": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "outlineSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "topics",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable section id within this document."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Section heading."
+        },
+        "topics": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Bullet topics this section must address.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "in_progress",
+            "verifier_passed",
+            "complete",
+            "blocked"
+          ],
+          "description": "Section lifecycle status."
+        }
+      }
+    },
+    "claimRatio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "V",
+        "I",
+        "A",
+        "U"
+      ],
+      "properties": {
+        "V": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Verified claims count."
+        },
+        "I": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Inferred claims count."
+        },
+        "A": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Assumed claims count."
+        },
+        "U": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Unknown claims count."
+        }
+      }
+    },
+    "coverageRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "section",
+        "required_topics",
+        "source_files",
+        "status",
+        "missing",
+        "claim_ratio"
+      ],
+      "properties": {
+        "section": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Outline section id or title."
+        },
+        "required_topics": {
+          "type": "array",
+          "description": "Topics that must be evidenced in this section.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "source_files": {
+          "type": "array",
+          "description": "Repository files cited as evidence.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "in_progress",
+            "verifier_passed",
+            "complete",
+            "blocked"
+          ],
+          "description": "Coverage verification status for this row."
+        },
+        "missing": {
+          "type": "array",
+          "description": "Topics or sources still missing from the section.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "claim_ratio": {
+          "$ref": "#/definitions/claimRatio"
+        }
+      }
+    },
+    "docBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sections_completed",
+        "checkpoint_every",
+        "extensions_granted"
+      ],
+      "properties": {
+        "sections_completed": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of outline sections marked complete."
+        },
+        "checkpoint_every": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Sections between mandatory verifier checkpoints (default 15)."
+        },
+        "extensions_granted": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of checkpoint budget extensions approved."
+        }
+      }
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Phase identifier (e.g. outline, draft, verify, finalize)."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable phase label."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "in_progress",
+            "complete",
+            "blocked"
+          ],
+          "description": "Phase completion state."
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 timestamp when the phase started."
+        },
+        "completed_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "ISO-8601 timestamp when the phase completed, or null."
+        },
+        "section_ids": {
+          "type": "array",
+          "description": "Outline section ids assigned to this phase.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "unknownEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable unknown identifier."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What is not yet known or verified."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "researching",
+            "resolved",
+            "accepted_risk"
+          ],
+          "description": "Disposition of the unknown."
+        },
+        "section_id": {
+          "type": "string",
+          "description": "Outline section where the unknown was raised."
+        },
+        "owner": {
+          "type": "string",
+          "description": "Agent or human tracking resolution."
+        },
+        "resolution": {
+          "type": "string",
+          "description": "Answer or risk acceptance note when resolved."
+        }
+      }
+    }
+  }
+}

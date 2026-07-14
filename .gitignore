@@ -1,0 +1,20 @@
+# Secrets — packed copies for local Cursor/Claude installs only
+.env
+**/.env
+plugins/**/.env
+
+# Local Python envs / caches (junctions or copies)
+.venv/
+**/.venv/
+plugins/**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+*.pyc
+*.pyo
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

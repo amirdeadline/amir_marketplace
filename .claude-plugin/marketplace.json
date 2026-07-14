@@ -1,0 +1,60 @@
+{
+  "name": "amir-marketplace",
+  "owner": {
+    "name": "amir"
+  },
+  "metadata": {
+    "description": "Cross-host marketplace for amir (project-execution harness) and amir-asana (Asana MCP + skills).",
+    "version": "0.1.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "amir",
+      "source": "amir",
+      "description": "Portable multi-agent project-execution harness: context engineering, JSON state, evidence-based QA loops, goal-drift protection, cost/budget control, and full human visibility.",
+      "version": "0.1.0",
+      "author": {
+        "name": "amir"
+      },
+      "category": "productivity",
+      "tags": [
+        "multi-agent",
+        "orchestrator",
+        "qa",
+        "project-management",
+        "budget",
+        "context-engineering"
+      ],
+      "keywords": [
+        "amir",
+        "agents",
+        "qa-loop",
+        "json-state",
+        "project-execution"
+      ]
+    },
+    {
+      "name": "amir-asana",
+      "source": "amir-asana",
+      "description": "Asana connector (MCP, 17 tools) + task skills: priorities, review, standup, triage, create/edit/complete, report sync.",
+      "version": "0.2.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "productivity",
+      "tags": [
+        "asana",
+        "mcp",
+        "task-management"
+      ],
+      "keywords": [
+        "asana",
+        "mcp",
+        "tasks",
+        "standup",
+        "triage"
+      ]
+    }
+  ]
+}

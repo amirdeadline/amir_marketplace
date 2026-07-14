@@ -1,0 +1,15 @@
+{
+  "name": "amir",
+  "description": "Portable multi-agent project-execution harness: context engineering, JSON state, QA loops, cost control, and human visibility.",
+  "version": "0.1.0",
+  "author": {
+    "name": "amir"
+  },
+  "keywords": [
+    "multi-agent",
+    "orchestrator",
+    "qa",
+    "project-management",
+    "budget"
+  ]
+}

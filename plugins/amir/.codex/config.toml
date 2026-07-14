@@ -1,0 +1,19 @@
+# amir — sample Codex CLI configuration notes
+# Copy relevant sections into your project or user Codex config.
+# Paths assume amir is installed with core/, skills/, tools/ at <amir-root>.
+
+[project]
+# Point Codex at amir agent guidance
+agents_file = "AGENTS.md"
+
+# Skills live under .agents/skills/<name>/SKILL.md (wrappers → skills/<name>.md)
+# Custom slash commands are deprecated; use skills instead.
+
+[tools]
+# amir tools require Node >= 18, zero npm dependencies
+# Example: node tools/state.js . status
+
+[notes]
+# Subagents: sequential SIMULATED roles when native delegation unavailable
+# /btw: read-only single turn — see .agents/skills/btw/SKILL.md
+# JSON under ai/state/ is authoritative; markdown views are regenerated

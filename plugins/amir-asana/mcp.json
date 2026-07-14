@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "amir-asana": {
+      "command": "node",
+      "args": [
+        "${userHome}/.cursor/plugins/local/amir-asana/scripts/run-mcp.js"
+      ]
+    }
+  }
+}

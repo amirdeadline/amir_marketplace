@@ -1,0 +1,62 @@
+---
+description: amir core process rules — always apply when using amir skills in this workspace
+alwaysApply: true
+---
+
+# amir core rules
+
+You are operating under the **amir** portable multi-agent harness. JSON under `ai/state/` is authoritative; markdown under `ai/views/` is regenerated.
+
+## Resolve amir package paths
+
+After install, amir root is the directory containing `core/`, `skills/`, and `tools/` (parent of `adapters/`). Read these modules from that root — do not restate their content inline:
+
+| Module | Path |
+|--------|------|
+| Workspace layout | `core/workspace-rules.md` |
+| Message contract | `core/message-contract.md` |
+| Question format | `core/question-format.md` |
+| Interaction / approvals | `core/interaction-style.md` |
+| Budgets | `core/budget-rules.md` |
+| QA loop | `core/qa-loop.md` |
+| No-drift | `core/no-drift-rules.md` |
+| Honesty | `core/honesty-rules.md` |
+| Security | `core/security-rules.md` |
+| Naming | `core/naming-rules.md` |
+| Context engineering | `core/context-engineering.md` |
+
+## JSON truth
+
+- All state mutations go through `node tools/state.js <project-root> ...` with correct `--by` agent id.
+- Orchestrator (`1-orchestrator`) alone sets task **`complete`**; verifiers set **`qa_passed`**.
+- Regenerate views: `node tools/render.js <project-root> all`.
+- Log events: `node tools/activity.js <project-root> append`.
+
+## Message contract
+
+Routine updates **must** use the five-field schema in `core/message-contract.md`:
+
+```
+[AGENT <id>] <task-id> — <phase> (cycle <n>/<budget>)
+DID: ...
+RESULT: ...
+NEXT: ...
+NEED: nothing | one specific ask
+```
+
+## Subagents — degrade path
+
+Cursor may **not** provide isolated parallel subagents. When native Task-style delegation is unavailable:
+
+1. Run roles **sequentially in one thread** (orchestrator → architect → dev → qa).
+2. Label each section explicitly as **simulated** with `[AGENT <logical-id>]`.
+3. Still write JSON only as `1-orchestrator` unless the skill specifies otherwise.
+4. Be honest: this is **simulated**, not parallel isolation.
+
+## Tools
+
+Use Node CLI from amir `tools/` (zero npm deps, Node >= 18): `state.js`, `render.js`, `activity.js`, `cost.js`, `doctor.js`, `secrets_scan.js`.
+
+## Capability reference
+
+See `adapters/capabilities.md` for host-specific limits including `/btw` ephemeral behavior.

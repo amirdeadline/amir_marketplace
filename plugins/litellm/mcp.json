@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "litellm": {
+      "command": "python",
+      "args": [
+        "${userHome}/.cursor/plugins/local/litellm/bin/litellm_mcp.py"
+      ]
+    }
+  }
+}

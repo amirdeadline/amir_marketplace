@@ -13,6 +13,15 @@ const {
   viewsDir,
   agentsDir,
 } = require('./lib/paths');
+const {
+  isHumanWriter,
+  addAgent,
+  deleteAgent,
+  setAgentState,
+  resetAgent,
+  generatePrompt,
+} = require('./lib/agent-ops');
+const { approveApproval, rejectApproval } = require('./lib/approval-ops');
 
 const VALID_STATUSES = new Set([
   'pending',
@@ -57,7 +66,11 @@ const DEFAULT_RISKS = { version: 1, risks: [] };
 const DEFAULT_APPROVALS = { version: 1, approvals: [] };
 
 function isOrchestrator(agentId) {
-  return agentId === '1-orchestrator' || agentId.endsWith('orchestrator');
+  return (
+    agentId === '1-orchestrator' ||
+    (typeof agentId === 'string' && agentId.endsWith('orchestrator')) ||
+    isHumanWriter(agentId)
+  );
 }
 
 function isQaAgent(agentId, agentsData) {
@@ -296,6 +309,16 @@ function parseFlags(argv) {
     else if (arg === '--file') flags.file = argv[++i];
     else if (arg === '--field') flags.field = argv[++i];
     else if (arg === '--value') flags.value = argv[++i];
+    else if (arg === '--role') flags.role = argv[++i];
+    else if (arg === '--parent') flags.parent = argv[++i];
+    else if (arg === '--responsibility') flags.responsibility = argv[++i];
+    else if (arg === '--model') flags.model = argv[++i];
+    else if (arg === '--name') flags.name = argv[++i];
+    else if (arg === '--agent') flags.agent = argv[++i];
+    else if (arg === '--confirm-name') flags.confirmName = argv[++i];
+    else if (arg === '--approval-id') flags.approvalId = argv[++i];
+    else if (arg === '--grant') flags.grant = argv[++i];
+    else if (arg === '--reason') flags.reason = argv[++i];
   }
   return flags;
 }
@@ -397,6 +420,69 @@ function runCli(argv) {
         console.log(JSON.stringify(result, null, 2));
         break;
       }
+      case 'add-agent': {
+        const result = addAgent(projectRoot, {
+          role: flags.role,
+          parent: flags.parent || null,
+          responsibility: flags.responsibility || '',
+          model: flags.model || 'premium',
+          name: flags.name || null,
+          by: writer || 'human',
+        });
+        console.log(JSON.stringify(result, null, 2));
+        break;
+      }
+      case 'delete-agent': {
+        const result = deleteAgent(projectRoot, {
+          agentId: flags.agent,
+          confirmName: flags.confirmName,
+          by: writer || 'human',
+        });
+        console.log(JSON.stringify(result, null, 2));
+        break;
+      }
+      case 'set-agent-state': {
+        const result = setAgentState(projectRoot, {
+          agentId: flags.agent,
+          to: flags.to,
+          by: writer || 'human',
+        });
+        console.log(JSON.stringify(result, null, 2));
+        break;
+      }
+      case 'reset-agent': {
+        const result = resetAgent(projectRoot, {
+          agentId: flags.agent,
+          by: writer || 'human',
+          reason: flags.reason || flags.note || '',
+        });
+        console.log(JSON.stringify(result, null, 2));
+        break;
+      }
+      case 'generate-prompt': {
+        const result = generatePrompt(projectRoot, { agentId: flags.agent });
+        console.log(JSON.stringify(result, null, 2));
+        break;
+      }
+      case 'approve': {
+        const result = approveApproval(projectRoot, {
+          approvalId: flags.approvalId,
+          grant: flags.grant || null,
+          by: writer || 'human',
+          note: flags.note || null,
+        });
+        console.log(JSON.stringify(result, null, 2));
+        break;
+      }
+      case 'reject': {
+        const result = rejectApproval(projectRoot, {
+          approvalId: flags.approvalId,
+          by: writer || 'human',
+          note: flags.note || null,
+        });
+        console.log(JSON.stringify(result, null, 2));
+        break;
+      }
       default:
         console.error(`Unknown command: ${command}`);
         process.exit(1);
@@ -420,9 +506,17 @@ module.exports = {
   loadAgents,
   loadStatus,
   isOrchestrator,
+  isHumanWriter,
   isQaAgent,
   isDevWorker,
   computeBudget,
   setTaskField,
   updateStatus,
+  addAgent,
+  deleteAgent,
+  setAgentState,
+  resetAgent,
+  generatePrompt,
+  approveApproval,
+  rejectApproval,
 };

@@ -28,7 +28,9 @@
           },
           "last_heartbeat_ts": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
           "task_id": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
-          "current_task": { "oneOf": [{ "type": "string" }, { "type": "null" }] }
+          "current_task": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+          "responsibility": { "type": "string" },
+          "description": { "type": "string" }
         }
       }
     }

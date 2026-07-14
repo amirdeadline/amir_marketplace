@@ -1,0 +1,19 @@
+{
+  "domain": "adem",
+  "ingested": "2026-07-14",
+  "topic_index": [
+    {
+      "topic": "Source PDF: autonomous-dem-administration",
+      "file": "prisma_access.md",
+      "anchor": "autonomous-dem-administration",
+      "line": 6952
+    }
+  ],
+  "files": [
+    {
+      "path": "prisma_access.md",
+      "title": "Prisma Access Agent Reference",
+      "bytes": 5765854
+    }
+  ]
+}

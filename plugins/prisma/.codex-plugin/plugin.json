@@ -1,0 +1,6 @@
+{
+  "name": "prisma",
+  "version": "0.1.0",
+  "description": "Prisma SASE / Strata Cloud Manager expertise: skills over local corpus + public docs.",
+  "skills": "./skills/"
+}

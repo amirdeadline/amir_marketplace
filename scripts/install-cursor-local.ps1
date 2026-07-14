@@ -10,7 +10,9 @@ New-Item -ItemType Directory -Force -Path $LocalRoot | Out-Null
 
 $plugins = @(
   @{ Name = "amir"; Path = Join-Path $MarketplaceRoot "plugins\amir" },
-  @{ Name = "amir-asana"; Path = Join-Path $MarketplaceRoot "plugins\amir-asana" }
+  @{ Name = "amir-asana"; Path = Join-Path $MarketplaceRoot "plugins\amir-asana" },
+  @{ Name = "prisma"; Path = Join-Path $MarketplaceRoot "plugins\prisma" },
+  @{ Name = "litellm"; Path = Join-Path $MarketplaceRoot "plugins\litellm" }
 )
 
 foreach ($p in $plugins) {
@@ -41,4 +43,4 @@ foreach ($p in $plugins) {
 
 Write-Host ""
 Write-Host "Done. In Cursor: Developer: Reload Window"
-Write-Host "Then open Customize -> Plugins and confirm amir + amir-asana."
+Write-Host "Then open Customize -> Plugins and confirm amir, amir-asana, prisma, litellm."

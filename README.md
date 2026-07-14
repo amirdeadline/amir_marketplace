@@ -1,119 +1,69 @@
 # amir marketplace
 
-Cross-host plugin marketplace for **amir** (project-execution harness) and
-**amir-asana** (Asana MCP + skills).
+Cross-host plugin marketplace for **amir**, **amir-asana**, **prisma** (internal),
+and **litellm**.
 
-One catalog. Three native marketplace formats.
+| Plugin | Source | Notes |
+|--------|--------|-------|
+| **amir** | `../Amir` | Project-execution harness |
+| **amir-asana** | `../asana/Amir_Asana_Claude` | Asana MCP + skills |
+| **prisma** | `../prisma` | Prisma SASE/SCM corpus skills — **internal use only** |
+| **litellm** | `../litellm` | Org LiteLLM session launcher + MCP |
 
-| Host | Marketplace file | Install |
-|------|------------------|---------|
-| **Claude Code** | `.claude-plugin/marketplace.json` | `/plugin marketplace add …` then `/plugin install <name>@amir-marketplace` |
-| **Cursor** | `.cursor-plugin/marketplace.json` | Local junctions under `~/.cursor/plugins/local/`, Team Marketplace, or [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish) |
-| **Codex / ChatGPT Work** | `.agents/plugins/marketplace.json` | `codex plugin marketplace add …` then `codex plugin add <name>` |
-| **Other Agent Skills hosts** | `catalog/hosts.json` | Copy skills + package roots as needed |
+## Licensing warning (prisma)
 
-| Plugin | Packed path | Source of truth |
-|--------|-------------|-----------------|
-| **amir** | `plugins/amir/` | [`../Amir`](../Amir) |
-| **amir-asana** | `plugins/amir-asana/` | [`../asana/Amir_Asana_Claude`](../asana/Amir_Asana_Claude) |
+The `prisma` plugin bakes distilled indexes from Palo Alto Networks documentation.
+**Do not publish this marketplace (or the prisma plugin) publicly** while those
+baked `references/` ship. Prefer a **private** GitHub repo. The ingest script never
+uploads corpus content.
 
-## Layout
+## Pack + verify
 
-```text
-amir_marketplace/
-  .claude-plugin/marketplace.json
-  .cursor-plugin/marketplace.json
-  .agents/plugins/marketplace.json
-  catalog/hosts.json
-  scripts/pack-amir.js
-  scripts/pack-amir-asana.js
-  scripts/verify-marketplace.js
-  scripts/install-cursor-local.ps1
-  plugins/amir/
-  plugins/amir-asana/
-  VERSION
-  README.md
-```
-
-## Quickstart — local
-
-### 1. Pack plugins
-
-```bash
+```powershell
+cd E:\PC3_Shared\Plugins\amir_marketplace
 node scripts/pack-amir.js
 node scripts/pack-amir-asana.js
+# prisma: generate skills + ingest corpus first
+python ..\prisma\scripts\gen_skills.py
+python ..\prisma\scripts\ingest.py
+node scripts/pack-plugin-copy.js --name prisma --source ../prisma
+node scripts/pack-plugin-copy.js --name litellm --source ../litellm
 node scripts/verify-marketplace.js
 ```
 
-Requires **Node.js >= 18**. Asana also needs its Python `.venv` (created in the
-source tree; pack junctions it into `plugins/amir-asana` when present).
-
-### 2. Add the marketplace (pick your host)
-
-**Claude Code**
-
-```text
-/plugin marketplace add E:/PC3_Shared/Plugins/amir_marketplace
-/plugin install amir@amir-marketplace
-/plugin install amir-asana@amir-marketplace
-```
-
-**Cursor (local — recommended on this machine)**
+## Cursor local install
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/install-cursor-local.ps1
 ```
 
-Then **Developer: Reload Window**. Plugins appear under Customize → Plugins
-as local installs (`amir`, `amir-asana`).
+Then **Developer: Reload Window**.
 
-Team / public listing: submit the repo at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish).
+## Visual Cockpit (VS Code / Cursor extension)
 
-**Codex CLI / ChatGPT desktop**
+Optional IDE side panel lives in [`extensions/amir`](extensions/amir) — Project / Agents / Tasks over `ai/state/*.json`. Mutations call packed `plugins/amir/tools/state.js`.
 
-```bash
-codex plugin marketplace add E:/PC3_Shared/Plugins/amir_marketplace
-codex plugin add amir
-codex plugin add amir-asana
+```powershell
+cd extensions/amir
+npm install
+npm run compile
+npm run package
+code --install-extension amir-0.1.0.vsix
+# or: cursor --install-extension amir-0.1.0.vsix
 ```
 
-**Other hosts (Windsurf, Continue, Gemini CLI, custom)**
+See [`extensions/amir/README.md`](extensions/amir/README.md).
 
-1. Pack plugins as above
-2. Copy skills into the host skills directory
-3. For Asana MCP: `node plugins/amir-asana/scripts/run-mcp.js` (stdio)
+## Claude Code
 
-See `catalog/hosts.json` for the support matrix.
-
-## What installs
-
-### amir
-
-- Full skill catalog (project lifecycle, design/plan, build/QA, git, docs, system/user maintenance)
-- JSON state layer + Node tools
-- Host adapters: Claude agents/hooks, Cursor commands/rules (includes `/btw`), Codex `AGENTS.md` + skills
-
-### amir-asana
-
-- FastMCP stdio server (17 Asana tools)
-- Nine skills: priorities today, review, standup, triage, sync-from-report, backlog update, create/update/complete
-- Credentials via `.env` (`ASANA_ACCESS_TOKEN`) — never committed
-
-Claude Code does **not** register `/btw` (documented intentional absence). Cursor and Codex do.
-
-## Developing
-
-| Plugin | Edit | Re-pack |
-|--------|------|---------|
-| amir | [`../Amir`](../Amir) | `node scripts/pack-amir.js` |
-| amir-asana | [`../asana/Amir_Asana_Claude`](../asana/Amir_Asana_Claude) | `node scripts/pack-amir-asana.js` |
-
-Do not hand-edit packed files under `plugins/` — they are generated.
+```text
+/plugin marketplace add E:/PC3_Shared/Plugins/amir_marketplace
+/plugin install amir@amir-marketplace
+/plugin install amir-asana@amir-marketplace
+/plugin install prisma@amir-marketplace
+/plugin install litellm@amir-marketplace
+```
 
 ## Version
 
-See [`VERSION`](VERSION). Keep `amir` aligned with `../Amir/VERSION`. `amir-asana` version lives in its pack script / plugin manifests (`0.2.0`).
-
-## License
-
-Same as the individual plugin packages. No warranty.
+See [`VERSION`](VERSION).

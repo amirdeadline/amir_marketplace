@@ -1,0 +1,1884 @@
+{
+  "domain": "troubleshooting",
+  "ingested": "2026-07-14",
+  "topic_index": [
+    {
+      "topic": "AI Prisma SD-WAN SME Knowledge Base & QA Comparison Contract",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "ai-prisma-sd-wan-sme-knowledge-base-qa-comparison-contract",
+      "line": 1
+    },
+    {
+      "topic": "0. Terminology & scoping",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "0-terminology-scoping",
+      "line": 14
+    },
+    {
+      "topic": "1. Logical export schema (the comparison skeleton)",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "1-logical-export-schema-the-comparison-skeleton",
+      "line": 32
+    },
+    {
+      "topic": "2\u201316. Config domains (what a correct export must contain)",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "2-16-config-domains-what-a-correct-export-must-contain",
+      "line": 66
+    },
+    {
+      "topic": "1. Sites & elements",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "1-sites-elements",
+      "line": 70
+    },
+    {
+      "topic": "2. Interfaces (physical, subinterface, tunnel, LAG, loopback, DHCP relay)",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "2-interfaces-physical-subinterface-tunnel-lag-loopback-dhcp-relay",
+      "line": 80
+    },
+    {
+      "topic": "3. WAN interfaces / circuits",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "3-wan-interfaces-circuits",
+      "line": 99
+    },
+    {
+      "topic": "4. Routing (static, BGP, OSPF, prefix-lists, route-maps, VRF)",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "4-routing-static-bgp-ospf-prefix-lists-route-maps-vrf",
+      "line": 112
+    },
+    {
+      "topic": "5. Security zones & bindings",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "5-security-zones-bindings",
+      "line": 126
+    },
+    {
+      "topic": "6. NAT policy",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "6-nat-policy",
+      "line": 133
+    },
+    {
+      "topic": "7. Path / QoS(priority) / Performance / NGFW security policy",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "7-path-qos-priority-performance-ngfw-security-policy",
+      "line": 143
+    },
+    {
+      "topic": "8. DHCP servers (site scopes)",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "8-dhcp-servers-site-scopes",
+      "line": 156
+    },
+    {
+      "topic": "9. HA \u2014 spoke HA & hub clusters",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "9-ha-spoke-ha-hub-clusters",
+      "line": 163
+    },
+    {
+      "topic": "10. SNMP, IPFIX, NTP, DNS (element services)",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "10-snmp-ipfix-ntp-dns-element-services",
+      "line": 173
+    },
+    {
+      "topic": "11. Switch configuration (switch-capable IONs)",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "11-switch-configuration-switch-capable-ions",
+      "line": 182
+    },
+    {
+      "topic": "12. Prisma Access integration",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "12-prisma-access-integration",
+      "line": 190
+    },
+    {
+      "topic": "13. Profiles",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "13-profiles",
+      "line": 199
+    },
+    {
+      "topic": "14. Resources",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "14-resources",
+      "line": 207
+    },
+    {
+      "topic": "15. System administration",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "15-system-administration",
+      "line": 217
+    },
+    {
+      "topic": "16. Site templates & bulk config",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "16-site-templates-bulk-config",
+      "line": 223
+    },
+    {
+      "topic": "17. Test tenant (tenant1) facts",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "17-test-tenant-tenant1-facts",
+      "line": 228
+    },
+    {
+      "topic": "18. Comparison rules (contract for `logical_compare`)",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "18-comparison-rules-contract-for-logical_compare",
+      "line": 241
+    },
+    {
+      "topic": "Sources",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "sources",
+      "line": 259
+    },
+    {
+      "topic": "Prisma Access Agent Reference",
+      "file": "prisma_access.md",
+      "anchor": "prisma-access-agent-reference",
+      "line": 3
+    },
+    {
+      "topic": "Purpose",
+      "file": "prisma_access.md",
+      "anchor": "purpose",
+      "line": 7
+    },
+    {
+      "topic": "How Agents Should Use This File",
+      "file": "prisma_access.md",
+      "anchor": "how-agents-should-use-this-file",
+      "line": 11
+    },
+    {
+      "topic": "Included Source PDFs",
+      "file": "prisma_access.md",
+      "anchor": "included-source-pdfs",
+      "line": 19
+    },
+    {
+      "topic": "Exact Duplicate PDFs Skipped",
+      "file": "prisma_access.md",
+      "anchor": "exact-duplicate-pdfs-skipped",
+      "line": 38
+    },
+    {
+      "topic": "Converted PDF Content",
+      "file": "prisma_access.md",
+      "anchor": "converted-pdf-content",
+      "line": 50
+    },
+    {
+      "topic": "Source PDF: advanced-url-filtering-administration",
+      "file": "prisma_access.md",
+      "anchor": "advanced-url-filtering-administration",
+      "line": 52
+    },
+    {
+      "topic": "set deviceconfig setting pan-url-db cloud-static-list <IP",
+      "file": "prisma_access.md",
+      "anchor": "set-deviceconfig-setting-pan-url-db-cloud-static-list-ip",
+      "line": 6799
+    },
+    {
+      "topic": "delete deviceconfig setting pan-url-db cloud-static-list <IP",
+      "file": "prisma_access.md",
+      "anchor": "delete-deviceconfig-setting-pan-url-db-cloud-static-list-ip",
+      "line": 6805
+    },
+    {
+      "topic": "Source PDF: autonomous-dem-administration",
+      "file": "prisma_access.md",
+      "anchor": "autonomous-dem-administration",
+      "line": 6952
+    },
+    {
+      "topic": "Source PDF: Extending SD-WAN into AWS for Private Application Access Solution Guide - Nov23",
+      "file": "prisma_access.md",
+      "anchor": "extending-sd-wan-into-aws-for-private-application-access-solution-guide-nov23",
+      "line": 13200
+    },
+    {
+      "topic": "show device-group branch-offices",
+      "file": "prisma_access.md",
+      "anchor": "show-device-group-branch-offices",
+      "line": 13263
+    },
+    {
+      "topic": "Source PDF: Extending SD-WAN into Azure for Private Application Access Solution Guide - Sep23",
+      "file": "prisma_access.md",
+      "anchor": "extending-sd-wan-into-azure-for-private-application-access-solution-guide-sep23",
+      "line": 14156
+    },
+    {
+      "topic": "show device-group branch-offices",
+      "file": "prisma_access.md",
+      "anchor": "show-device-group-branch-offices",
+      "line": 14220
+    },
+    {
+      "topic": "Source PDF: extending-sdwan-into-azure-for-private-apps-solution-guide",
+      "file": "prisma_access.md",
+      "anchor": "extending-sdwan-into-azure-for-private-apps-solution-guide",
+      "line": 15187
+    },
+    {
+      "topic": "show device-group branch-offices",
+      "file": "prisma_access.md",
+      "anchor": "show-device-group-branch-offices",
+      "line": 15251
+    },
+    {
+      "topic": "Source PDF: prisma-access-activation-and-onboarding",
+      "file": "prisma_access.md",
+      "anchor": "prisma-access-activation-and-onboarding",
+      "line": 16218
+    },
+    {
+      "topic": "Source PDF: prisma-access-administration",
+      "file": "prisma_access.md",
+      "anchor": "prisma-access-administration",
+      "line": 19814
+    },
+    {
+      "topic": "For the Chrome browser, follow the instructions listed below to disable TLS 1.3 Kyber, if",
+      "file": "prisma_access.md",
+      "anchor": "for-the-chrome-browser-follow-the-instructions-listed-below-to-disable-tls-1-3-k",
+      "line": 39833
+    },
+    {
+      "topic": "display all keytabs, get the key entry numbers to remove DES-CBC-",
+      "file": "prisma_access.md",
+      "anchor": "display-all-keytabs-get-the-key-entry-numbers-to-remove-des-cbc",
+      "line": 41622
+    },
+    {
+      "topic": "Also, enable or disable RC4-HMAC based on your organization\u2019s",
+      "file": "prisma_access.md",
+      "anchor": "also-enable-or-disable-rc4-hmac-based-on-your-organization-s",
+      "line": 41624
+    },
+    {
+      "topic": "cleanup unsupported ciphers",
+      "file": "prisma_access.md",
+      "anchor": "cleanup-unsupported-ciphers",
+      "line": 41628
+    },
+    {
+      "topic": "entry #1 is typically des-cbc-crc",
+      "file": "prisma_access.md",
+      "anchor": "entry-1-is-typically-des-cbc-crc",
+      "line": 41629
+    },
+    {
+      "topic": "entry #2 is typically des-cbc-md5",
+      "file": "prisma_access.md",
+      "anchor": "entry-2-is-typically-des-cbc-md5",
+      "line": 41630
+    },
+    {
+      "topic": "entry #3 is typically arcfour-hmac",
+      "file": "prisma_access.md",
+      "anchor": "entry-3-is-typically-arcfour-hmac",
+      "line": 41631
+    },
+    {
+      "topic": "if you created any additional region-specific keytab files, add",
+      "file": "prisma_access.md",
+      "anchor": "if-you-created-any-additional-region-specific-keytab-files-add",
+      "line": 41668
+    },
+    {
+      "topic": "Go to Workflows > Prisma Access Setup > GlobalProtect > Infrastructure and edit",
+      "file": "prisma_access.md",
+      "anchor": "go-to-workflows-prisma-access-setup-globalprotect-infrastructure-and-edit",
+      "line": 43882
+    },
+    {
+      "topic": "Go to Workflows > Prisma Access Setup > Explicit Proxy > Infrastructure and edit",
+      "file": "prisma_access.md",
+      "anchor": "go-to-workflows-prisma-access-setup-explicit-proxy-infrastructure-and-edit",
+      "line": 43885
+    },
+    {
+      "topic": "Source PDF: prisma-access-agent-administration",
+      "file": "prisma_access.md",
+      "anchor": "prisma-access-agent-administration",
+      "line": 57822
+    },
+    {
+      "topic": "Uninstall_PAA.ps1",
+      "file": "prisma_access.md",
+      "anchor": "uninstall_paa-ps1",
+      "line": 64207
+    },
+    {
+      "topic": "Check if running as Administrator",
+      "file": "prisma_access.md",
+      "anchor": "check-if-running-as-administrator",
+      "line": 64208
+    },
+    {
+      "topic": "Disable the anti tampering. For now the password needs to be echoed",
+      "file": "prisma_access.md",
+      "anchor": "disable-the-anti-tampering-for-now-the-password-needs-to-be-echoed",
+      "line": 64216
+    },
+    {
+      "topic": "Retrieving the Prisma Access Agent product code",
+      "file": "prisma_access.md",
+      "anchor": "retrieving-the-prisma-access-agent-product-code",
+      "line": 64221
+    },
+    {
+      "topic": "Uninstall the agent using Msiexec.exe",
+      "file": "prisma_access.md",
+      "anchor": "uninstall-the-agent-using-msiexec-exe",
+      "line": 64226
+    },
+    {
+      "topic": "Source PDF: prisma-access-browser-administration",
+      "file": "prisma_access.md",
+      "anchor": "prisma-access-browser-administration",
+      "line": 66101
+    },
+    {
+      "topic": "Source PDF: prisma-access-incidents-and-alerts",
+      "file": "prisma_access.md",
+      "anchor": "prisma-access-incidents-and-alerts",
+      "line": 73684
+    },
+    {
+      "topic": "Source PDF: SASE for Securing Private Applications - Deployment Guide - Jun24",
+      "file": "prisma_access.md",
+      "anchor": "sase-for-securing-private-applications-deployment-guide-jun24",
+      "line": 78032
+    },
+    {
+      "topic": "show device-group branch-of\ufb01ces",
+      "file": "prisma_access.md",
+      "anchor": "show-device-group-branch-of\ufb01ces",
+      "line": 78093
+    },
+    {
+      "topic": "Source PDF: SASE for Securing Private Applications - Design Guide - Jun24",
+      "file": "prisma_access.md",
+      "anchor": "sase-for-securing-private-applications-design-guide-jun24",
+      "line": 82241
+    },
+    {
+      "topic": "show device-group branch-of\ufb01ces",
+      "file": "prisma_access.md",
+      "anchor": "show-device-group-branch-of\ufb01ces",
+      "line": 82294
+    },
+    {
+      "topic": "Source PDF: strata-logging-service-log-reference",
+      "file": "prisma_access.md",
+      "anchor": "strata-logging-service-log-reference",
+      "line": 85556
+    },
+    {
+      "topic": "Source PDF: zero-trust-best-practices",
+      "file": "prisma_access.md",
+      "anchor": "zero-trust-best-practices",
+      "line": 119649
+    },
+    {
+      "topic": "Prisma SASE Architecture Agent Reference",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "prisma-sase-architecture-agent-reference",
+      "line": 3
+    },
+    {
+      "topic": "Purpose",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "purpose",
+      "line": 7
+    },
+    {
+      "topic": "How Agents Should Use This File",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "how-agents-should-use-this-file",
+      "line": 11
+    },
+    {
+      "topic": "Included Source PDFs",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "included-source-pdfs",
+      "line": 19
+    },
+    {
+      "topic": "Exact Duplicate PDFs Skipped",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "exact-duplicate-pdfs-skipped",
+      "line": 42
+    },
+    {
+      "topic": "Converted PDF Content",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "converted-pdf-content",
+      "line": 54
+    },
+    {
+      "topic": "Source PDF: aws-vpc-tgw",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "aws-vpc-tgw",
+      "line": 56
+    },
+    {
+      "topic": "Source PDF: azure-virtual-wan",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "azure-virtual-wan",
+      "line": 6392
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7407
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7484
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7576
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7667
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7763
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7839
+    },
+    {
+      "topic": "P2S client root certificate private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-root-certificate-private-key",
+      "line": 21337
+    },
+    {
+      "topic": "please fill this field with a PEM formatted key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-key",
+      "line": 21338
+    },
+    {
+      "topic": "P2S client root certificate private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-root-certificate-private-key",
+      "line": 21519
+    },
+    {
+      "topic": "please fill this field with a PEM formatted key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-key",
+      "line": 21520
+    },
+    {
+      "topic": "P2S CA root certificate",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-ca-root-certificate",
+      "line": 21550
+    },
+    {
+      "topic": "Pre Shared Key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "pre-shared-key",
+      "line": 21559
+    },
+    {
+      "topic": "P2S client certificate",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-certificate",
+      "line": 21583
+    },
+    {
+      "topic": "Please fill this field with a PEM formatted client certificate",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-client-certificate",
+      "line": 21584
+    },
+    {
+      "topic": "Alternatively, configure 'cert PATH_TO_CLIENT_CERT' to use input from a",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "alternatively-configure-cert-path_to_client_cert-to-use-input-from-a",
+      "line": 21585
+    },
+    {
+      "topic": "P2S client certificate private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-certificate-private-key",
+      "line": 21594
+    },
+    {
+      "topic": "Please fill this field with a PEM formatted private key of the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-private-key-of-the-client",
+      "line": 21595
+    },
+    {
+      "topic": "Alternatively, configure 'key PATH_TO_CLIENT_KEY' to use input from a PEM",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "alternatively-configure-key-path_to_client_key-to-use-input-from-a-pem",
+      "line": 21597
+    },
+    {
+      "topic": "Generate a private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "generate-a-private-key",
+      "line": 21708
+    },
+    {
+      "topic": "Generate a CSR",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "generate-a-csr",
+      "line": 21711
+    },
+    {
+      "topic": "Sign the CSR using the CA certificate and key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "sign-the-csr-using-the-ca-certificate-and-key",
+      "line": 21715
+    },
+    {
+      "topic": "install curl utility",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-curl-utility",
+      "line": 21736
+    },
+    {
+      "topic": "Install Microsoft's public key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-microsoft-s-public-key",
+      "line": 21738
+    },
+    {
+      "topic": "Install the production repo list for focal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-the-production-repo-list-for-focal",
+      "line": 21741
+    },
+    {
+      "topic": "For Ubuntu 20.04",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "for-ubuntu-20-04",
+      "line": 21742
+    },
+    {
+      "topic": "Install the production repo list for jammy",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-the-production-repo-list-for-jammy",
+      "line": 21745
+    },
+    {
+      "topic": "For Ubuntu 22.04",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "for-ubuntu-22-04",
+      "line": 21746
+    },
+    {
+      "topic": "P2S client certificate",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-certificate",
+      "line": 21893
+    },
+    {
+      "topic": "please fill this field with a PEM formatted cert",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-cert",
+      "line": 21894
+    },
+    {
+      "topic": "P2S client root certificate private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-root-certificate-private-key",
+      "line": 21898
+    },
+    {
+      "topic": "please fill this field with a PEM formatted key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-key",
+      "line": 21899
+    },
+    {
+      "topic": "Generate a private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "generate-a-private-key",
+      "line": 22882
+    },
+    {
+      "topic": "Generate a CSR (Certificate Sign Request)",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "generate-a-csr-certificate-sign-request",
+      "line": 22884
+    },
+    {
+      "topic": "Sign the CSR using the CA certificate and CA key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "sign-the-csr-using-the-ca-certificate-and-ca-key",
+      "line": 22887
+    },
+    {
+      "topic": "install curl utility",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-curl-utility",
+      "line": 24802
+    },
+    {
+      "topic": "Install Microsoft's public key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-microsoft-s-public-key",
+      "line": 24804
+    },
+    {
+      "topic": "Install the production repo list for focal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-the-production-repo-list-for-focal",
+      "line": 24828
+    },
+    {
+      "topic": "For Ubuntu 20.04",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "for-ubuntu-20-04",
+      "line": 24829
+    },
+    {
+      "topic": "Install the production repo list for jammy",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-the-production-repo-list-for-jammy",
+      "line": 24833
+    },
+    {
+      "topic": "For Ubuntu 22.04",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "for-ubuntu-22-04",
+      "line": 24834
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 26571
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure Portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 26573
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 26576
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 26579
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 26582
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 26642
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 26644
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 26647
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 26660
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 26664
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 26666
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 26669
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 26672
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 26676
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 26715
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 26717
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 26720
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 26723
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 26726
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 31301
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure Portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 31303
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 31306
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 31309
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 31312
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 31372
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 31374
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 31377
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 31390
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 31394
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 31396
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 31399
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 31402
+    },
+    {
+      "topic": "Prisma SASE Python SDK \u2014 API Reference",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "prisma-sase-python-sdk-api-reference",
+      "line": 2
+    },
+    {
+      "topic": "Key APIs (most-used)",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "key-apis-most-used",
+      "line": 8
+    },
+    {
+      "topic": "Counts by HTTP verb",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "counts-by-http-verb",
+      "line": 22
+    },
+    {
+      "topic": "Counts by domain",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "counts-by-domain",
+      "line": 33
+    },
+    {
+      "topic": "Applications, QoS & Probes",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "applications-qos-probes",
+      "line": 51
+    },
+    {
+      "topic": "Authentication, Session & IAM",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "authentication-session-iam",
+      "line": 92
+    },
+    {
+      "topic": "CloudBlades, Bulk Config & Extensions",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "cloudblades-bulk-config-extensions",
+      "line": 237
+    },
+    {
+      "topic": "Elements, ION Devices & Software",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "elements-ion-devices-software",
+      "line": 252
+    },
+    {
+      "topic": "Interfaces, LAN/WAN & Routing",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "interfaces-lan-wan-routing",
+      "line": 347
+    },
+    {
+      "topic": "Monitoring, Stats & Telemetry",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "monitoring-stats-telemetry",
+      "line": 489
+    },
+    {
+      "topic": "Other / General API",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "other-general-api",
+      "line": 574
+    },
+    {
+      "topic": "Policies, Security & NAT",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "policies-security-nat",
+      "line": 630
+    },
+    {
+      "topic": "Prisma Access & SASE Integration",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "prisma-access-sase-integration",
+      "line": 850
+    },
+    {
+      "topic": "Sites, Topology & VPN",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "sites-topology-vpn",
+      "line": 908
+    },
+    {
+      "topic": "Tenant & Account Administration",
+      "file": "prisma_sase_sdk/api_reference.md",
+      "anchor": "tenant-account-administration",
+      "line": 1048
+    },
+    {
+      "topic": "Prisma SASE Python SDK \u2014 Architecture & Internals",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "prisma-sase-python-sdk-architecture-internals",
+      "line": 3
+    },
+    {
+      "topic": "Package layout",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "package-layout",
+      "line": 10
+    },
+    {
+      "topic": "Class diagram",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "class-diagram",
+      "line": 31
+    },
+    {
+      "topic": "Object construction",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "object-construction",
+      "line": 89
+    },
+    {
+      "topic": "Request flow",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "request-flow",
+      "line": 107
+    },
+    {
+      "topic": "URL construction pattern",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "url-construction-pattern",
+      "line": 131
+    },
+    {
+      "topic": "Authentication architecture",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "authentication-architecture",
+      "line": 158
+    },
+    {
+      "topic": "Service account flow (`login_secret`)",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "service-account-flow-login_secret",
+      "line": 160
+    },
+    {
+      "topic": "Interactive user flow (`login`)",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "interactive-user-flow-login",
+      "line": 189
+    },
+    {
+      "topic": "Session storage",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "session-storage",
+      "line": 199
+    },
+    {
+      "topic": "JWT refresh",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "jwt-refresh",
+      "line": 209
+    },
+    {
+      "topic": "Region handling",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "region-handling",
+      "line": 219
+    },
+    {
+      "topic": "rest_call() \u2014 the HTTP engine",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "rest_call-the-http-engine",
+      "line": 246
+    },
+    {
+      "topic": "Parameters",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "parameters",
+      "line": 250
+    },
+    {
+      "topic": "Response extension",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "response-extension",
+      "line": 262
+    },
+    {
+      "topic": "Legacy aliases: cgx_status, cgx_content, cgx_errors, cgx_warnings",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "legacy-aliases-cgx_status-cgx_content-cgx_errors-cgx_warnings",
+      "line": 271
+    },
+    {
+      "topic": "Retry policy",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "retry-policy",
+      "line": 284
+    },
+    {
+      "topic": "SSL/TLS",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "ssl-tls",
+      "line": 292
+    },
+    {
+      "topic": "WebSocket layer",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "websocket-layer",
+      "line": 305
+    },
+    {
+      "topic": "Interactive module responsibilities",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "interactive-module-responsibilities",
+      "line": 323
+    },
+    {
+      "topic": "Helper utilities (module level and API methods)",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "helper-utilities-module-level-and-api-methods",
+      "line": 339
+    },
+    {
+      "topic": "API versioning strategy",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "api-versioning-strategy",
+      "line": 354
+    },
+    {
+      "topic": "Prisma Access / SASE API mapping",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "prisma-access-sase-api-mapping",
+      "line": 369
+    },
+    {
+      "topic": "Monitor API architecture",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "monitor-api-architecture",
+      "line": 395
+    },
+    {
+      "topic": "Query pattern (`*_query` methods)",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "query-pattern-_query-methods",
+      "line": 423
+    },
+    {
+      "topic": "Error model",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "error-model",
+      "line": 437
+    },
+    {
+      "topic": "Session state reference",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "session-state-reference",
+      "line": 463
+    },
+    {
+      "topic": "Extension points",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "extension-points",
+      "line": 481
+    },
+    {
+      "topic": "Related documentation",
+      "file": "prisma_sase_sdk/architecture.md",
+      "anchor": "related-documentation",
+      "line": 496
+    },
+    {
+      "topic": "Prisma SASE Python SDK \u2014 User Guide",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "prisma-sase-python-sdk-user-guide",
+      "line": 3
+    },
+    {
+      "topic": "What is this SDK?",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "what-is-this-sdk",
+      "line": 10
+    },
+    {
+      "topic": "Prerequisites",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "prerequisites",
+      "line": 24
+    },
+    {
+      "topic": "Core concepts (plain language)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "core-concepts-plain-language",
+      "line": 42
+    },
+    {
+      "topic": "Tenant and TSG",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "tenant-and-tsg",
+      "line": 44
+    },
+    {
+      "topic": "Controller",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "controller",
+      "line": 48
+    },
+    {
+      "topic": "Site, Element, Element Shell",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "site-element-element-shell",
+      "line": 58
+    },
+    {
+      "topic": "Configuration vs Monitor APIs",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "configuration-vs-monitor-apis",
+      "line": 73
+    },
+    {
+      "topic": "Prisma Access / SASE integration",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "prisma-access-sase-integration",
+      "line": 82
+    },
+    {
+      "topic": "Quick start (5 minutes)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "quick-start-5-minutes",
+      "line": 95
+    },
+    {
+      "topic": "1. Create SDK instance",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "1-create-sdk-instance",
+      "line": 100
+    },
+    {
+      "topic": "2. Login with service account (recommended for automation)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "2-login-with-service-account-recommended-for-automation",
+      "line": 103
+    },
+    {
+      "topic": "3. List all sites",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "3-list-all-sites",
+      "line": 110
+    },
+    {
+      "topic": "4. Logout when done",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "4-logout-when-done",
+      "line": 118
+    },
+    {
+      "topic": "How to call any API",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "how-to-call-any-api",
+      "line": 130
+    },
+    {
+      "topic": "HTTP verb modules",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "http-verb-modules",
+      "line": 143
+    },
+    {
+      "topic": "Pretty-print responses",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "pretty-print-responses",
+      "line": 155
+    },
+    {
+      "topic": "Authentication options",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "authentication-options",
+      "line": 167
+    },
+    {
+      "topic": "Option A \u2014 Service account (recommended)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "option-a-service-account-recommended",
+      "line": 169
+    },
+    {
+      "topic": "Option B \u2014 Interactive user login",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "option-b-interactive-user-login",
+      "line": 193
+    },
+    {
+      "topic": "Option C \u2014 Raw login API",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "option-c-raw-login-api",
+      "line": 203
+    },
+    {
+      "topic": "MSP / ESP (managed service providers)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "msp-esp-managed-service-providers",
+      "line": 212
+    },
+    {
+      "topic": "... work in customer context ...",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "work-in-customer-context",
+      "line": 218
+    },
+    {
+      "topic": "Common tasks",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "common-tasks",
+      "line": 224
+    },
+    {
+      "topic": "List sites",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "list-sites",
+      "line": 226
+    },
+    {
+      "topic": "List ION devices (elements)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "list-ion-devices-elements",
+      "line": 239
+    },
+    {
+      "topic": "Tenant-wide element list",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "tenant-wide-element-list",
+      "line": 242
+    },
+    {
+      "topic": "Site-scoped (if your workflow has site_id)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "site-scoped-if-your-workflow-has-site_id",
+      "line": 245
+    },
+    {
+      "topic": "Create a site",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "create-a-site",
+      "line": 249
+    },
+    {
+      "topic": "Update a site",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "update-a-site",
+      "line": 260
+    },
+    {
+      "topic": "Query with POST (filtered lists)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "query-with-post-filtered-lists",
+      "line": 266
+    },
+    {
+      "topic": "Prisma Access config on a site",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "prisma-access-config-on-a-site",
+      "line": 276
+    },
+    {
+      "topic": "Read",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "read",
+      "line": 279
+    },
+    {
+      "topic": "Create \u2014 maps site to remote networks / SPN / service links",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "create-maps-site-to-remote-networks-spn-service-links",
+      "line": 282
+    },
+    {
+      "topic": "SASE connection (IPsec to Prisma Access)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "sase-connection-ipsec-to-prisma-access",
+      "line": 295
+    },
+    {
+      "topic": "Tenant-level connection template",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "tenant-level-connection-template",
+      "line": 298
+    },
+    {
+      "topic": "Per-site connection",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "per-site-connection",
+      "line": 302
+    },
+    {
+      "topic": "Check tunnel status",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "check-tunnel-status",
+      "line": 312
+    },
+    {
+      "topic": "Monitoring / metrics",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "monitoring-metrics",
+      "line": 317
+    },
+    {
+      "topic": "Policies and security",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "policies-and-security",
+      "line": 334
+    },
+    {
+      "topic": "WAN / LAN / routing",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "wan-lan-routing",
+      "line": 344
+    },
+    {
+      "topic": "Device toolkit (WebSocket)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "device-toolkit-websocket",
+      "line": 354
+    },
+    {
+      "topic": "Understanding responses",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "understanding-responses",
+      "line": 373
+    },
+    {
+      "topic": "Debugging",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "debugging",
+      "line": 401
+    },
+    {
+      "topic": "API version parameter",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "api-version-parameter",
+      "line": 428
+    },
+    {
+      "topic": "Domain map (where to look)",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "domain-map-where-to-look",
+      "line": 439
+    },
+    {
+      "topic": "Relationship to Palo Alto products",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "relationship-to-palo-alto-products",
+      "line": 456
+    },
+    {
+      "topic": "Tips and pitfalls",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "tips-and-pitfalls",
+      "line": 489
+    },
+    {
+      "topic": "Further reading",
+      "file": "prisma_sase_sdk/user_guide.md",
+      "anchor": "further-reading",
+      "line": 501
+    },
+    {
+      "topic": "Prisma SD-WAN Agent Reference",
+      "file": "prisma_sdwan.md",
+      "anchor": "prisma-sd-wan-agent-reference",
+      "line": 3
+    },
+    {
+      "topic": "Purpose",
+      "file": "prisma_sdwan.md",
+      "anchor": "purpose",
+      "line": 7
+    },
+    {
+      "topic": "How Agents Should Use This File",
+      "file": "prisma_sdwan.md",
+      "anchor": "how-agents-should-use-this-file",
+      "line": 11
+    },
+    {
+      "topic": "Included Source PDFs",
+      "file": "prisma_sdwan.md",
+      "anchor": "included-source-pdfs",
+      "line": 19
+    },
+    {
+      "topic": "Exact Duplicate PDFs Skipped",
+      "file": "prisma_sdwan.md",
+      "anchor": "exact-duplicate-pdfs-skipped",
+      "line": 45
+    },
+    {
+      "topic": "Converted PDF Content",
+      "file": "prisma_sdwan.md",
+      "anchor": "converted-pdf-content",
+      "line": 57
+    },
+    {
+      "topic": "Source PDF: 00ION_data",
+      "file": "prisma_sdwan.md",
+      "anchor": "00ion_data",
+      "line": 59
+    },
+    {
+      "topic": "config interface controller1 ip static address=10.0.0.126/24",
+      "file": "prisma_sdwan.md",
+      "anchor": "config-interface-controller1-ip-static-address-10-0-0-126-24",
+      "line": 8171
+    },
+    {
+      "topic": "dump interface config controller1",
+      "file": "prisma_sdwan.md",
+      "anchor": "dump-interface-config-controller1",
+      "line": 8174
+    },
+    {
+      "topic": "config interface 1 ip static address=24.4.5.2/30 gw=24.4.5.1",
+      "file": "prisma_sdwan.md",
+      "anchor": "config-interface-1-ip-static-address-24-4-5-2-30-gw-24-4-5-1",
+      "line": 8207
+    },
+    {
+      "topic": "dump controller status",
+      "file": "prisma_sdwan.md",
+      "anchor": "dump-controller-status",
+      "line": 8211
+    },
+    {
+      "topic": "file remove test.log",
+      "file": "prisma_sdwan.md",
+      "anchor": "file-remove-test-log",
+      "line": 9989
+    },
+    {
+      "topic": "file tailf log syslog",
+      "file": "prisma_sdwan.md",
+      "anchor": "file-tailf-log-syslog",
+      "line": 10023
+    },
+    {
+      "topic": "dump bfd status localv6=2008::5",
+      "file": "prisma_sdwan.md",
+      "anchor": "dump-bfd-status-localv6-2008-5",
+      "line": 11186
+    },
+    {
+      "topic": "Source PDF: Extending SD-WAN into AWS for Private Application Access Solution Guide - Nov23",
+      "file": "prisma_sdwan.md",
+      "anchor": "extending-sd-wan-into-aws-for-private-application-access-solution-guide-nov23",
+      "line": 26660
+    },
+    {
+      "topic": "show device-group branch-offices",
+      "file": "prisma_sdwan.md",
+      "anchor": "show-device-group-branch-offices",
+      "line": 26723
+    },
+    {
+      "topic": "Source PDF: Extending SD-WAN into Azure for Private Application Access Solution Guide - Sep23",
+      "file": "prisma_sdwan.md",
+      "anchor": "extending-sd-wan-into-azure-for-private-application-access-solution-guide-sep23",
+      "line": 27616
+    },
+    {
+      "topic": "show device-group branch-offices",
+      "file": "prisma_sdwan.md",
+      "anchor": "show-device-group-branch-offices",
+      "line": 27680
+    },
+    {
+      "topic": "Source PDF: extending-sdwan-into-azure-for-private-apps-solution-guide",
+      "file": "prisma_sdwan.md",
+      "anchor": "extending-sdwan-into-azure-for-private-apps-solution-guide",
+      "line": 28647
+    },
+    {
+      "topic": "show device-group branch-offices",
+      "file": "prisma_sdwan.md",
+      "anchor": "show-device-group-branch-offices",
+      "line": 28711
+    },
+    {
+      "topic": "Source PDF: ion-1200-s-4g-quick-start-guide",
+      "file": "prisma_sdwan.md",
+      "anchor": "ion-1200-s-4g-quick-start-guide",
+      "line": 29678
+    },
+    {
+      "topic": "Source PDF: ion-1200-s-hardware-reference",
+      "file": "prisma_sdwan.md",
+      "anchor": "ion-1200-s-hardware-reference",
+      "line": 29827
+    },
+    {
+      "topic": "Source PDF: ion-3200-hardware-reference",
+      "file": "prisma_sdwan.md",
+      "anchor": "ion-3200-hardware-reference",
+      "line": 31171
+    },
+    {
+      "topic": "Source PDF: ion-5200-hardware-reference",
+      "file": "prisma_sdwan.md",
+      "anchor": "ion-5200-hardware-reference",
+      "line": 32354
+    },
+    {
+      "topic": "Source PDF: ion-9200-hardware-reference",
+      "file": "prisma_sdwan.md",
+      "anchor": "ion-9200-hardware-reference",
+      "line": 32844
+    },
+    {
+      "topic": "Source PDF: On Premises Network Security and SD-WAN for the Branch - Design Guide - Oct22",
+      "file": "prisma_sdwan.md",
+      "anchor": "on-premises-network-security-and-sd-wan-for-the-branch-design-guide-oct22",
+      "line": 33386
+    },
+    {
+      "topic": "show device-group branch-of\ufb01ces",
+      "file": "prisma_sdwan.md",
+      "anchor": "show-device-group-branch-of\ufb01ces",
+      "line": 33472
+    },
+    {
+      "topic": "Source PDF: On-Premises Network Security for the Branch - Overview - Oct22",
+      "file": "prisma_sdwan.md",
+      "anchor": "on-premises-network-security-for-the-branch-overview-oct22",
+      "line": 36813
+    },
+    {
+      "topic": "show device-group branch-of\ufb01ces",
+      "file": "prisma_sdwan.md",
+      "anchor": "show-device-group-branch-of\ufb01ces",
+      "line": 36866
+    },
+    {
+      "topic": "Source PDF: prisma-sd-wan-administration",
+      "file": "prisma_sdwan.md",
+      "anchor": "prisma-sd-wan-administration",
+      "line": 37581
+    },
+    {
+      "topic": "Source PDF: prisma-sd-wan-cloudblades-cloudblade-integrations",
+      "file": "prisma_sdwan.md",
+      "anchor": "prisma-sd-wan-cloudblades-cloudblade-integrations",
+      "line": 58807
+    },
+    {
+      "topic": "Source PDF: prisma-sd-wan-instant-on-network-ion-device-specifications_dps",
+      "file": "prisma_sdwan.md",
+      "anchor": "prisma-sd-wan-instant-on-network-ion-device-specifications_dps",
+      "line": 62858
+    },
+    {
+      "topic": "Source PDF: prisma-sd-wan-ion-cli-reference",
+      "file": "prisma_sdwan.md",
+      "anchor": "prisma-sd-wan-ion-cli-reference",
+      "line": 63413
+    },
+    {
+      "topic": "config interface controller1 ip static address=10.0.0.126/24",
+      "file": "prisma_sdwan.md",
+      "anchor": "config-interface-controller1-ip-static-address-10-0-0-126-24",
+      "line": 63968
+    },
+    {
+      "topic": "dump interface config controller1",
+      "file": "prisma_sdwan.md",
+      "anchor": "dump-interface-config-controller1",
+      "line": 63971
+    },
+    {
+      "topic": "config interface 1 ip static address=24.4.5.2/30 gw=24.4.5.1",
+      "file": "prisma_sdwan.md",
+      "anchor": "config-interface-1-ip-static-address-24-4-5-2-30-gw-24-4-5-1",
+      "line": 64004
+    },
+    {
+      "topic": "dump controller status",
+      "file": "prisma_sdwan.md",
+      "anchor": "dump-controller-status",
+      "line": 64008
+    },
+    {
+      "topic": "file remove test.log",
+      "file": "prisma_sdwan.md",
+      "anchor": "file-remove-test-log",
+      "line": 65786
+    },
+    {
+      "topic": "file tailf log syslog",
+      "file": "prisma_sdwan.md",
+      "anchor": "file-tailf-log-syslog",
+      "line": 65820
+    },
+    {
+      "topic": "dump bfd status localv6=2008::5",
+      "file": "prisma_sdwan.md",
+      "anchor": "dump-bfd-status-localv6-2008-5",
+      "line": 66983
+    },
+    {
+      "topic": "Source PDF: prisma-sd-wan-ion-release-notes-6-3",
+      "file": "prisma_sdwan.md",
+      "anchor": "prisma-sd-wan-ion-release-notes-6-3",
+      "line": 82457
+    },
+    {
+      "topic": "Source PDF: prisma-sd-wan-ion-release-notes-6-4",
+      "file": "prisma_sdwan.md",
+      "anchor": "prisma-sd-wan-ion-release-notes-6-4",
+      "line": 83297
+    },
+    {
+      "topic": "Source PDF: prisma-sd-wan-ion-release-notes-6-5",
+      "file": "prisma_sdwan.md",
+      "anchor": "prisma-sd-wan-ion-release-notes-6-5",
+      "line": 83865
+    },
+    {
+      "topic": "Source PDF: SDWANN best practice",
+      "file": "prisma_sdwan.md",
+      "anchor": "sdwann-best-practice",
+      "line": 86354
+    },
+    {
+      "topic": "Source PDF: Secure and Resilient Enterprise Connectivity Using Prisma SD-WAN - Deployment Guide - Oct25",
+      "file": "prisma_sdwan.md",
+      "anchor": "secure-and-resilient-enterprise-connectivity-using-prisma-sd-wan-deployment-guid",
+      "line": 95685
+    },
+    {
+      "topic": "show device-group branch-of\ufb01ces",
+      "file": "prisma_sdwan.md",
+      "anchor": "show-device-group-branch-of\ufb01ces",
+      "line": 95741
+    },
+    {
+      "topic": "Source PDF: Secure and Resilient Enterprise Connectivity Using Prisma SD-WAN - Design Guide - Oct25.pdf",
+      "file": "prisma_sdwan.md",
+      "anchor": "secure-and-resilient-enterprise-connectivity-using-prisma-sd-wan-design-guide-oc",
+      "line": 98403
+    },
+    {
+      "topic": "show device-group branch-of\ufb01ces",
+      "file": "prisma_sdwan.md",
+      "anchor": "show-device-group-branch-of\ufb01ces",
+      "line": 98462
+    },
+    {
+      "topic": "project.md \u2014 Markdowns Prisma SASE (Master Specification)",
+      "file": "project.md",
+      "anchor": "project-md-markdowns-prisma-sase-master-specification",
+      "line": 3
+    },
+    {
+      "topic": "1. Overview and architecture of the documentation set",
+      "file": "project.md",
+      "anchor": "1-overview-and-architecture-of-the-documentation-set",
+      "line": 9
+    },
+    {
+      "topic": "2. Annotated directory structure",
+      "file": "project.md",
+      "anchor": "2-annotated-directory-structure",
+      "line": 22
+    },
+    {
+      "topic": "3. Question-routing map",
+      "file": "project.md",
+      "anchor": "3-question-routing-map",
+      "line": 57
+    },
+    {
+      "topic": "4. Technologies and dependencies",
+      "file": "project.md",
+      "anchor": "4-technologies-and-dependencies",
+      "line": 69
+    },
+    {
+      "topic": "5. Prisma SASE Python SDK \u2014 consolidated reference (from `prisma_sase_sdk/*.md`)",
+      "file": "project.md",
+      "anchor": "5-prisma-sase-python-sdk-consolidated-reference-from-prisma_sase_sdk-md",
+      "line": 76
+    },
+    {
+      "topic": "5.1 Quick facts",
+      "file": "project.md",
+      "anchor": "5-1-quick-facts",
+      "line": 78
+    },
+    {
+      "topic": "5.2 Package layout",
+      "file": "project.md",
+      "anchor": "5-2-package-layout",
+      "line": 90
+    },
+    {
+      "topic": "5.3 Authentication",
+      "file": "project.md",
+      "anchor": "5-3-authentication",
+      "line": 107
+    },
+    {
+      "topic": "5.4 Response model",
+      "file": "project.md",
+      "anchor": "5-4-response-model",
+      "line": 113
+    },
+    {
+      "topic": "5.5 Minimal example",
+      "file": "project.md",
+      "anchor": "5-5-minimal-example",
+      "line": 117
+    },
+    {
+      "topic": "5.6 Operational details",
+      "file": "project.md",
+      "anchor": "5-6-operational-details",
+      "line": 130
+    },
+    {
+      "topic": "5.7 Domain coverage (method counts)",
+      "file": "project.md",
+      "anchor": "5-7-domain-coverage-method-counts",
+      "line": 140
+    },
+    {
+      "topic": "5.8 SD-WAN \u2194 Prisma Access integration objects",
+      "file": "project.md",
+      "anchor": "5-8-sd-wan-prisma-access-integration-objects",
+      "line": 144
+    },
+    {
+      "topic": "6. QA comparison contract \u2014 consolidated (from `ai_prisma_sdwan.md`)",
+      "file": "project.md",
+      "anchor": "6-qa-comparison-contract-consolidated-from-ai_prisma_sdwan-md",
+      "line": 154
+    },
+    {
+      "topic": "7. PDF-extract references \u2014 specification for rebuilding",
+      "file": "project.md",
+      "anchor": "7-pdf-extract-references-specification-for-rebuilding",
+      "line": 166
+    },
+    {
+      "topic": "8. API bundles (from `api/generation_stats.json`)",
+      "file": "project.md",
+      "anchor": "8-api-bundles-from-api-generation_stats-json",
+      "line": 184
+    },
+    {
+      "topic": "9. Configuration (names only \u2014 never store values)",
+      "file": "project.md",
+      "anchor": "9-configuration-names-only-never-store-values",
+      "line": 195
+    },
+    {
+      "topic": "10. Setup / usage workflows",
+      "file": "project.md",
+      "anchor": "10-setup-usage-workflows",
+      "line": 199
+    },
+    {
+      "topic": "11. Known quirks",
+      "file": "project.md",
+      "anchor": "11-known-quirks",
+      "line": 206
+    }
+  ],
+  "files": [
+    {
+      "path": "ai_prisma_sdwan.md",
+      "title": "AI Prisma SD-WAN SME Knowledge Base & QA Comparison Contract",
+      "bytes": 16568
+    },
+    {
+      "path": "prisma_access.md",
+      "title": "Prisma Access Agent Reference",
+      "bytes": 5765854
+    },
+    {
+      "path": "prisma_sase_architecure.md",
+      "title": "Prisma SASE Architecture Agent Reference",
+      "bytes": 4377891
+    },
+    {
+      "path": "prisma_sase_sdk/api_reference.md",
+      "title": "Prisma SASE Python SDK \u2014 API Reference",
+      "bytes": 279258
+    },
+    {
+      "path": "prisma_sase_sdk/architecture.md",
+      "title": "Prisma SASE Python SDK \u2014 Architecture & Internals",
+      "bytes": 16653
+    },
+    {
+      "path": "prisma_sase_sdk/user_guide.md",
+      "title": "Prisma SASE Python SDK \u2014 User Guide",
+      "bytes": 14512
+    },
+    {
+      "path": "prisma_sdwan.md",
+      "title": "Prisma SD-WAN Agent Reference",
+      "bytes": 4258831
+    },
+    {
+      "path": "project.md",
+      "title": "project.md \u2014 Markdowns Prisma SASE (Master Specification)",
+      "bytes": 18225
+    }
+  ]
+}

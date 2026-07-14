@@ -1,6 +1,6 @@
 {
   "marketplace": "amir-marketplace",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "updated_at": "2026-07-14",
   "plugins": [
     {
@@ -14,86 +14,67 @@
       "path": "./plugins/amir-asana",
       "source_of_truth": "../asana/Amir_Asana_Claude",
       "pack": "node scripts/pack-amir-asana.js"
+    },
+    {
+      "name": "prisma",
+      "path": "./plugins/prisma",
+      "source_of_truth": "../prisma",
+      "pack": "python ../prisma/scripts/ingest.py && node scripts/pack-plugin-copy.js --name prisma"
+    },
+    {
+      "name": "litellm",
+      "path": "./plugins/litellm",
+      "source_of_truth": "../litellm",
+      "pack": "node scripts/pack-plugin-copy.js --name litellm"
     }
   ],
-  "plugin": {
-    "name": "amir",
-    "path": "./plugins/amir",
-    "source_of_truth": "../Amir"
-  },
   "hosts": [
     {
       "id": "claude-code",
       "display_name": "Claude Code",
       "marketplace_manifest": ".claude-plugin/marketplace.json",
-      "plugin_manifest": "plugins/amir/.claude-plugin/plugin.json",
       "install": [
         "/plugin marketplace add <path-or-owner/repo>",
         "/plugin install amir@amir-marketplace",
-        "/plugin install amir-asana@amir-marketplace"
+        "/plugin install amir-asana@amir-marketplace",
+        "/plugin install prisma@amir-marketplace",
+        "/plugin install litellm@amir-marketplace"
       ],
-      "supports": {
-        "native_subagents": true,
-        "btw": false,
-        "hooks": true,
-        "slash_commands": true
-      },
-      "notes": "/btw intentionally absent — no true zero-pollution ephemeral session."
+      "supports": { "native_subagents": true, "btw": false, "hooks": true, "slash_commands": true },
+      "notes": "prisma is INTERNAL (PANW docs). Keep marketplace private if prisma is included."
     },
     {
       "id": "cursor",
       "display_name": "Cursor",
       "marketplace_manifest": ".cursor-plugin/marketplace.json",
-      "plugin_manifest": "plugins/amir/.cursor-plugin/plugin.json",
       "install": [
-        "Local: junction ~/.cursor/plugins/local/<plugin> → plugins/<plugin>",
-        "Or add this marketplace repo via Team Marketplace / cursor.com/marketplace/publish",
-        "Install plugins: amir, amir-asana"
+        "powershell -ExecutionPolicy Bypass -File scripts/install-cursor-local.ps1",
+        "Developer: Reload Window"
       ],
-      "supports": {
-        "native_subagents": false,
-        "btw": true,
-        "hooks": "limited",
-        "slash_commands": true
-      },
-      "notes": "Subagents degrade to sequential simulated roles. /btw uses closest read-only primitive. Local plugins: ~/.cursor/plugins/local/"
+      "supports": { "native_subagents": false, "btw": true, "hooks": "limited", "slash_commands": true },
+      "notes": "Local junctions under ~/.cursor/plugins/local/"
     },
     {
       "id": "codex",
       "display_name": "OpenAI Codex CLI / ChatGPT Codex",
       "marketplace_manifest": ".agents/plugins/marketplace.json",
-      "plugin_manifest": "plugins/amir/.codex-plugin/plugin.json",
       "install": [
         "codex plugin marketplace add <path-or-owner/repo>",
         "codex plugin add amir",
-        "codex plugin add amir-asana"
+        "codex plugin add amir-asana",
+        "codex plugin add prisma",
+        "codex plugin add litellm"
       ],
-      "supports": {
-        "native_subagents": false,
-        "btw": true,
-        "hooks": "limited",
-        "slash_commands": "deprecated — use skills"
-      },
-      "notes": "AGENTS.md + skills wrappers; sequential simulated roles."
+      "supports": { "native_subagents": false, "btw": true, "hooks": "limited", "slash_commands": "deprecated — use skills" }
     },
     {
       "id": "agent-skills",
-      "display_name": "Agent Skills compatible hosts (Windsurf, Continue, Gemini CLI, others)",
+      "display_name": "Agent Skills compatible hosts",
       "marketplace_manifest": "catalog/hosts.json",
-      "plugin_manifest": null,
       "install": [
-        "Copy or symlink plugins/amir/skills/*/SKILL.md into the host skills directory",
-        "Copy plugins/amir/core, tools, schemas, templates, skill-specs alongside so wrappers resolve",
-        "For Asana: register MCP via plugins/amir-asana/scripts/run-mcp.js and copy skills/",
-        "Or run: node scripts/pack-amir.js && use install/install.sh from packaged plugin"
+        "Copy skills from plugins/<name>/skills into the host skills directory"
       ],
-      "supports": {
-        "native_subagents": "host-dependent",
-        "btw": "host-dependent",
-        "hooks": "host-dependent",
-        "slash_commands": "host-dependent"
-      },
-      "notes": "No universal marketplace API. Distribution uses Agent Skills (SKILL.md) layout plus amir tools/core. See README."
+      "supports": { "native_subagents": "host-dependent", "btw": "host-dependent", "hooks": "host-dependent", "slash_commands": "host-dependent" }
     }
   ]
 }

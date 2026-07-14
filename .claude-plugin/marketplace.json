@@ -4,57 +4,49 @@
     "name": "amir"
   },
   "metadata": {
-    "description": "Cross-host marketplace for amir (project-execution harness) and amir-asana (Asana MCP + skills).",
-    "version": "0.1.0",
-    "pluginRoot": "./plugins"
+    "description": "Private/cross-host marketplace: amir, amir-asana, prisma (PANW internal), litellm.",
+    "version": "0.2.0"
   },
   "plugins": [
     {
       "name": "amir",
-      "source": "amir",
+      "source": "./plugins/amir",
       "description": "Portable multi-agent project-execution harness: context engineering, JSON state, evidence-based QA loops, goal-drift protection, cost/budget control, and full human visibility.",
       "version": "0.1.0",
-      "author": {
-        "name": "amir"
-      },
+      "author": { "name": "amir" },
       "category": "productivity",
-      "tags": [
-        "multi-agent",
-        "orchestrator",
-        "qa",
-        "project-management",
-        "budget",
-        "context-engineering"
-      ],
-      "keywords": [
-        "amir",
-        "agents",
-        "qa-loop",
-        "json-state",
-        "project-execution"
-      ]
+      "tags": ["multi-agent", "orchestrator", "qa", "project-management"],
+      "keywords": ["amir", "agents", "qa-loop", "json-state"]
     },
     {
       "name": "amir-asana",
-      "source": "amir-asana",
+      "source": "./plugins/amir-asana",
       "description": "Asana connector (MCP, 17 tools) + task skills: priorities, review, standup, triage, create/edit/complete, report sync.",
       "version": "0.2.0",
-      "author": {
-        "name": "Amir"
-      },
+      "author": { "name": "Amir" },
       "category": "productivity",
-      "tags": [
-        "asana",
-        "mcp",
-        "task-management"
-      ],
-      "keywords": [
-        "asana",
-        "mcp",
-        "tasks",
-        "standup",
-        "triage"
-      ]
+      "tags": ["asana", "mcp", "task-management"],
+      "keywords": ["asana", "mcp", "tasks"]
+    },
+    {
+      "name": "prisma",
+      "source": "./plugins/prisma",
+      "description": "INTERNAL: Prisma SASE / SCM expertise over a local markdown corpus + live public docs. Do not publish baked references.",
+      "version": "0.1.0",
+      "author": { "name": "Amir" },
+      "category": "productivity",
+      "tags": ["prisma", "sase", "internal"],
+      "keywords": ["prisma", "sase", "scm", "palo-alto"]
+    },
+    {
+      "name": "litellm",
+      "source": "./plugins/litellm",
+      "description": "Org LiteLLM proxy: Claude Code session launcher + MCP tools for the proxy API surface.",
+      "version": "0.1.0",
+      "author": { "name": "Amir" },
+      "category": "developer-tools",
+      "tags": ["litellm", "proxy", "mcp"],
+      "keywords": ["litellm", "proxy", "mcp", "anthropic"]
     }
   ]
 }

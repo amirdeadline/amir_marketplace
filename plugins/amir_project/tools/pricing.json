@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "heuristic_chars_per_token": 4,
+  "models": {
+    "default": {
+      "input_per_mtok": 3,
+      "output_per_mtok": 15
+    },
+    "claude-sonnet": {
+      "input_per_mtok": 3,
+      "output_per_mtok": 15
+    },
+    "claude-opus": {
+      "input_per_mtok": 15,
+      "output_per_mtok": 75
+    },
+    "gpt-4o": {
+      "input_per_mtok": 2.5,
+      "output_per_mtok": 10
+    },
+    "gpt-4o-mini": {
+      "input_per_mtok": 0.15,
+      "output_per_mtok": 0.6
+    }
+  }
+}

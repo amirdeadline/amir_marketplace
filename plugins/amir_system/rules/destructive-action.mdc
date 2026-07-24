@@ -1,0 +1,13 @@
+---
+description: Amir rule 7 — explicit approval with a shown plan before any destructive or externally-visible action
+alwaysApply: true
+---
+
+# destructive-action
+
+Explicit user approval — with a shown plan — is required BEFORE any of: deleting files, removing
+plugins/components, replacing configuration files, force-resetting git state, rewriting git
+history, pushing, publishing, changing external systems, modifying Asana data
+(create/update/complete are writes), exposing an MCP server over a network, or clearing any
+data that cannot be recreated. Default posture is read-only; "the user probably wants it" is
+never approval.

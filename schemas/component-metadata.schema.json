@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://amir-marketplace.local/schemas/component-metadata.schema.json",
+  "title": "Amir component catalog (catalog/catalog.json)",
+  "description": "Validates the full catalog document. Each entry describes one component group of the amir_system or amir_project plugin, with honest capability, dependency, credential, and health metadata per SPEC-amir_project-tools.md section 10.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "catalog_version", "components"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "catalog_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "generated_at": { "type": "string" },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/component" }
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "plugin",
+        "version",
+        "scope",
+        "description",
+        "official_source",
+        "license",
+        "supported_hosts",
+        "supported_operating_systems",
+        "installation_mode",
+        "dependencies",
+        "optional_dependencies",
+        "conflicts_with",
+        "required_executables",
+        "required_credentials",
+        "network_access",
+        "secret_access",
+        "filesystem_access",
+        "write_capabilities",
+        "destructive_capabilities",
+        "resource_requirements",
+        "health_check",
+        "uninstall_method"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_]*$" },
+        "plugin": { "type": "string", "enum": ["amir_system", "amir_project"] },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "scope": { "type": "string", "enum": ["user", "project"] },
+        "description": { "type": "string", "minLength": 1 },
+        "official_source": {
+          "type": "string",
+          "description": "URL of the upstream project, or 'internal' for Amir-authored components."
+        },
+        "license": { "type": "string" },
+        "supported_hosts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "enum": ["claude-code", "cursor"] }
+        },
+        "supported_operating_systems": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "enum": ["windows", "macos", "linux"] }
+        },
+        "installation_mode": {
+          "type": "string",
+          "enum": ["user-plugin", "project-plugin-or-render"],
+          "description": "user-plugin: ships in amir_system at user scope. project-plugin-or-render: installed per project via 'claude plugin install amir_project ... --scope project' or rendered as a subset by tools/renderer.py."
+        },
+        "host_version_constraints": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "claude-code": { "$ref": "#/$defs/versionRange" },
+            "cursor": { "$ref": "#/$defs/versionRange" }
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Hard dependencies. An entry that matches a catalog component id is a component dependency (must be selected too, transitively). Any other entry names an executable that must be on PATH (e.g. 'git')."
+        },
+        "optional_dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Same semantics as dependencies, but absence only degrades functionality; never blocks activation."
+        },
+        "conflicts_with": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Component ids that must not be selected together with this one."
+        },
+        "required_executables": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Executables that must exist on PATH for this component to function."
+        },
+        "required_credentials": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+          "description": "Environment variable NAMES only; values are never stored or read by the catalog tooling beyond presence checks."
+        },
+        "network_access": { "type": "string", "enum": ["none", "optional", "required"] },
+        "secret_access": { "type": "string", "enum": ["none", "optional", "required"] },
+        "filesystem_access": {
+          "type": "string",
+          "enum": ["none", "project", "project_and_user_state", "system"],
+          "description": "Broadest filesystem surface the component touches. project_and_user_state includes per-user config/state dirs (e.g. ~/.amir); system means it may read outside the project (e.g. packet capture)."
+        },
+        "write_capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "What the component can create or modify (e.g. project_files, external_service:asana, cloud:aws, containers)."
+        },
+        "destructive_capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Irreversible or high-risk operations the component can perform (each gated by confirmation rules)."
+        },
+        "resource_requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cpu": { "type": "string" },
+            "memory": { "type": "string" },
+            "disk": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "health_check": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A concrete runnable command that verifies the component's prerequisites work on this machine."
+        },
+        "uninstall_method": { "type": "string", "minLength": 1 },
+        "commands": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "description": "Slash command names this group contributes (surfaced as /amir:<name>)."
+        },
+        "skills": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" },
+          "description": "Skill directory names this group contributes. create-project-doc is the sole hyphenated exception."
+        },
+        "mcp_servers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" }
+        },
+        "deprecated_aliases": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Map old command name -> replacement command. Alias stubs print a deprecation warning; removed at amir_project 1.0."
+        }
+      }
+    },
+    "versionRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "string" },
+        "max": { "type": "string" }
+      }
+    }
+  }
+}

@@ -4,307 +4,57 @@
     "name": "amir"
   },
   "metadata": {
-    "description": "amir marketplace \u2014 all slash commands under /amir\u2026",
-    "version": "0.3.1",
+    "description": "amir marketplace — two plugins, every command under /amir:",
+    "version": "1.0.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
     {
-      "name": "amir",
-      "source": "amir",
-      "description": "Portable multi-agent project-execution harness.",
-      "version": "0.1.0",
+      "name": "amir_system",
+      "source": "amir_system",
+      "description": "User-scope core: project lifecycle (create/onboard/orchestrate/inspect/manage), Graphify wrappers, Asana + Playwright MCP, system rules. Available before any project exists.",
+      "version": "1.0.0",
       "author": {
         "name": "Amir"
       },
       "category": "integrations",
       "tags": [
-        "multi-agent",
-        "orchestrator"
-      ],
-      "keywords": [
-        "multi-agent",
-        "orchestrator"
-      ]
-    },
-    {
-      "name": "amir-asana",
-      "source": "amir-asana",
-      "description": "Asana MCP + task skills.",
-      "version": "0.2.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "integrations",
-      "tags": [
+        "core",
+        "orchestrator",
+        "graphify",
         "asana",
-        "mcp"
+        "playwright"
       ],
       "keywords": [
+        "core",
+        "orchestrator",
+        "graphify",
         "asana",
-        "mcp"
+        "playwright"
       ]
     },
     {
-      "name": "amir-prisma",
-      "source": "amir-prisma",
-      "description": "INTERNAL Prisma SASE/SCM corpus skills.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "security",
-      "tags": [
-        "prisma",
-        "sase",
-        "internal"
-      ],
-      "keywords": [
-        "prisma",
-        "sase",
-        "internal"
-      ]
-    },
-    {
-      "name": "amir-litellm",
-      "source": "amir-litellm",
-      "description": "Org LiteLLM proxy session launcher + MCP.",
-      "version": "0.1.0",
+      "name": "amir_project",
+      "source": "amir_project",
+      "description": "Project-scope component groups (harness, cloud, security, network, dev tooling, evaluation). Never auto-enabled; installed per project or rendered as a manifest-selected subset.",
+      "version": "1.0.0",
       "author": {
         "name": "Amir"
       },
       "category": "integrations",
       "tags": [
-        "litellm",
-        "proxy"
+        "harness",
+        "multi-agent",
+        "infra",
+        "security",
+        "evaluation"
       ],
       "keywords": [
-        "litellm",
-        "proxy"
-      ]
-    },
-    {
-      "name": "amir-paloalto",
-      "source": "amir-paloalto",
-      "description": "PAN-OS/Panorama/GlobalProtect companion to amir-prisma.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "security",
-      "tags": [
-        "pan-os",
-        "panorama"
-      ],
-      "keywords": [
-        "pan-os",
-        "panorama"
-      ]
-    },
-    {
-      "name": "amir-aws",
-      "source": "amir-aws",
-      "description": "AWS official MCP + aws CLI fallback.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "infra",
-      "tags": [
-        "aws",
-        "mcp"
-      ],
-      "keywords": [
-        "aws",
-        "mcp"
-      ]
-    },
-    {
-      "name": "amir-azure",
-      "source": "amir-azure",
-      "description": "Azure MCP + az CLI.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "infra",
-      "tags": [
-        "azure",
-        "mcp"
-      ],
-      "keywords": [
-        "azure",
-        "mcp"
-      ]
-    },
-    {
-      "name": "amir-terraform",
-      "source": "amir-terraform",
-      "description": "Terraform plan/apply/destroy with confirm + hooks.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "infra",
-      "tags": [
-        "terraform",
-        "iac"
-      ],
-      "keywords": [
-        "terraform",
-        "iac"
-      ]
-    },
-    {
-      "name": "amir-docker",
-      "source": "amir-docker",
-      "description": "Docker/Compose CLI wrappers with guards.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "infra",
-      "tags": [
-        "docker"
-      ],
-      "keywords": [
-        "docker"
-      ]
-    },
-    {
-      "name": "amir-splunk",
-      "source": "amir-splunk",
-      "description": "Splunk REST/SPL helper.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "security",
-      "tags": [
-        "splunk",
-        "spl"
-      ],
-      "keywords": [
-        "splunk",
-        "spl"
-      ]
-    },
-    {
-      "name": "amir-elastic",
-      "source": "amir-elastic",
-      "description": "Elasticsearch/Kibana API + ES|QL skills.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "security",
-      "tags": [
-        "elastic"
-      ],
-      "keywords": [
-        "elastic"
-      ]
-    },
-    {
-      "name": "amir-sentinel",
-      "source": "amir-sentinel",
-      "description": "Microsoft Sentinel KQL hunting + analytics.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "security",
-      "tags": [
-        "sentinel",
-        "kql"
-      ],
-      "keywords": [
-        "sentinel",
-        "kql"
-      ]
-    },
-    {
-      "name": "amir-qradar",
-      "source": "amir-qradar",
-      "description": "QRadar AQL/offenses REST helper.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "security",
-      "tags": [
-        "qradar"
-      ],
-      "keywords": [
-        "qradar"
-      ]
-    },
-    {
-      "name": "amir-cortex-xdr",
-      "source": "amir-cortex-xdr",
-      "description": "Cortex XDR API + IR; typed response confirms.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "security",
-      "tags": [
-        "cortex",
-        "xdr"
-      ],
-      "keywords": [
-        "cortex",
-        "xdr"
-      ]
-    },
-    {
-      "name": "amir-ssh",
-      "source": "amir-ssh",
-      "description": "OpenSSH wrappers with host/command confirmation.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "network",
-      "tags": [
-        "ssh"
-      ],
-      "keywords": [
-        "ssh"
-      ]
-    },
-    {
-      "name": "amir-nmap",
-      "source": "amir-nmap",
-      "description": "Authorized nmap scanning + parse.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "network",
-      "tags": [
-        "nmap"
-      ],
-      "keywords": [
-        "nmap"
-      ]
-    },
-    {
-      "name": "amir-wireshark",
-      "source": "amir-wireshark",
-      "description": "tshark pcap analysis; live capture opt-in.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Amir"
-      },
-      "category": "network",
-      "tags": [
-        "tshark",
-        "pcap"
-      ],
-      "keywords": [
-        "tshark",
-        "pcap"
+        "harness",
+        "multi-agent",
+        "infra",
+        "security",
+        "evaluation"
       ]
     }
   ]

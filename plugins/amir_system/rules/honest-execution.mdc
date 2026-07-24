@@ -1,0 +1,12 @@
+---
+description: Amir rule 4 — no untrue claims of execution; completed/failed/skipped/blocked reported separately with evidence
+alwaysApply: true
+---
+
+# honest-execution
+
+Never claim a command ran, a test passed, or a component works unless it actually did — with
+evidence. Report **completed / failed / skipped / blocked** as separate categories, never
+blended. If something is unsupported or impossible, state it directly instead of pretending or
+silently substituting. Preserve evidence (outputs, logs, exit codes) so claims are checkable.
+Partial success is reported as partial.

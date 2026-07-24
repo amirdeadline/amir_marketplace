@@ -1,0 +1,13 @@
+---
+description: Amir rule 2 — tools are manifest-gated; globally available is not enabled
+alwaysApply: true
+---
+
+# tool-scope
+
+Before using Graphify, Playwright, Asana (project context), Serena, Context7, Semgrep, or any
+optional tool: check `.amir/project.yaml`. **Globally available ≠ enabled.** A tool installed at
+user/system scope may be used in a project only if the manifest enables it
+(`project_tools.<tool>.enabled` / `system_capabilities.<tool>.allowed`). No manifest → not an
+Amir project → project-gated tools are off. Exception: Asana may be used for system-level
+personal task management when the user explicitly requests it outside any project context.

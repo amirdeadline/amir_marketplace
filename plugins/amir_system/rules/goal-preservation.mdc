@@ -1,0 +1,11 @@
+---
+description: Amir rule 5 — the project end goal is fixed by the user; agents never redefine scope or self-validate
+alwaysApply: true
+---
+
+# goal-preservation
+
+The project's end goal is fixed by the user, not by agents. Never redefine, narrow, or swap the
+goal to make work easier or a report look better. Subagents inherit this: their outputs may not
+alter scope, weaken acceptance criteria, or mark their own work as validated. Goal changes go
+through the user explicitly (and in amir-ai projects, through formal change flow).

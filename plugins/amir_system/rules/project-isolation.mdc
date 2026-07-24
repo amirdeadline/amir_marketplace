@@ -1,0 +1,12 @@
+---
+description: Amir rule 1 — work stays inside the current project root; no cross-project or global leakage
+alwaysApply: true
+---
+
+# project-isolation
+
+Work stays inside the current project root. Never read, write, or delete files of other
+projects. Never write outside the project root except: `%USERPROFILE%\.amir\` (registry,
+secrets, engine) and explicitly user-approved locations. Never let project configuration leak
+into global/user scope, and never let global state silently alter a project. One project's
+agents, worktrees, graphs, and docs belong to that project only.

@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://amir.plugin/schemas/agent-registry.schema.json",
+  "title": "amir agents.json",
+  "description": "Agent registry for ai/state/agents.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "agents"
+  ],
+  "properties": {
+    "agents": {
+      "type": "array",
+      "description": "Known agents participating in the project.",
+      "items": {
+        "$ref": "#/definitions/agent"
+      }
+    }
+  },
+  "definitions": {
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "role",
+        "parent",
+        "workspace",
+        "model",
+        "created_at",
+        "last_heartbeat_ts",
+        "state",
+        "current_task"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical agent id per core/naming-rules.md."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Display name for views and logs."
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Functional role (orchestrator, dev, qa, architect, security, doc-lead, etc.)."
+        },
+        "parent": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Parent agent id in the hierarchy, or null for top-level agents."
+        },
+        "workspace": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Filesystem path to the agent workspace under ai/agents/."
+        },
+        "model": {
+          "type": "string",
+          "description": "Host model identifier, or empty string if host-managed."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 timestamp when the agent was registered."
+        },
+        "last_heartbeat_ts": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 timestamp of the last heartbeat or activity event."
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "active",
+            "idle",
+            "complete",
+            "stale",
+            "reset"
+          ],
+          "description": "Runtime liveness and completion state."
+        },
+        "current_task": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(T|D)[0-9]{3,}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Task id currently assigned, or null."
+        }
+      }
+    }
+  }
+}

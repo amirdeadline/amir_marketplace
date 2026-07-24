@@ -1,31 +1,28 @@
 {
   "marketplace": "amir-marketplace",
-  "version": "0.2.0",
-  "updated_at": "2026-07-14",
+  "version": "1.0.0",
+  "updated_at": "2026-07-24",
   "plugins": [
     {
-      "name": "amir",
-      "path": "./plugins/amir",
-      "source_of_truth": "../Amir",
-      "pack": "node scripts/pack-amir.js"
+      "name": "amir_system",
+      "path": "./plugins/amir_system",
+      "plugin_namespace": "amir",
+      "scope": "user",
+      "description": "User-scope core: project lifecycle, subagent orchestration, registry, Graphify wrappers, Asana + Playwright MCP, system rules. Available before any project exists.",
+      "component_groups": ["core", "graphify", "asana", "playwright", "rules"]
     },
     {
-      "name": "amir-asana",
-      "path": "./plugins/amir-asana",
-      "source_of_truth": "../asana/Amir_Asana_Claude",
-      "pack": "node scripts/pack-amir-asana.js"
-    },
-    {
-      "name": "prisma",
-      "path": "./plugins/prisma",
-      "source_of_truth": "../prisma",
-      "pack": "python ../prisma/scripts/ingest.py && node scripts/pack-plugin-copy.js --name prisma"
-    },
-    {
-      "name": "litellm",
-      "path": "./plugins/litellm",
-      "source_of_truth": "../litellm",
-      "pack": "node scripts/pack-plugin-copy.js --name litellm"
+      "name": "amir_project",
+      "path": "./plugins/amir_project",
+      "plugin_namespace": "amir",
+      "scope": "project",
+      "description": "Project-scope component groups. Never auto-enabled: installed per project (--scope project) or rendered as a manifest-selected subset by tools/renderer.py.",
+      "component_groups": [
+        "harness", "aws", "azure", "xdr", "docker", "elastic", "litellm", "nmap",
+        "paloalto", "prisma", "qradar", "sentinel", "splunk", "ssh", "terraform",
+        "wireshark", "serena", "context7", "semgrep", "langfuse", "openhands",
+        "worktrees", "swebench", "terminalbench"
+      ]
     }
   ],
   "hosts": [
@@ -33,48 +30,36 @@
       "id": "claude-code",
       "display_name": "Claude Code",
       "marketplace_manifest": ".claude-plugin/marketplace.json",
-      "install": [
-        "/plugin marketplace add <path-or-owner/repo>",
-        "/plugin install amir@amir-marketplace",
-        "/plugin install amir-asana@amir-marketplace",
-        "/plugin install prisma@amir-marketplace",
-        "/plugin install litellm@amir-marketplace"
-      ],
-      "supports": { "native_subagents": true, "btw": false, "hooks": true, "slash_commands": true },
-      "notes": "prisma is INTERNAL (PANW docs). Keep marketplace private if prisma is included."
+      "install": {
+        "user_scope": [
+          "claude plugin marketplace add E:/PC3_Shared/Plugins/amir_marketplace",
+          "claude plugin install amir_system@amir-marketplace --scope user"
+        ],
+        "project_scope_full": [
+          "claude plugin install amir_project@amir-marketplace --scope project"
+        ],
+        "project_scope_subset": [
+          "Rendered by tools/renderer.py into .amir/generated/claude/marketplace/ per .amir/project.yaml selection, then: claude plugin marketplace add .amir/generated/claude/marketplace --scope project"
+        ]
+      },
+      "supports": { "native_subagents": true, "hooks": true, "slash_commands": true, "mcp": true, "rules_mdc": false },
+      "notes": "Both plugins declare plugin.json name 'amir' so every command surfaces as /amir:{name}; command sets are disjoint (enforced by design/component-map.md and tools/validator.py)."
     },
     {
       "id": "cursor",
       "display_name": "Cursor",
       "marketplace_manifest": ".cursor-plugin/marketplace.json",
-      "install": [
-        "powershell -ExecutionPolicy Bypass -File scripts/install-cursor-local.ps1",
-        "Developer: Reload Window"
-      ],
-      "supports": { "native_subagents": false, "btw": true, "hooks": "limited", "slash_commands": true },
-      "notes": "Local junctions under ~/.cursor/plugins/local/"
-    },
-    {
-      "id": "codex",
-      "display_name": "OpenAI Codex CLI / ChatGPT Codex",
-      "marketplace_manifest": ".agents/plugins/marketplace.json",
-      "install": [
-        "codex plugin marketplace add <path-or-owner/repo>",
-        "codex plugin add amir",
-        "codex plugin add amir-asana",
-        "codex plugin add prisma",
-        "codex plugin add litellm"
-      ],
-      "supports": { "native_subagents": false, "btw": true, "hooks": "limited", "slash_commands": "deprecated — use skills" }
-    },
-    {
-      "id": "agent-skills",
-      "display_name": "Agent Skills compatible hosts",
-      "marketplace_manifest": "catalog/hosts.json",
-      "install": [
-        "Copy skills from plugins/<name>/skills into the host skills directory"
-      ],
-      "supports": { "native_subagents": "host-dependent", "btw": "host-dependent", "hooks": "host-dependent", "slash_commands": "host-dependent" }
+      "install": {
+        "user_scope": [
+          "New-Item -ItemType Junction -Path \"$env:USERPROFILE\\.cursor\\plugins\\local\\amir_system\" -Target \"E:\\PC3_Shared\\Plugins\\amir_marketplace\\plugins\\amir_system\"",
+          "Developer: Reload Window"
+        ],
+        "project_scope_subset": [
+          "Rendered by tools/renderer.py per .amir/project.yaml selection: .cursor/commands/amir_<name>.md, .cursor/rules/amir_*.mdc, .cursor/mcp.json (merge; amir entries carry the \"//amir-generated\" marker key)"
+        ]
+      },
+      "supports": { "native_subagents": false, "hooks": "limited", "slash_commands": true, "mcp": true, "rules_mdc": true },
+      "notes": "Colons are illegal in Windows filenames, so Cursor project commands are flat files named amir_<name>.md. Regeneration is idempotent; user files are never touched."
     }
   ]
 }

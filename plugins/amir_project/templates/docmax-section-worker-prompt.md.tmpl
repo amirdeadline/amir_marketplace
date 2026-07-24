@@ -1,0 +1,216 @@
+# Docmax Section Worker Prompt — {{DOC_ID}} / {{SECTION_ID}}
+
+> **Agent:** `doc-worker-{{DOC_ID}}-{{SECTION_ID}}`  
+> **Generated:** {{GENERATED_AT}}  
+> **Document:** {{DOC_TITLE}}  
+> **Output section file:** {{SECTION_OUTPUT_PATH}}
+
+Write **only** this section to your workspace section file. Do not edit other sections or authoritative JSON.
+
+---
+
+## Outline Entry
+
+| Field | Value |
+|-------|-------|
+| **Section ID** | {{SECTION_ID}} |
+| **Title** | {{SECTION_TITLE}} |
+| **Status** | {{SECTION_STATUS}} |
+| **Phase** | {{DOC_PHASE}} |
+
+### Required topics (must all be addressed)
+
+{{#each SECTION_TOPICS}}
+- {{this}}
+{{/each}}
+
+{{SECTION_TOPICS_LIST}}
+
+---
+
+## Coverage Matrix Rows
+
+Your section must satisfy these coverage matrix rows (from `ai/state/docmax-{{DOC_ID}}.json`):
+
+| Section | Required topics | Source files | Status | Missing | Claim ratio (V/I/A/U) |
+|---------|-----------------|--------------|--------|---------|------------------------|
+{{#each COVERAGE_MATRIX_ROWS}}
+| {{this.section}} | {{this.required_topics}} | {{this.source_files}} | {{this.status}} | {{this.missing}} | {{this.claim_ratio}} |
+{{/each}}
+
+{{COVERAGE_MATRIX_TABLE}}
+
+Read cited **source files** before writing. Every factual claim needs a traceability label.
+
+---
+
+## Mapped Source Files
+
+Primary evidence files for this section:
+
+{{#each SOURCE_FILES}}
+- `{{this.path}}` — {{this.relevance}}
+{{/each}}
+
+{{SOURCE_FILES_LIST}}
+
+Add to coverage matrix `source_files` when you cite new paths.
+
+---
+
+## Terminology Glossary
+
+Use these terms consistently (from docmax state):
+
+| Term | Definition |
+|------|------------|
+{{#each GLOSSARY_ENTRIES}}
+| {{this.term}} | {{this.definition}} |
+{{/each}}
+
+{{GLOSSARY_TABLE}}
+
+Do not redefine glossary terms inline without cross-reference.
+
+---
+
+## Scope
+
+**Scope statement (document):**
+
+{{SCOPE_STATEMENT}}
+
+### Non-goals (do not document as in-scope)
+
+{{#each NON_GOALS}}
+- {{this}}
+{{/each}}
+
+{{NON_GOALS_LIST}}
+
+Stay within section topics. Out-of-scope detail → omit or one-line pointer with ASSUMED label.
+
+---
+
+## Section Detail Template
+
+Structure your section file using these subsections:
+
+### Responsibility
+
+What this component/module/area owns and what it explicitly does **not** own.
+
+### Internal Design
+
+Key modules, classes, functions, data structures, and control flow. Cite source files.
+
+### Runtime Behavior
+
+Startup, request/job lifecycle, state transitions, error paths, retries, idempotency.
+
+### Data
+
+Schemas, persistence, migrations, caches, retention, PII handling.
+
+### Security
+
+Authn/authz, secrets, validation, trust boundaries, threat-relevant behaviors.
+
+### Operations
+
+Config, deployment, health checks, logging, metrics, runbooks, failure modes.
+
+### Testing
+
+How behavior is verified: test files, commands, gaps honestly labeled UNKNOWN.
+
+---
+
+## Claim Labels
+
+Every factual statement must be tagged inline or in a trailing claim column:
+
+| Label | When to use |
+|-------|-------------|
+| **VERIFIED** | Read source file, ran command, observed output |
+| **INFERRED** | Deduced from partial evidence |
+| **ASSUMED** | Planning placeholder — minimize in final section |
+| **UNKNOWN** | Not checked — use UNKNOWN block format |
+
+**Never present INFERRED or ASSUMED as VERIFIED.**
+
+---
+
+## UNKNOWN Block Format
+
+When information cannot be confirmed:
+
+```
+**UNKNOWN:** <what is unknown>
+
+- **Confirmed:** <what is verified, or "nothing yet">
+- **Missing:** <what must be obtained>
+- **Risk:** <what goes wrong if reader relies on this doc>
+- **Recommendation:** <safest next step>
+- **Question:** <single question or register in unknowns_register>
+```
+
+Register persistent unknowns in docmax state `unknowns_register`.
+
+---
+
+## Banned Lazy Phrases — Do Not Use
+
+Reject and rewrite any sentence containing these patterns:
+
+- "etc."
+- "and so on"
+- "standard implementation"
+- "handled elsewhere"
+- "similar logic applies"
+- "refer to the code"
+- "implementation details omitted"
+- "additional cases may exist"
+- "as needed"
+- "various"
+- "typically"
+- "should be straightforward"
+
+Replace with specific names, paths, behaviors, or explicit UNKNOWN blocks.
+
+---
+
+## Mermaid (if useful)
+
+Include diagrams when they clarify architecture or flow. Example:
+
+```mermaid
+{{SECTION_DIAGRAM}}
+```
+
+Omit diagram subsection if not useful for this section.
+
+---
+
+## Workspace Path
+
+Write completed section to:
+
+```
+{{SECTION_OUTPUT_PATH}}
+```
+
+Do not write to `{{DOC_OUT_PATH}}` directly unless orchestrator assigns merge step.
+
+---
+
+## Instructions
+
+1. Read all mapped source files and outline topics.
+2. Write section using **Section Detail Template** subsections.
+3. Tag claims VERIFIED | INFERRED | ASSUMED | UNKNOWN.
+4. Update your working notes with source citations for verifier.
+5. Avoid banned lazy phrases — be specific or mark UNKNOWN.
+6. Hand off to docmax section verifier when complete.
+
+Follow `core/honesty-rules.md` and document_max budget in `core/budget-rules.md`.

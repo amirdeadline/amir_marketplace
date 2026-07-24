@@ -1,0 +1,108 @@
+# Project Goal — {{PROJECT_NAME}}
+
+> **Version:** {{GOAL_VERSION}}  
+> **Created:** {{CREATED_AT}}  
+> **Last approved:** {{APPROVED_AT}}  
+> **Approved by:** {{APPROVED_BY}}
+
+---
+
+## Original Human Goal
+
+{{ORIGINAL_HUMAN_GOAL}}
+
+---
+
+## Final Product Objective
+
+{{FINAL_PRODUCT_OBJECTIVE}}
+
+The deliverable is considered successful when it satisfies all explicit requirements below, meets success criteria, and does not violate non-goals or protected behaviors.
+
+---
+
+## Explicit Requirements
+
+Must-have capabilities and constraints. Each item is binding unless changed through an approved decision.
+
+| ID | Requirement | Priority | Notes |
+|----|-------------|----------|-------|
+{{#each EXPLICIT_REQUIREMENTS}}
+| {{this.id}} | {{this.text}} | {{this.priority}} | {{this.notes}} |
+{{/each}}
+
+{{EXPLICIT_REQUIREMENTS_TABLE}}
+
+---
+
+## Non-Goals
+
+The following are explicitly **out of product scope**. Implementing them without approval is drift.
+
+{{#each NON_GOALS}}
+- {{this}}
+{{/each}}
+
+{{NON_GOALS_LIST}}
+
+---
+
+## Protected Behaviors
+
+Existing or planned behaviors that **must not regress** without human approval and goal/decision update.
+
+| ID | Behavior | Why protected | Verification |
+|----|----------|---------------|--------------|
+{{#each PROTECTED_BEHAVIORS}}
+| {{this.id}} | {{this.description}} | {{this.reason}} | {{this.verification}} |
+{{/each}}
+
+{{PROTECTED_BEHAVIORS_TABLE}}
+
+---
+
+## Success Criteria
+
+Measurable outcomes that define "done" for the project as a whole.
+
+| ID | Criterion | Measurement | Target |
+|----|-----------|-------------|--------|
+{{#each SUCCESS_CRITERIA}}
+| {{this.id}} | {{this.text}} | {{this.measurement}} | {{this.target}} |
+{{/each}}
+
+{{SUCCESS_CRITERIA_TABLE}}
+
+---
+
+## Out of Scope
+
+Work that may be related but is **not part of this project** unless explicitly added via decision.
+
+{{#each OUT_OF_SCOPE}}
+- {{this}}
+{{/each}}
+
+{{OUT_OF_SCOPE_LIST}}
+
+---
+
+## Known Constraints
+
+Technical, organizational, or environmental limits that shape design and implementation.
+
+| Constraint | Impact | Mitigation |
+|------------|--------|------------|
+{{#each KNOWN_CONSTRAINTS}}
+| {{this.constraint}} | {{this.impact}} | {{this.mitigation}} |
+{{/each}}
+
+{{KNOWN_CONSTRAINTS_TABLE}}
+
+---
+
+## Approval Note
+
+{{APPROVAL_NOTE}}
+
+This document is authoritative for goal alignment. Changes require human approval recorded in `ai/state/decisions.json` and orchestrator update to `ai/project-goal.md`. Agents must read the current file at session start — conversation history does not override this goal.

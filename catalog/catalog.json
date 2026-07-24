@@ -1,0 +1,1473 @@
+{
+  "schema_version": 1,
+  "catalog_version": "1.0.0",
+  "generated_at": "2026-07-24",
+  "components": [
+    {
+      "id": "core",
+      "plugin": "amir_system",
+      "version": "1.0.0",
+      "scope": "user",
+      "description": "Project lifecycle core: create/onboard projects, orchestrate subagents, manage the project registry, configure/validate/repair project component selections, and browse the catalog.",
+      "official_source": "internal",
+      "license": "Proprietary (personal use)",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "user-plugin",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "python"
+      ],
+      "required_credentials": [],
+      "network_access": "none",
+      "secret_access": "none",
+      "filesystem_access": "project_and_user_state",
+      "write_capabilities": [
+        "project_files",
+        "user_registry"
+      ],
+      "destructive_capabilities": [
+        "remove_project_config (backed up, confirmed, Amir-managed files only)"
+      ],
+      "resource_requirements": {},
+      "health_check": "python \"%USERPROFILE%\\.amir\\bin\\amirctl.py\" doctor",
+      "uninstall_method": "Uninstall the amir_system user plugin (claude plugin uninstall amir_system; remove the %USERPROFILE%\\.cursor\\plugins\\local\\amir_system junction).",
+      "commands": [
+        "create_project",
+        "onboard_project",
+        "use_subagents",
+        "list_projects",
+        "cleanup_context",
+        "configure_project",
+        "validate_project",
+        "repair_project",
+        "list_components",
+        "update_catalog",
+        "remove_project_config",
+        "project_status",
+        "help"
+      ],
+      "skills": [
+        "create_project",
+        "onboard_project",
+        "use_subagents",
+        "cleanup_context",
+        "create-project-doc"
+      ],
+      "mcp_servers": []
+    },
+    {
+      "id": "graphify",
+      "plugin": "amir_system",
+      "version": "1.0.0",
+      "scope": "user",
+      "description": "Graphify knowledge-graph wrappers: build/update/query/explain a project-scoped code graph, impact analysis, architecture doc generation. Project-scoped only; never global registration without explicit approval.",
+      "official_source": "https://pypi.org/project/graphifyy/",
+      "license": "See PyPI package graphifyy (verify upstream)",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "user-plugin",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "graphify"
+      ],
+      "required_credentials": [],
+      "network_access": "none",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "project_files (graphify-out/, host hook registration inside project)"
+      ],
+      "destructive_capabilities": [
+        "graphify_clean deletes this project's graphify-out/ (shown first)"
+      ],
+      "resource_requirements": {
+        "disk": "Graph output can reach hundreds of MB on large repos",
+        "notes": "Full builds are CPU-heavy on large repos; prefer incremental update."
+      },
+      "health_check": "graphify --version",
+      "uninstall_method": "graphify uninstall / graphify hook uninstall inside the project; the graphify CLI itself is never uninstalled automatically.",
+      "commands": [
+        "graphify",
+        "graphify_setup",
+        "graphify_build",
+        "graphify_update",
+        "graphify_query",
+        "graphify_explain",
+        "graphify_status",
+        "graphify_impact",
+        "graphify_architecture",
+        "graphify_clean",
+        "graphify_disable"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "asana",
+      "plugin": "amir_system",
+      "version": "1.0.0",
+      "scope": "user",
+      "description": "Asana MCP server (custom client over the Asana REST API) plus nine task-management skills and health-check commands. Default posture is read-only; writes require confirmation.",
+      "official_source": "internal (client for https://developers.asana.com/reference/rest-api-reference)",
+      "license": "Proprietary (personal use)",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "user-plugin",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "node",
+        "python"
+      ],
+      "required_credentials": [
+        "ASANA_ACCESS_TOKEN"
+      ],
+      "network_access": "required",
+      "secret_access": "required",
+      "filesystem_access": "project_and_user_state",
+      "write_capabilities": [
+        "external_service:asana (tasks, comments, sections, tags)"
+      ],
+      "destructive_capabilities": [
+        "complete/modify Asana tasks (confirmation required; never deletes)"
+      ],
+      "resource_requirements": {},
+      "health_check": "node --version && python -c \"import os,sys; missing=[v for v in ('ASANA_ACCESS_TOKEN',) if not os.environ.get(v)]; print(('missing: '+', '.join(missing)) if missing else 'ok'); sys.exit(1 if missing else 0)\"",
+      "uninstall_method": "Disable via manifest system_capabilities.asana.allowed=false; user-scope removal with the amir_system plugin. Token file %USERPROFILE%\\.amir\\secrets\\asana.env is never deleted automatically.",
+      "commands": [
+        "asana_status",
+        "asana_auth_check"
+      ],
+      "skills": [
+        "asana_complete_task",
+        "asana_create_task",
+        "asana_daily_triage",
+        "asana_priorities_today",
+        "asana_review_tasks",
+        "asana_standup",
+        "asana_sync_from_report",
+        "asana_update",
+        "asana_update_task"
+      ],
+      "mcp_servers": [
+        "asana"
+      ]
+    },
+    {
+      "id": "playwright",
+      "plugin": "amir_system",
+      "version": "1.0.0",
+      "scope": "user",
+      "description": "Official Playwright MCP server (@playwright/mcp) for browser automation with isolated profiles. Availability is not authorization: manifest system_capabilities.playwright.allowed gates use.",
+      "official_source": "https://github.com/microsoft/playwright-mcp",
+      "license": "Apache-2.0",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "user-plugin",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "node",
+        "npx"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "project_files (screenshots/traces/artifacts inside project)",
+        "browser_actions (isolated profile)"
+      ],
+      "destructive_capabilities": [],
+      "resource_requirements": {
+        "memory": "Browser instances typically need 500 MB+ each"
+      },
+      "health_check": "npx --yes @playwright/mcp@latest --version",
+      "uninstall_method": "Disable via manifest system_capabilities.playwright.allowed=false; npx cache eviction is optional and manual.",
+      "commands": [],
+      "skills": [],
+      "mcp_servers": [
+        "playwright"
+      ]
+    },
+    {
+      "id": "rules",
+      "plugin": "amir_system",
+      "version": "1.0.0",
+      "scope": "user",
+      "description": "The seven Amir system rules (project-isolation, tool-scope, security-secrets, honest-execution, goal-preservation, context-control, destructive-action) as Cursor .mdc rules and the Claude system_rules skill.",
+      "official_source": "internal",
+      "license": "Proprietary (personal use)",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "user-plugin",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [],
+      "required_credentials": [],
+      "network_access": "none",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [],
+      "destructive_capabilities": [],
+      "resource_requirements": {},
+      "health_check": "python \"%USERPROFILE%\\.amir\\bin\\amirctl.py\" doctor",
+      "uninstall_method": "Uninstall the amir_system user plugin (claude plugin uninstall amir_system; remove the %USERPROFILE%\\.cursor\\plugins\\local\\amir_system junction).",
+      "commands": [],
+      "skills": [
+        "system_rules"
+      ],
+      "mcp_servers": []
+    },
+    {
+      "id": "harness",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Multi-agent project-execution harness: planning, design, build orchestration, git flow, docs sync, retros, troubleshooting, security scan.",
+      "official_source": "internal",
+      "license": "Proprietary (personal use)",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "git"
+      ],
+      "required_credentials": [],
+      "network_access": "optional",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "project_files",
+        "git_history (commits, branches)"
+      ],
+      "destructive_capabilities": [
+        "rollback",
+        "git_push",
+        "agent_reset",
+        "project_cleanup"
+      ],
+      "resource_requirements": {},
+      "health_check": "git --version",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "agent_reset",
+        "btw",
+        "build_agents",
+        "build_goal",
+        "design",
+        "design_agents",
+        "design_qa",
+        "docs_sync",
+        "document_max",
+        "git_commit",
+        "git_push",
+        "git_setup",
+        "git_tree",
+        "handoff",
+        "milestone_retro",
+        "plan",
+        "project_cleanup",
+        "project_cost",
+        "project_tasks",
+        "project_watch",
+        "resume_build",
+        "rollback",
+        "security_scan",
+        "tasks_update",
+        "troubleshoot"
+      ],
+      "skills": [],
+      "mcp_servers": [],
+      "deprecated_aliases": {
+        "project_create": "create_project",
+        "project_import": "onboard_project",
+        "use_subagent": "use_subagents",
+        "compact": "cleanup_context",
+        "project_doctor": "validate_project",
+        "project_status": "project_status (moved to amir_system)"
+      }
+    },
+    {
+      "id": "aws",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "AWS CLI wrappers (aws_cli with safety guardrails, aws_whoami) plus the AWS MCP server.",
+      "official_source": "https://github.com/awslabs/mcp",
+      "license": "Apache-2.0 (AWS MCP); AWS CLI per AWS terms",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "aws"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "optional",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "cloud:aws (only when explicitly confirmed)"
+      ],
+      "destructive_capabilities": [
+        "cloud resource modification/deletion via aws CLI (confirmation required)"
+      ],
+      "resource_requirements": {},
+      "health_check": "aws sts get-caller-identity",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "aws_cli",
+        "aws_whoami"
+      ],
+      "skills": [
+        "aws_cli_safety"
+      ],
+      "mcp_servers": [
+        "aws-mcp"
+      ]
+    },
+    {
+      "id": "azure",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Azure az CLI wrappers (azure_cli, azure_whoami) plus the Azure MCP server.",
+      "official_source": "https://github.com/Azure/azure-mcp",
+      "license": "MIT (Azure MCP); az CLI per Microsoft terms",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "az"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "optional",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "cloud:azure (only when explicitly confirmed)"
+      ],
+      "destructive_capabilities": [
+        "cloud resource modification/deletion via az CLI (confirmation required)"
+      ],
+      "resource_requirements": {},
+      "health_check": "az account show",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "azure_cli",
+        "azure_whoami"
+      ],
+      "skills": [],
+      "mcp_servers": [
+        "azure-mcp"
+      ]
+    },
+    {
+      "id": "xdr",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Cortex XDR REST API helper: incident listing, querying, and typed-confirmation response actions.",
+      "official_source": "https://cortex-panw.stoplight.io/docs/cortex-xdr",
+      "license": "Internal client; Cortex XDR API per Palo Alto Networks terms",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [],
+      "required_credentials": [
+        "XDR_API_KEY",
+        "XDR_API_KEY_ID",
+        "XDR_FQDN"
+      ],
+      "network_access": "required",
+      "secret_access": "required",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "external_service:cortex-xdr (incident updates, response actions)"
+      ],
+      "destructive_capabilities": [
+        "endpoint response actions (isolate/quarantine) \u2014 typed confirmation required"
+      ],
+      "resource_requirements": {},
+      "health_check": "python -c \"import os,sys; missing=[v for v in ('XDR_API_KEY','XDR_API_KEY_ID','XDR_FQDN') if not os.environ.get(v)]; print(('missing: '+', '.join(missing)) if missing else 'ok'); sys.exit(1 if missing else 0)\"",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "xdr_ask",
+        "xdr_incidents",
+        "xdr_preflight",
+        "xdr_respond"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "docker",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Docker/Compose CLI wrappers with guards: build, up, down, logs, push, status.",
+      "official_source": "https://www.docker.com/",
+      "license": "Docker CLI per Docker terms; wrappers internal",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "docker"
+      ],
+      "required_credentials": [],
+      "network_access": "optional",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "containers",
+        "images",
+        "volumes (compose-managed)"
+      ],
+      "destructive_capabilities": [
+        "docker_down removes containers/networks; image push publishes to registries"
+      ],
+      "resource_requirements": {
+        "notes": "Requires a running Docker daemon (Docker Desktop on Windows)"
+      },
+      "health_check": "docker info",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "docker_build",
+        "docker_down",
+        "docker_logs",
+        "docker_push",
+        "docker_status",
+        "docker_up"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "elastic",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Elasticsearch/Kibana REST + ES|QL helper with preflight checks, plus the Elastic agent-builder MCP.",
+      "official_source": "https://www.elastic.co/docs/api/",
+      "license": "Internal client; Elastic APIs per Elastic terms",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [],
+      "required_credentials": [
+        "ELASTIC_BASE_URL",
+        "ELASTIC_AUTH_HEADER"
+      ],
+      "network_access": "required",
+      "secret_access": "required",
+      "filesystem_access": "project",
+      "write_capabilities": [],
+      "destructive_capabilities": [],
+      "resource_requirements": {},
+      "health_check": "python -c \"import os,sys; missing=[v for v in ('ELASTIC_BASE_URL','ELASTIC_AUTH_HEADER') if not os.environ.get(v)]; print(('missing: '+', '.join(missing)) if missing else 'ok'); sys.exit(1 if missing else 0)\"",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "elastic_ask",
+        "elastic_preflight",
+        "elastic_search"
+      ],
+      "skills": [],
+      "mcp_servers": [
+        "elastic-agent-builder"
+      ]
+    },
+    {
+      "id": "litellm",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Org LiteLLM proxy session launcher, model listing, spend reporting, and MCP integration.",
+      "official_source": "https://github.com/BerriAI/litellm",
+      "license": "MIT (LiteLLM); wrappers internal",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [],
+      "required_credentials": [
+        "ANTHROPIC_BASE_URL",
+        "ANTHROPIC_AUTH_TOKEN"
+      ],
+      "network_access": "required",
+      "secret_access": "required",
+      "filesystem_access": "project",
+      "write_capabilities": [],
+      "destructive_capabilities": [],
+      "resource_requirements": {},
+      "health_check": "python -c \"import os,sys; missing=[v for v in ('ANTHROPIC_BASE_URL','ANTHROPIC_AUTH_TOKEN') if not os.environ.get(v)]; print(('missing: '+', '.join(missing)) if missing else 'ok'); sys.exit(1 if missing else 0)\"",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "litellm_chat",
+        "litellm_models",
+        "litellm_session",
+        "litellm_spend",
+        "litellm_status"
+      ],
+      "skills": [],
+      "mcp_servers": [
+        "litellm"
+      ]
+    },
+    {
+      "id": "nmap",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Authorized nmap scanning and scan-output parsing. Scanning requires explicit target authorization.",
+      "official_source": "https://nmap.org/",
+      "license": "Nmap Public Source License; wrappers internal",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "nmap"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "project_files (scan output)"
+      ],
+      "destructive_capabilities": [
+        "active network scanning (can trigger IDS/alerts; authorization required)"
+      ],
+      "resource_requirements": {},
+      "health_check": "nmap --version",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "nmap_parse",
+        "nmap_scan"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "paloalto",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "PAN-OS/Panorama/GlobalProtect XML/REST API helper with preflight checks.",
+      "official_source": "https://pan.dev/",
+      "license": "Internal client; PAN-OS APIs per Palo Alto Networks terms",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [],
+      "required_credentials": [
+        "PANOS_HOST",
+        "PANOS_API_KEY"
+      ],
+      "network_access": "required",
+      "secret_access": "required",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "external_service:panos (candidate config changes when confirmed)"
+      ],
+      "destructive_capabilities": [
+        "firewall configuration modification/commit (confirmation required)"
+      ],
+      "resource_requirements": {},
+      "health_check": "python -c \"import os,sys; missing=[v for v in ('PANOS_HOST','PANOS_API_KEY') if not os.environ.get(v)]; print(('missing: '+', '.join(missing)) if missing else 'ok'); sys.exit(1 if missing else 0)\"",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "panos_api",
+        "panos_ask",
+        "panos_preflight"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "prisma",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "INTERNAL Prisma SASE/SCM corpus skills: design, review, troubleshoot, what's-new, API helper. Docs corpus path via PRISMA_DOCS_PATH env var (path, not a secret).",
+      "official_source": "internal (Palo Alto Networks Prisma SASE documentation corpus)",
+      "license": "Internal/personal use only (PANW docs corpus)",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [],
+      "required_credentials": [],
+      "network_access": "optional",
+      "secret_access": "optional",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "external_service:prisma_sase (API calls when confirmed)"
+      ],
+      "destructive_capabilities": [],
+      "resource_requirements": {},
+      "health_check": "python -c \"import os,sys; p=os.environ.get('PRISMA_DOCS_PATH'); print(p or 'PRISMA_DOCS_PATH not set'); sys.exit(0 if p and os.path.isdir(p) else 1)\"",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "prisma_api",
+        "prisma_ask",
+        "prisma_design",
+        "prisma_review",
+        "prisma_troubleshoot",
+        "prisma_update_index",
+        "prisma_whats_new"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "qradar",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "IBM QRadar AQL queries and offenses via the REST API, with preflight checks.",
+      "official_source": "https://www.ibm.com/docs/en/qsip",
+      "license": "Internal client; QRadar APIs per IBM terms",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [],
+      "required_credentials": [
+        "QRADAR_BASE_URL",
+        "QRADAR_SEC_TOKEN"
+      ],
+      "network_access": "required",
+      "secret_access": "required",
+      "filesystem_access": "project",
+      "write_capabilities": [],
+      "destructive_capabilities": [],
+      "resource_requirements": {},
+      "health_check": "python -c \"import os,sys; missing=[v for v in ('QRADAR_BASE_URL','QRADAR_SEC_TOKEN') if not os.environ.get(v)]; print(('missing: '+', '.join(missing)) if missing else 'ok'); sys.exit(1 if missing else 0)\"",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "qradar_aql",
+        "qradar_ask",
+        "qradar_preflight"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "sentinel",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Microsoft Sentinel KQL hunting and analytics via az CLI / Log Analytics.",
+      "official_source": "https://learn.microsoft.com/azure/sentinel/",
+      "license": "Internal client; Azure APIs per Microsoft terms",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "az"
+      ],
+      "required_credentials": [
+        "SENTINEL_WORKSPACE_ID"
+      ],
+      "network_access": "required",
+      "secret_access": "required",
+      "filesystem_access": "project",
+      "write_capabilities": [],
+      "destructive_capabilities": [],
+      "resource_requirements": {},
+      "health_check": "az account show",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "sentinel_ask",
+        "sentinel_preflight",
+        "sentinel_query"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "splunk",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Splunk REST/SPL search helper with preflight checks.",
+      "official_source": "https://docs.splunk.com/Documentation/Splunk/latest/RESTREF/RESTprolog",
+      "license": "Internal client; Splunk APIs per Splunk terms",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [],
+      "required_credentials": [
+        "SPLUNK_BASE_URL",
+        "SPLUNK_TOKEN"
+      ],
+      "network_access": "required",
+      "secret_access": "required",
+      "filesystem_access": "project",
+      "write_capabilities": [],
+      "destructive_capabilities": [],
+      "resource_requirements": {},
+      "health_check": "python -c \"import os,sys; missing=[v for v in ('SPLUNK_BASE_URL','SPLUNK_TOKEN') if not os.environ.get(v)]; print(('missing: '+', '.join(missing)) if missing else 'ok'); sys.exit(1 if missing else 0)\"",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "splunk_ask",
+        "splunk_preflight",
+        "splunk_search"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "ssh",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "OpenSSH wrappers (run, copy, session) with per-host and per-command confirmation.",
+      "official_source": "https://www.openssh.com/",
+      "license": "OpenSSH BSD; wrappers internal",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "ssh",
+        "scp"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "optional",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "remote_hosts (files and command execution over SSH)"
+      ],
+      "destructive_capabilities": [
+        "arbitrary remote command execution (per-command confirmation)"
+      ],
+      "resource_requirements": {},
+      "health_check": "ssh -V",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "ssh_copy",
+        "ssh_run",
+        "ssh_session"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "terraform",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Terraform init/fmt/validate/plan/apply/destroy with confirmation gates and a plan-before-apply hook.",
+      "official_source": "https://developer.hashicorp.com/terraform",
+      "license": "Terraform BUSL-1.1; wrappers internal",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "terraform"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "optional",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "cloud_infrastructure (via providers)",
+        "project_files (state/lock files)"
+      ],
+      "destructive_capabilities": [
+        "terraform_apply",
+        "terraform_destroy (typed confirmation required)"
+      ],
+      "resource_requirements": {},
+      "health_check": "terraform version",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "terraform_apply",
+        "terraform_destroy",
+        "terraform_fmt",
+        "terraform_init",
+        "terraform_plan",
+        "terraform_validate"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "wireshark",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "tshark pcap analysis, extraction, and filtering; live capture is opt-in and confirmed.",
+      "official_source": "https://www.wireshark.org/",
+      "license": "GPL-2.0 (Wireshark); wrappers internal",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "tshark"
+      ],
+      "required_credentials": [],
+      "network_access": "optional",
+      "secret_access": "none",
+      "filesystem_access": "system",
+      "write_capabilities": [
+        "project_files (pcap/analysis output)"
+      ],
+      "destructive_capabilities": [
+        "live packet capture on host interfaces (opt-in, may capture sensitive traffic)"
+      ],
+      "resource_requirements": {},
+      "health_check": "tshark --version",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "wireshark_analyze",
+        "wireshark_capture",
+        "wireshark_extract",
+        "wireshark_filter"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "serena",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Serena MCP: LSP-backed symbol lookup, references, analysis, and symbol-level refactoring. Project-local index in .serena/; no global indexing.",
+      "official_source": "https://github.com/oraios/serena",
+      "license": "MIT",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "uv"
+      ],
+      "required_credentials": [],
+      "network_access": "optional",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "project_files (symbol-level edits, validated + tested)",
+        "project_state (.serena/)"
+      ],
+      "destructive_capabilities": [],
+      "resource_requirements": {
+        "memory": "Language servers can use significant RAM on large repos"
+      },
+      "health_check": "uv --version",
+      "uninstall_method": "serena_disable (removes MCP registration + .serena/ after confirmation); deselect in manifest.",
+      "commands": [
+        "serena_setup",
+        "serena_status",
+        "serena_index",
+        "serena_find_symbol",
+        "serena_find_references",
+        "serena_analyze_symbol",
+        "serena_refactor",
+        "serena_validate",
+        "serena_disable"
+      ],
+      "skills": [],
+      "mcp_servers": [
+        "serena"
+      ]
+    },
+    {
+      "id": "context7",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Context7 MCP: version-accurate library documentation lookup pinned to the project's installed dependency versions.",
+      "official_source": "https://github.com/upstash/context7",
+      "license": "MIT",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "node",
+        "npx"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "optional",
+      "filesystem_access": "project",
+      "write_capabilities": [],
+      "destructive_capabilities": [],
+      "resource_requirements": {},
+      "health_check": "npx --yes @upstash/context7-mcp@latest --help",
+      "uninstall_method": "context7_disable (removes MCP registration); deselect in manifest.",
+      "commands": [
+        "context7_setup",
+        "context7_status",
+        "context7_lookup",
+        "context7_library",
+        "context7_version_docs",
+        "context7_validate",
+        "context7_disable"
+      ],
+      "skills": [],
+      "mcp_servers": [
+        "context7"
+      ]
+    },
+    {
+      "id": "semgrep",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Semgrep static analysis: full/changed/dependency/secret scans, security gate, explain and fix. Local scans by default; cloud/pro features require explicit opt-in.",
+      "official_source": "https://github.com/semgrep/semgrep",
+      "license": "LGPL-2.1 (engine); rule licenses vary",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "semgrep"
+      ],
+      "required_credentials": [],
+      "network_access": "optional",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "project_files (reviewed autofixes)",
+        "project_state (.amir/state/semgrep/ findings)"
+      ],
+      "destructive_capabilities": [],
+      "resource_requirements": {},
+      "health_check": "semgrep --version",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "semgrep_setup",
+        "semgrep_status",
+        "semgrep_scan",
+        "semgrep_scan_changed",
+        "semgrep_scan_dependencies",
+        "semgrep_scan_secrets",
+        "semgrep_security_gate",
+        "semgrep_explain",
+        "semgrep_fix",
+        "semgrep_validate",
+        "semgrep_disable"
+      ],
+      "skills": [],
+      "mcp_servers": [
+        "semgrep"
+      ]
+    },
+    {
+      "id": "langfuse",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Langfuse LLM observability: traces, evaluations, datasets, experiments, and cost reports. Telemetry is never auto-enabled; redaction/sampling configurable.",
+      "official_source": "https://github.com/langfuse/langfuse",
+      "license": "MIT (core); Langfuse Cloud per Langfuse terms",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [
+        "docker"
+      ],
+      "conflicts_with": [],
+      "required_executables": [],
+      "required_credentials": [
+        "LANGFUSE_PUBLIC_KEY",
+        "LANGFUSE_SECRET_KEY",
+        "LANGFUSE_HOST"
+      ],
+      "network_access": "required",
+      "secret_access": "required",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "external_service:langfuse (traces/datasets)",
+        "telemetry (opt-in, redacted)"
+      ],
+      "destructive_capabilities": [],
+      "resource_requirements": {
+        "notes": "self_hosted mode runs the Langfuse docker compose stack locally"
+      },
+      "health_check": "python -c \"import os,sys; missing=[v for v in ('LANGFUSE_PUBLIC_KEY','LANGFUSE_SECRET_KEY','LANGFUSE_HOST') if not os.environ.get(v)]; print(('missing: '+', '.join(missing)) if missing else 'ok'); sys.exit(1 if missing else 0)\"",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "langfuse_setup",
+        "langfuse_status",
+        "langfuse_start",
+        "langfuse_stop",
+        "langfuse_trace",
+        "langfuse_evaluate",
+        "langfuse_dataset",
+        "langfuse_experiment",
+        "langfuse_cost_report",
+        "langfuse_validate",
+        "langfuse_disable"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "openhands",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "OpenHands sandboxed autonomous coding: docker-isolated runs on the selected project only. No home mount, no credential forwarding, no privileged containers, network off by default.",
+      "official_source": "https://github.com/All-Hands-AI/OpenHands",
+      "license": "MIT",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "docker"
+      ],
+      "required_credentials": [],
+      "network_access": "optional",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "project_files (inside sandbox mount)",
+        "containers (sandbox lifecycle)"
+      ],
+      "destructive_capabilities": [
+        "openhands_reset discards sandbox state (confirmation required)"
+      ],
+      "resource_requirements": {
+        "memory": "4 GB+ recommended",
+        "disk": "Several GB for runtime images"
+      },
+      "health_check": "docker info",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "openhands_setup",
+        "openhands_status",
+        "openhands_sandbox",
+        "openhands_run",
+        "openhands_compare",
+        "openhands_evaluate",
+        "openhands_logs",
+        "openhands_reset",
+        "openhands_validate",
+        "openhands_disable"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "worktrees",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Git worktree management for parallel subagents: one agent = one task branch = one worktree, deterministic naming, validated merges, safe cleanup.",
+      "official_source": "https://git-scm.com/docs/git-worktree",
+      "license": "GPL-2.0 (git); wrappers internal",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [
+        "git"
+      ],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "git"
+      ],
+      "required_credentials": [],
+      "network_access": "none",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "git_worktrees",
+        "project_files",
+        "git_history (merges)"
+      ],
+      "destructive_capabilities": [
+        "worktree_cleanup removes worktrees (uncommitted-work check + approval; never force-deletes silently)"
+      ],
+      "resource_requirements": {},
+      "health_check": "git worktree list",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "worktree_create",
+        "worktree_list",
+        "worktree_assign",
+        "worktree_status",
+        "worktree_validate",
+        "worktree_merge",
+        "worktree_cleanup",
+        "worktree_repair"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "swebench",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "SWE-bench evaluation harness: prepare/run/evaluate/compare issue-resolution benchmarks in reproducible docker environments. Full runs require approval.",
+      "official_source": "https://github.com/princeton-nlp/SWE-bench",
+      "license": "MIT",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [
+        "docker"
+      ],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "docker",
+        "python"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "project_state (.amir/state/swebench/ patches + evaluator output)",
+        "containers",
+        "images"
+      ],
+      "destructive_capabilities": [
+        "swebench_cleanup removes benchmark containers/images (shown first)"
+      ],
+      "resource_requirements": {
+        "memory": "8 GB+ recommended",
+        "disk": "Tens of GB for task images on full runs"
+      },
+      "health_check": "docker info",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "swebench_setup",
+        "swebench_status",
+        "swebench_prepare",
+        "swebench_run",
+        "swebench_evaluate",
+        "swebench_compare",
+        "swebench_report",
+        "swebench_cleanup"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    },
+    {
+      "id": "terminalbench",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Terminal-Bench evaluation harness: isolated terminal-agent benchmark runs with recorded task/env/model/harness/results and enforced limits.",
+      "official_source": "https://github.com/laude-institute/terminal-bench",
+      "license": "Apache-2.0 (verify upstream)",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [
+        "docker"
+      ],
+      "optional_dependencies": [
+        "uv"
+      ],
+      "conflicts_with": [],
+      "required_executables": [
+        "docker",
+        "python"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "none",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "project_state (.amir/state/terminalbench/ logs + results)",
+        "containers"
+      ],
+      "destructive_capabilities": [
+        "terminalbench_cleanup removes benchmark containers (shown first)"
+      ],
+      "resource_requirements": {
+        "disk": "Several GB for task environments"
+      },
+      "health_check": "docker info",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "terminalbench_setup",
+        "terminalbench_status",
+        "terminalbench_prepare",
+        "terminalbench_run",
+        "terminalbench_evaluate",
+        "terminalbench_compare",
+        "terminalbench_report",
+        "terminalbench_cleanup"
+      ],
+      "skills": [],
+      "mcp_servers": []
+    }
+  ]
+}

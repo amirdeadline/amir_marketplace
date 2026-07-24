@@ -1,0 +1,155 @@
+# Fix Prompt — {{TASK_ID}}
+
+> **Agent:** `dev-{{TASK_ID}}`  
+> **Generated:** {{GENERATED_AT}}  
+> **Phase:** fix  
+> **Cycle:** {{CYCLE_USED}}/{{CYCLE_BUDGET}}  
+> **Prior QA report:** {{QA_REPORT_PATH}}
+
+---
+
+## Context
+
+QA returned **{{QA_DECISION}}**. Fix **only** the valid issues below. This is fix cycle **{{CYCLE_USED}}** of **{{CYCLE_BUDGET}}**.
+
+---
+
+## Valid Issues (fix these)
+
+Orchestrator-validated issues from QA — do not fix rejected or duplicate items without new approval.
+
+| Issue ID | Severity | AC / area | Evidence summary | Recommended fix |
+|----------|----------|-----------|------------------|-----------------|
+{{#each VALID_ISSUES}}
+| {{this.id}} | {{this.severity}} | {{this.area}} | {{this.evidence}} | {{this.recommended_fix}} |
+{{/each}}
+
+{{VALID_ISSUES_TABLE}}
+
+---
+
+## Do-Not-Change List
+
+The following must **remain unchanged** during this fix cycle:
+
+{{DO_NOT_CHANGE_LIST}}
+
+Violations require **DECISION REQUIRED** and orchestrator approval before proceeding.
+
+---
+
+## Acceptance Criteria (still binding)
+
+All criteria must pass after fix — not only the failed ones:
+
+| AC ID | Criterion | Prior QA result |
+|-------|-----------|-----------------|
+{{#each ACCEPTANCE_CRITERIA}}
+| {{this.id}} | {{this.text}} | {{this.prior_result}} |
+{{/each}}
+
+{{ACCEPTANCE_CRITERIA_TABLE}}
+
+---
+
+## Regression Checks
+
+Re-run these after your fix:
+
+| ID | Scenario | Last status |
+|----|----------|-------------|
+{{#each REGRESSION_CHECKS}}
+| {{this.id}} | {{this.scenario}} | {{this.last_status}} |
+{{/each}}
+
+{{REGRESSION_CHECKS_TABLE}}
+
+New failures in previously passing regression items → QA **FAIL** unless orchestrator waives with logged decision.
+
+---
+
+## Goal Guardrail
+
+Before every change, confirm alignment with `ai/project-goal.md`:
+
+- **Must-haves preserved:** {{GOAL_MUST_HAVES}}
+- **Non-goals not introduced:** {{GOAL_NON_GOALS}}
+- **Protected behaviors intact:** {{PROTECTED_BEHAVIORS_SUMMARY}}
+
+If a fix requires **changing expected behavior**, stop and emit **DECISION REQUIRED** per `core/no-drift-rules.md` — do not silently alter product semantics.
+
+---
+
+## Scope Discipline — No Unrelated Work
+
+**Forbidden during fix loop:**
+
+- Unrelated refactors, renames, or "while we're here" changes
+- Removing features to pass tests without approval
+- Weakening acceptance criteria or deleting failing tests
+- Disabling security controls or skipping scans to unblock
+- Broad rewrites outside failed issue scope
+
+Follow `core/no-drift-rules.md`. Log scope questions to orchestrator.
+
+---
+
+## Budget — Cycle {{CYCLE_USED}}/{{CYCLE_BUDGET}}
+
+| Metric | Value |
+|--------|-------|
+| Cycles used (including this) | {{CYCLE_USED}} |
+| Budget | {{CYCLE_BUDGET}} |
+| Extensions granted | {{EXTENSIONS_GRANTED}} |
+
+At exhaustion without extension → **BLOCKED**. Request extension only with four-element justification per `core/budget-rules.md`.
+
+---
+
+## Two-Strike Note
+
+{{TWO_STRIKE_STATUS}}
+
+If the **same root cause class** failed QA **twice consecutively**, orchestrator intervention is mandatory. Your fix **must use a different approach** than prior cycles — not a repeat of the same patch.
+
+Prior fix attempts summary:
+
+{{PRIOR_FIX_ATTEMPTS}}
+
+---
+
+## Core Modules (follow by path)
+
+- `core/no-drift-rules.md`
+- `core/honesty-rules.md`
+- `core/budget-rules.md`
+- `core/qa-loop.md`
+- `core/message-contract.md`
+- `core/workspace-rules.md`
+
+---
+
+## Workspace Path
+
+```
+{{WORKSPACE_PATH}}
+```
+
+---
+
+## Deliverable
+
+1. Fix valid issues only.
+2. Re-run `./verify.sh` or equivalent; record honest results.
+3. Update `implementation-notes.md` with fix-specific section.
+4. Hand back to `qa-{{TASK_ID}}` for full re-QA — do not claim PASS yourself.
+
+Message contract example:
+
+```
+[AGENT dev-{{TASK_ID}}] {{TASK_ID}} — fix (cycle {{CYCLE_USED}}/{{CYCLE_BUDGET}})
+DID: Fixed issues {{FIXED_ISSUE_IDS}} per fix-prompt
+RESULT: verify.sh pass; unit {{UNIT_RESULT}}
+NEXT: Hand off to qa-{{TASK_ID}} for re-QA
+NEED: nothing
+```

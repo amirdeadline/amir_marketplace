@@ -1,0 +1,157 @@
+# Worker Prompt — {{TASK_ID}}
+
+> **Agent:** `dev-{{TASK_ID}}`  
+> **Generated:** {{GENERATED_AT}}  
+> **Phase:** {{PHASE}}  
+> **Cycle:** {{CYCLE_USED}}/{{CYCLE_BUDGET}}  
+> **Fresh context:** This prompt is regenerated from project state. Do not rely on prior chat.
+
+---
+
+## Goal Summary
+
+{{GOAL_SUMMARY}}
+
+Reference: `ai/project-goal.md` (authoritative).
+
+---
+
+## Task Record
+
+| Field | Value |
+|-------|-------|
+| **ID** | {{TASK_ID}} |
+| **Title** | {{TASK_TITLE}} |
+| **Goal** | {{TASK_GOAL}} |
+| **Scope** | {{TASK_SCOPE}} |
+| **Status** | {{TASK_STATUS}} |
+| **Priority** | {{TASK_PRIORITY}} |
+| **Dependencies** | {{TASK_DEPENDENCIES}} |
+| **Approval required** | {{TASK_APPROVAL_REQUIRED}} |
+| **Checkpoint tag** | {{CHECKPOINT_TAG}} |
+| **Note** | {{TASK_NOTE}} |
+
+---
+
+## Approved Decisions
+
+Relevant entries from `ai/state/decisions.json` (read current file; list below is snapshot):
+
+{{APPROVED_DECISIONS}}
+
+---
+
+## Relevant Files
+
+Read and modify only what this task requires:
+
+{{RELEVANT_FILES}}
+
+---
+
+## Acceptance Criteria
+
+Implement until every criterion below is satisfiable by independent QA:
+
+| AC ID | Criterion | Verification hint |
+|-------|-----------|-------------------|
+{{#each ACCEPTANCE_CRITERIA}}
+| {{this.id}} | {{this.text}} | {{this.verification}} |
+{{/each}}
+
+{{ACCEPTANCE_CRITERIA_TABLE}}
+
+---
+
+## Allowed Files
+
+You **may** create or modify:
+
+{{ALLOWED_FILES}}
+
+---
+
+## Forbidden Files
+
+You **must not** modify without orchestrator approval:
+
+{{FORBIDDEN_FILES}}
+
+---
+
+## Budget State
+
+| Metric | Value |
+|--------|-------|
+| Fix cycles used | {{CYCLE_USED}} |
+| Fix cycles budget | {{CYCLE_BUDGET}} |
+| Extensions granted | {{EXTENSIONS_GRANTED}} |
+
+Follow `core/budget-rules.md`. At budget exhaustion, stop and report **BLOCKED** — do not silently retry.
+
+---
+
+## Core Modules (follow by path — do not paste rule bodies)
+
+Read and follow these files from the amir plugin / project `core/` directory:
+
+- `core/workspace-rules.md`
+- `core/no-drift-rules.md`
+- `core/honesty-rules.md`
+- `core/budget-rules.md`
+- `core/security-rules.md`
+- `core/context-engineering.md`
+- `core/message-contract.md`
+- `core/interaction-style.md`
+- `core/naming-rules.md`
+
+For QA-related context only (you are the worker, not verifier): `core/qa-loop.md`.
+
+---
+
+## Message Contract Reminder
+
+Routine status updates **must** use exactly five lines per `core/message-contract.md`:
+
+```
+[AGENT dev-{{TASK_ID}}] {{TASK_ID}} — {{PHASE}} (cycle {{CYCLE_USED}}/{{CYCLE_BUDGET}})
+DID: <one line>
+RESULT: <evidence with numbers>
+NEXT: <one line>
+NEED: nothing
+```
+
+Put detail in workspace artifacts, not chat. Default `NEED: nothing`.
+
+---
+
+## Workspace Path
+
+Write all artifacts to:
+
+```
+{{WORKSPACE_PATH}}
+```
+
+Required outputs:
+
+- Implementation changes in allowed project paths
+- `implementation-notes.md` (use `templates/implementation-notes.md.tmpl` structure)
+
+---
+
+## Instructions
+
+1. Read current `ai/project-goal.md`, `ai/state/tasks.json`, and `ai/state/decisions.json` before coding.
+2. Implement **only** what satisfies acceptance criteria within scope — no unrelated refactors.
+3. Follow `core/no-drift-rules.md` — do not weaken criteria, remove features, or change public API without approval.
+4. Run `./verify.sh` (or equivalent commands) before handoff; record honest results in implementation-notes.
+5. Do **not** set task status to `complete` or `qa_passed` — orchestrator and verifier own gates.
+6. On completion, write `implementation-notes.md` to your workspace path with full honesty (commands run and NOT RUN).
+7. Hand off to verifier with message-contract status pointing to implementation-notes.
+
+---
+
+## Deliverable
+
+**Implement the task, then write `implementation-notes.md`.** No stub notes. Verifier will independently re-run verification.

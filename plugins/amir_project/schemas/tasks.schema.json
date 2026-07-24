@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://amir.plugin/schemas/tasks.schema.json",
+  "title": "amir tasks.json",
+  "description": "Authoritative task state for ai/state/tasks.json (Section 5.1).",
+  "type": "object",
+  "required": ["tasks"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "project_id": { "type": "string", "minLength": 1 },
+    "updated_at": { "type": "string", "minLength": 1 },
+    "tasks": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/task" }
+    }
+  },
+  "definitions": {
+    "task": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "goal",
+        "scope",
+        "status",
+        "priority",
+        "dependencies",
+        "approval_required",
+        "cycles"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^T[0-9]{3,}$" },
+        "order": { "type": "integer", "minimum": 0 },
+        "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3"] },
+        "title": { "type": "string", "minLength": 1 },
+        "goal": { "type": "string" },
+        "scope": { "type": "string" },
+        "files_likely_affected": { "type": "array", "items": { "type": "string" } },
+        "allowed_files": { "type": "array", "items": { "type": "string" } },
+        "forbidden_files": { "type": "array", "items": { "type": "string" } },
+        "acceptance_criteria": { "type": "array", "items": { "type": "string" } },
+        "definition_of_done": { "type": "array", "items": { "type": "string" } },
+        "risk_level": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "in_progress",
+            "qa_failed",
+            "qa_passed",
+            "complete",
+            "blocked",
+            "cancelled"
+          ]
+        },
+        "dev_agent_folder": { "type": "string" },
+        "qa_report_path": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+        "alignment_review_path": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+        "checkpoint_tag": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+        "dependencies": { "type": "array", "items": { "type": "string" } },
+        "approval_required": { "type": "boolean" },
+        "human_approval_required": { "type": "boolean" },
+        "milestone": { "type": "string" },
+        "note": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+        "cycles": {
+          "type": "object",
+          "required": ["used", "budget", "extensions_granted"],
+          "additionalProperties": false,
+          "properties": {
+            "used": { "type": "integer", "minimum": 0 },
+            "budget": { "type": "integer", "minimum": 0 },
+            "extensions_granted": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "size_estimate": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "required": ["files", "loc"],
+              "additionalProperties": false,
+              "properties": {
+                "files": { "type": "integer", "minimum": 0 },
+                "loc": { "type": "integer", "minimum": 0 }
+              }
+            }
+          ]
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["ts", "from", "to", "by"],
+            "additionalProperties": false,
+            "properties": {
+              "ts": { "type": "string" },
+              "from": { "type": "string" },
+              "to": { "type": "string" },
+              "by": { "type": "string" },
+              "note": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

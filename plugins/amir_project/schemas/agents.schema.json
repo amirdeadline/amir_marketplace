@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://amir.plugin/schemas/agents.schema.json",
+  "title": "amir agents.json (tools runtime)",
+  "description": "Runtime agent registry used by tools/. Full Section 5.5 field set is documented in agent-registry.schema.json; tools accept this compatible subset plus optional extended fields.",
+  "type": "object",
+  "required": ["agents"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "role", "state"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string" },
+          "role": { "type": "string", "minLength": 1 },
+          "parent": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+          "workspace": { "type": "string" },
+          "model": { "type": "string" },
+          "created_at": { "type": "string" },
+          "state": {
+            "type": "string",
+            "enum": ["active", "idle", "complete", "stale", "reset", "inactive"]
+          },
+          "last_heartbeat_ts": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+          "task_id": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+          "current_task": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+          "responsibility": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  }
+}

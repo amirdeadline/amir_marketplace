@@ -1,0 +1,5 @@
+# Runtime dependencies for the amir_system Asana MCP server
+# (test-only deps pytest/respx intentionally omitted; see plugins/amir-asana for the test suite)
+mcp>=1.2.0
+httpx>=0.27.0
+python-dotenv>=1.0.0

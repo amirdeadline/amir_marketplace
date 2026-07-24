@@ -1,0 +1,53 @@
+{
+  "name": "amir",
+  "version": "1.0.0",
+  "description": "Amir project plugin — project-selected components (harness, cloud/security/network groups, dev tools)",
+  "author": {
+    "name": "Amir",
+    "email": "amir.rashidi2016@gmail.com"
+  },
+  "keywords": [
+    "multi-agent",
+    "harness",
+    "cloud",
+    "security",
+    "network",
+    "project-scoped"
+  ],
+  "mcpServers": {
+    "aws-mcp": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy-for-aws@1.6.3",
+        "https://aws-mcp.us-east-1.api.aws/mcp",
+        "--metadata",
+        "AWS_REGION=${env:AWS_REGION}"
+      ]
+    },
+    "azure-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@azure/mcp@latest",
+        "server",
+        "start"
+      ]
+    },
+    "litellm": {
+      "command": "python",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/scripts/litellm/litellm_mcp.py"
+      ]
+    },
+    "elastic-agent-builder": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "${env:ELASTIC_KIBANA_URL}/api/agent_builder/mcp",
+        "--header",
+        "Authorization:${env:ELASTIC_AUTH_HEADER}"
+      ]
+    }
+  }
+}

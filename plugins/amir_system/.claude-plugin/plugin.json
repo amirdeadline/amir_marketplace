@@ -1,0 +1,23 @@
+{
+  "name": "amir",
+  "version": "1.0.0",
+  "description": "Amir system plugin — project creation, onboarding, orchestration, Graphify, Asana, Playwright (user scope)",
+  "author": {
+    "name": "Amir"
+  },
+  "mcpServers": {
+    "asana": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/mcp/asana/run-mcp.js"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--isolated"
+      ]
+    }
+  }
+}

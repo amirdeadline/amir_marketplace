@@ -1,0 +1,124 @@
+# Implementation Notes — {{TASK_ID}}
+
+> **Agent:** `dev-{{TASK_ID}}`  
+> **Generated:** {{GENERATED_AT}}  
+> **Phase:** {{PHASE}}  
+> **Cycle:** {{CYCLE_USED}}/{{CYCLE_BUDGET}}
+
+---
+
+## Files Changed
+
+| File | Change type | Reason |
+|------|-------------|--------|
+{{#each FILES_CHANGED}}
+| {{this.path}} | {{this.change_type}} | {{this.reason}} |
+{{/each}}
+
+{{FILES_CHANGED_TABLE}}
+
+---
+
+## Behavior
+
+### Added
+
+{{BEHAVIOR_ADDED}}
+
+### Fixed
+
+{{BEHAVIOR_FIXED}}
+
+### Removed
+
+{{BEHAVIOR_REMOVED}}
+
+If none in a category, write `_None_`.
+
+---
+
+## Commands Run
+
+| Command | Exit code | Result summary | Claim |
+|---------|-----------|----------------|-------|
+{{#each COMMANDS_RUN}}
+| `{{this.command}}` | {{this.exit_code}} | {{this.summary}} | VERIFIED |
+{{/each}}
+
+{{COMMANDS_RUN_TABLE}}
+
+---
+
+## Commands Not Run
+
+{{#each COMMANDS_NOT_RUN}}
+**NOT RUN:** `{{this.command}}`
+- **Reason:** {{this.reason}}
+- **Why not blocking handoff:** {{this.why_not_blocking}}
+
+{{/each}}
+
+{{COMMANDS_NOT_RUN_SECTION}}
+
+Follow `core/honesty-rules.md` — never claim VERIFIED for NOT RUN commands.
+
+---
+
+## Risks
+
+| Risk | Evidence label | Mitigation |
+|------|----------------|------------|
+{{#each RISKS}}
+| {{this.description}} | {{this.claim}} | {{this.mitigation}} |
+{{/each}}
+
+{{RISKS_TABLE}}
+
+---
+
+## Acceptance Criteria Satisfied?
+
+| AC ID | Satisfied? | How verified (worker-side) |
+|-------|------------|----------------------------|
+{{#each AC_SATISFACTION}}
+| {{this.id}} | {{this.satisfied}} | {{this.verification}} |
+{{/each}}
+
+{{AC_SATISFACTION_TABLE}}
+
+Worker self-assessment is **INFERRED** until independent QA verifies.
+
+---
+
+## Goal Alignment Statement
+
+{{GOAL_ALIGNMENT_STATEMENT}}
+
+Confirm explicitly: implementation supports `ai/project-goal.md` must-haves and does not implement listed non-goals.
+
+---
+
+## Behavior Changed?
+
+| Question | Answer | Details |
+|----------|--------|---------|
+| User-visible behavior changed? | {{BEHAVIOR_CHANGED}} | {{BEHAVIOR_CHANGED_DETAILS}} |
+| Public API changed? | {{PUBLIC_API_CHANGED}} | {{PUBLIC_API_CHANGED_DETAILS}} |
+| Backward-compat risk? | {{BACKWARD_COMPAT_RISK}} | {{BACKWARD_COMPAT_DETAILS}} |
+
+If yes to API or behavior change without prior approval → flag for orchestrator **DECISION REQUIRED**.
+
+---
+
+## Reflection
+
+Answer in complete sentences (four lines minimum):
+
+1. **Did I solve it?** {{REFLECTION_SOLVED}}
+2. **Did I break anything?** {{REFLECTION_BROKE}}
+3. **Did I miss edge cases?** {{REFLECTION_EDGE_CASES}}
+4. **Could this be simpler?** {{REFLECTION_SIMPLER}}
+
+---
+
+_End of implementation notes. Verifier: treat all worker claims as INFERRED until independently verified._

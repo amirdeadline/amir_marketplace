@@ -1,0 +1,653 @@
+{
+  "domain": "scm-platform",
+  "ingested": "2026-07-14",
+  "topic_index": [
+    {
+      "topic": "Prisma SASE Architecture Agent Reference",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "prisma-sase-architecture-agent-reference",
+      "line": 3
+    },
+    {
+      "topic": "Purpose",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "purpose",
+      "line": 7
+    },
+    {
+      "topic": "How Agents Should Use This File",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "how-agents-should-use-this-file",
+      "line": 11
+    },
+    {
+      "topic": "Included Source PDFs",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "included-source-pdfs",
+      "line": 19
+    },
+    {
+      "topic": "Exact Duplicate PDFs Skipped",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "exact-duplicate-pdfs-skipped",
+      "line": 42
+    },
+    {
+      "topic": "Converted PDF Content",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "converted-pdf-content",
+      "line": 54
+    },
+    {
+      "topic": "Source PDF: aws-vpc-tgw",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "aws-vpc-tgw",
+      "line": 56
+    },
+    {
+      "topic": "Source PDF: azure-virtual-wan",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "azure-virtual-wan",
+      "line": 6392
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7407
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7484
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7576
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7667
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7763
+    },
+    {
+      "topic": "Issue Description Date first reported Mitigation",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "issue-description-date-first-reported-mitigation",
+      "line": 7839
+    },
+    {
+      "topic": "P2S client root certificate private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-root-certificate-private-key",
+      "line": 21337
+    },
+    {
+      "topic": "please fill this field with a PEM formatted key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-key",
+      "line": 21338
+    },
+    {
+      "topic": "P2S client root certificate private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-root-certificate-private-key",
+      "line": 21519
+    },
+    {
+      "topic": "please fill this field with a PEM formatted key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-key",
+      "line": 21520
+    },
+    {
+      "topic": "P2S CA root certificate",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-ca-root-certificate",
+      "line": 21550
+    },
+    {
+      "topic": "Pre Shared Key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "pre-shared-key",
+      "line": 21559
+    },
+    {
+      "topic": "P2S client certificate",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-certificate",
+      "line": 21583
+    },
+    {
+      "topic": "Please fill this field with a PEM formatted client certificate",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-client-certificate",
+      "line": 21584
+    },
+    {
+      "topic": "Alternatively, configure 'cert PATH_TO_CLIENT_CERT' to use input from a",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "alternatively-configure-cert-path_to_client_cert-to-use-input-from-a",
+      "line": 21585
+    },
+    {
+      "topic": "P2S client certificate private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-certificate-private-key",
+      "line": 21594
+    },
+    {
+      "topic": "Please fill this field with a PEM formatted private key of the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-private-key-of-the-client",
+      "line": 21595
+    },
+    {
+      "topic": "Alternatively, configure 'key PATH_TO_CLIENT_KEY' to use input from a PEM",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "alternatively-configure-key-path_to_client_key-to-use-input-from-a-pem",
+      "line": 21597
+    },
+    {
+      "topic": "Generate a private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "generate-a-private-key",
+      "line": 21708
+    },
+    {
+      "topic": "Generate a CSR",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "generate-a-csr",
+      "line": 21711
+    },
+    {
+      "topic": "Sign the CSR using the CA certificate and key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "sign-the-csr-using-the-ca-certificate-and-key",
+      "line": 21715
+    },
+    {
+      "topic": "install curl utility",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-curl-utility",
+      "line": 21736
+    },
+    {
+      "topic": "Install Microsoft's public key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-microsoft-s-public-key",
+      "line": 21738
+    },
+    {
+      "topic": "Install the production repo list for focal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-the-production-repo-list-for-focal",
+      "line": 21741
+    },
+    {
+      "topic": "For Ubuntu 20.04",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "for-ubuntu-20-04",
+      "line": 21742
+    },
+    {
+      "topic": "Install the production repo list for jammy",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-the-production-repo-list-for-jammy",
+      "line": 21745
+    },
+    {
+      "topic": "For Ubuntu 22.04",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "for-ubuntu-22-04",
+      "line": 21746
+    },
+    {
+      "topic": "P2S client certificate",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-certificate",
+      "line": 21893
+    },
+    {
+      "topic": "please fill this field with a PEM formatted cert",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-cert",
+      "line": 21894
+    },
+    {
+      "topic": "P2S client root certificate private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "p2s-client-root-certificate-private-key",
+      "line": 21898
+    },
+    {
+      "topic": "please fill this field with a PEM formatted key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "please-fill-this-field-with-a-pem-formatted-key",
+      "line": 21899
+    },
+    {
+      "topic": "Generate a private key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "generate-a-private-key",
+      "line": 22882
+    },
+    {
+      "topic": "Generate a CSR (Certificate Sign Request)",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "generate-a-csr-certificate-sign-request",
+      "line": 22884
+    },
+    {
+      "topic": "Sign the CSR using the CA certificate and CA key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "sign-the-csr-using-the-ca-certificate-and-ca-key",
+      "line": 22887
+    },
+    {
+      "topic": "install curl utility",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-curl-utility",
+      "line": 24802
+    },
+    {
+      "topic": "Install Microsoft's public key",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-microsoft-s-public-key",
+      "line": 24804
+    },
+    {
+      "topic": "Install the production repo list for focal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-the-production-repo-list-for-focal",
+      "line": 24828
+    },
+    {
+      "topic": "For Ubuntu 20.04",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "for-ubuntu-20-04",
+      "line": 24829
+    },
+    {
+      "topic": "Install the production repo list for jammy",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "install-the-production-repo-list-for-jammy",
+      "line": 24833
+    },
+    {
+      "topic": "For Ubuntu 22.04",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "for-ubuntu-22-04",
+      "line": 24834
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 26571
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure Portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 26573
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 26576
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 26579
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 26582
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 26642
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 26644
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 26647
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 26660
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 26664
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 26666
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 26669
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 26672
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 26676
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 26715
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 26717
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 26720
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 26723
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 26726
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 31301
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure Portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 31303
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 31306
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 31309
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 31312
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 31372
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 31374
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 31377
+    },
+    {
+      "topic": "enabled forced tunneling",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "enabled-forced-tunneling",
+      "line": 31390
+    },
+    {
+      "topic": "specify the name of the VPN Connection to be installed on the client",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "specify-the-name-of-the-vpn-connection-to-be-installed-on-the-client",
+      "line": 31394
+    },
+    {
+      "topic": "get the VPN Server FQDN from the profile downloaded from Azure portal",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "get-the-vpn-server-fqdn-from-the-profile-downloaded-from-azure-portal",
+      "line": 31396
+    },
+    {
+      "topic": "use the appropriate EAP XML file based on the authentication method",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "use-the-appropriate-eap-xml-file-based-on-the-authentication-method",
+      "line": 31399
+    },
+    {
+      "topic": "create the VPN Connection",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "create-the-vpn-connection",
+      "line": 31402
+    },
+    {
+      "topic": "project.md \u2014 Markdowns Prisma SASE (Master Specification)",
+      "file": "project.md",
+      "anchor": "project-md-markdowns-prisma-sase-master-specification",
+      "line": 3
+    },
+    {
+      "topic": "1. Overview and architecture of the documentation set",
+      "file": "project.md",
+      "anchor": "1-overview-and-architecture-of-the-documentation-set",
+      "line": 9
+    },
+    {
+      "topic": "2. Annotated directory structure",
+      "file": "project.md",
+      "anchor": "2-annotated-directory-structure",
+      "line": 22
+    },
+    {
+      "topic": "3. Question-routing map",
+      "file": "project.md",
+      "anchor": "3-question-routing-map",
+      "line": 57
+    },
+    {
+      "topic": "4. Technologies and dependencies",
+      "file": "project.md",
+      "anchor": "4-technologies-and-dependencies",
+      "line": 69
+    },
+    {
+      "topic": "5. Prisma SASE Python SDK \u2014 consolidated reference (from `prisma_sase_sdk/*.md`)",
+      "file": "project.md",
+      "anchor": "5-prisma-sase-python-sdk-consolidated-reference-from-prisma_sase_sdk-md",
+      "line": 76
+    },
+    {
+      "topic": "5.1 Quick facts",
+      "file": "project.md",
+      "anchor": "5-1-quick-facts",
+      "line": 78
+    },
+    {
+      "topic": "5.2 Package layout",
+      "file": "project.md",
+      "anchor": "5-2-package-layout",
+      "line": 90
+    },
+    {
+      "topic": "5.3 Authentication",
+      "file": "project.md",
+      "anchor": "5-3-authentication",
+      "line": 107
+    },
+    {
+      "topic": "5.4 Response model",
+      "file": "project.md",
+      "anchor": "5-4-response-model",
+      "line": 113
+    },
+    {
+      "topic": "5.5 Minimal example",
+      "file": "project.md",
+      "anchor": "5-5-minimal-example",
+      "line": 117
+    },
+    {
+      "topic": "5.6 Operational details",
+      "file": "project.md",
+      "anchor": "5-6-operational-details",
+      "line": 130
+    },
+    {
+      "topic": "5.7 Domain coverage (method counts)",
+      "file": "project.md",
+      "anchor": "5-7-domain-coverage-method-counts",
+      "line": 140
+    },
+    {
+      "topic": "5.8 SD-WAN \u2194 Prisma Access integration objects",
+      "file": "project.md",
+      "anchor": "5-8-sd-wan-prisma-access-integration-objects",
+      "line": 144
+    },
+    {
+      "topic": "6. QA comparison contract \u2014 consolidated (from `ai_prisma_sdwan.md`)",
+      "file": "project.md",
+      "anchor": "6-qa-comparison-contract-consolidated-from-ai_prisma_sdwan-md",
+      "line": 154
+    },
+    {
+      "topic": "7. PDF-extract references \u2014 specification for rebuilding",
+      "file": "project.md",
+      "anchor": "7-pdf-extract-references-specification-for-rebuilding",
+      "line": 166
+    },
+    {
+      "topic": "8. API bundles (from `api/generation_stats.json`)",
+      "file": "project.md",
+      "anchor": "8-api-bundles-from-api-generation_stats-json",
+      "line": 184
+    },
+    {
+      "topic": "9. Configuration (names only \u2014 never store values)",
+      "file": "project.md",
+      "anchor": "9-configuration-names-only-never-store-values",
+      "line": 195
+    },
+    {
+      "topic": "10. Setup / usage workflows",
+      "file": "project.md",
+      "anchor": "10-setup-usage-workflows",
+      "line": 199
+    },
+    {
+      "topic": "11. Known quirks",
+      "file": "project.md",
+      "anchor": "11-known-quirks",
+      "line": 206
+    },
+    {
+      "topic": "Markdowns Prisma SASE \u2014 Documentation Index",
+      "file": "README.md",
+      "anchor": "markdowns-prisma-sase-documentation-index",
+      "line": 3
+    },
+    {
+      "topic": "Which file answers what",
+      "file": "README.md",
+      "anchor": "which-file-answers-what",
+      "line": 7
+    },
+    {
+      "topic": "Folder contents",
+      "file": "README.md",
+      "anchor": "folder-contents",
+      "line": 22
+    },
+    {
+      "topic": "Usage rules for AI agents",
+      "file": "README.md",
+      "anchor": "usage-rules-for-ai-agents",
+      "line": 49
+    },
+    {
+      "topic": "Regeneration",
+      "file": "README.md",
+      "anchor": "regeneration",
+      "line": 57
+    }
+  ],
+  "files": [
+    {
+      "path": "prisma_sase_architecure.md",
+      "title": "Prisma SASE Architecture Agent Reference",
+      "bytes": 4377891
+    },
+    {
+      "path": "project.md",
+      "title": "project.md \u2014 Markdowns Prisma SASE (Master Specification)",
+      "bytes": 18225
+    },
+    {
+      "path": "README.md",
+      "title": "Markdowns Prisma SASE \u2014 Documentation Index",
+      "bytes": 5054
+    }
+  ]
+}

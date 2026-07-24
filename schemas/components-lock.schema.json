@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://amir-marketplace.local/schemas/components-lock.schema.json",
+  "title": "Amir components lock (.amir/components.lock.json)",
+  "description": "Pins the exact version and per-source-file sha256 of every selected component at install/render time. Used for drift detection and repair.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "catalog_version", "components"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "generated_at": { "type": "string" },
+    "catalog_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9_]*$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "source_path", "files"],
+          "properties": {
+            "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+            "source_path": {
+              "type": "string",
+              "description": "Catalog-repo-relative root of the component's source files (forward slashes)."
+            },
+            "files": {
+              "type": "object",
+              "description": "Map of source-relative file path (forward slashes) to sha256 hex digest.",
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

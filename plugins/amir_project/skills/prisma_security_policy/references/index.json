@@ -1,0 +1,41 @@
+{
+  "domain": "security-policy",
+  "ingested": "2026-07-14",
+  "topic_index": [
+    {
+      "topic": "7. Path / QoS(priority) / Performance / NGFW security policy",
+      "file": "ai_prisma_sdwan.md",
+      "anchor": "7-path-qos-priority-performance-ngfw-security-policy",
+      "line": 143
+    },
+    {
+      "topic": "Source PDF: advanced-url-filtering-administration",
+      "file": "prisma_access.md",
+      "anchor": "advanced-url-filtering-administration",
+      "line": 52
+    },
+    {
+      "topic": "Prisma SASE Architecture Agent Reference",
+      "file": "prisma_sase_architecure.md",
+      "anchor": "top",
+      "line": 1
+    }
+  ],
+  "files": [
+    {
+      "path": "ai_prisma_sdwan.md",
+      "title": "AI Prisma SD-WAN SME Knowledge Base & QA Comparison Contract",
+      "bytes": 16568
+    },
+    {
+      "path": "prisma_access.md",
+      "title": "Prisma Access Agent Reference",
+      "bytes": 5765854
+    },
+    {
+      "path": "prisma_sase_architecure.md",
+      "title": "Prisma SASE Architecture Agent Reference",
+      "bytes": 4377891
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://amir.plugin/schemas/activity-event.schema.json",
+  "title": "amir activity.jsonl event",
+  "description": "Append-only activity event (Section 5.3). Tools accept timestamp/agent_id naming; adapters may also emit ts/agent aliases before normalize.",
+  "type": "object",
+  "required": ["timestamp", "agent_id", "action", "result"],
+  "additionalProperties": false,
+  "properties": {
+    "timestamp": { "type": "string", "minLength": 1 },
+    "ts": { "type": "string", "minLength": 1 },
+    "agent_id": { "type": "string", "minLength": 1 },
+    "agent": { "type": "string", "minLength": 1 },
+    "action": {
+      "type": "string",
+      "enum": [
+        "start",
+        "compact",
+        "checkpoint",
+        "qa_run",
+        "fix",
+        "message",
+        "budget_request",
+        "approval",
+        "heartbeat",
+        "doc_section",
+        "drift_check",
+        "error"
+      ]
+    },
+    "result": { "type": "string" },
+    "task_id": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+    "task": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+    "tokens_in": { "oneOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }] },
+    "tokens_out": { "oneOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }] },
+    "model": { "oneOf": [{ "type": "string" }, { "type": "null" }] },
+    "usd": { "oneOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }] },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tokens_in": { "type": "integer", "minimum": 0 },
+        "tokens_out": { "type": "integer", "minimum": 0 },
+        "model": { "type": "string" },
+        "usd_est": { "type": "number", "minimum": 0 }
+      }
+    }
+  }
+}

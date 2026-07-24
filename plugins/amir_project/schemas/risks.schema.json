@@ -1,0 +1,10 @@
+{
+  "$id": "risks.schema.json",
+  "type": "object",
+  "required": ["version", "risks"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "risks": { "type": "array" }
+  }
+}

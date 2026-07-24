@@ -105,7 +105,7 @@ Include Markdown files in directories such as:
 ```text
 docs/
 documentation/
-ai/
+.ai/
 .github/
 architecture/
 design/
@@ -348,9 +348,9 @@ Explain which files AI agents must read.
 ### Always Read
 
 * [Project documentation hub](./project.md)
-* [Current project status](./ai/status.md)
-* [Task registry](./ai/tasks.md)
-* [Agent rules](./ai/rules.md)
+* [Current project status](./.ai/status.md)
+* [Task registry](./.ai/tasks.md)
+* [Agent rules](./.ai/rules.md)
 
 ### Read for Architecture Work
 
@@ -392,8 +392,8 @@ Explain which files AI agents must read.
 
 ### AI Agent Files
 
-* [Current Status](./ai/status.md) — description
-* [Task Registry](./ai/tasks.md) — description
+* [Current Status](./.ai/status.md) — description
+* [Task Registry](./.ai/tasks.md) — description
 
 Continue until every relevant Markdown file is included.
 
@@ -403,7 +403,7 @@ Continue until every relevant Markdown file is included.
 | ---------------- | ---------------------- | ----------------------- |
 | Project overview | `project.md`           | `README.md`             |
 | Architecture     | `docs/architecture.md` | Related design files    |
-| Current status   | `ai/status.md`         | `ai/tasks.md`           |
+| Current status   | `.ai/status.md`         | `.ai/tasks.md`           |
 | Testing          | `docs/testing.md`      | Test-specific documents |
 
 ## Known Documentation Gaps
@@ -441,7 +441,7 @@ Examples:
 
 ```markdown
 [Architecture](./docs/architecture.md)
-[QA Process](./ai/qa/process.md)
+[QA Process](./.ai/qa/process.md)
 [API Reference](./docs/api/reference.md)
 ```
 

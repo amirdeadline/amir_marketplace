@@ -22,7 +22,7 @@ Render the branch and commit graph for the project as human-readable text or Mer
 1. Verify git repository; if absent, offer `/git_setup` and stop.
 2. Run `git branch -a --list` and collect local/remote branch tips.
 3. Run `git tag -l 'amir/T*-complete'`; map tags to commit hashes via `git rev-parse`.
-4. Cross-reference tags with `ai/state/tasks.json` task ids where available (read-only); note tasks without tags or tags without tasks.
+4. Cross-reference tags with `.ai/state/tasks.json` task ids where available (read-only); note tasks without tags or tags without tasks.
 5. **Text format:** run `git log --oneline --graph --decorate -n <depth> [--all|<branch>]`; append tag legend table (tag → commit → task id).
 6. **Mermaid format:** build `gitGraph` or commit DAG Mermaid from `git log --pretty=format:'%H|%P|%s|%D'` — include annotated tags on commits; follow Mermaid syntax rules (no spaces in commit ids; sanitize messages).
 7. Present graph to human per `core/message-contract.md`; offer `/details` for full log if truncated.
@@ -38,8 +38,8 @@ Render the branch and commit graph for the project as human-readable text or Mer
 
 | File | Access |
 |------|--------|
-| `ai/state/tasks.json` | Read (task ↔ tag correlation) |
-| `ai/state/activity.jsonl` | Append |
+| `.ai/state/tasks.json` | Read (task ↔ tag correlation) |
+| `.ai/state/activity.jsonl` | Append |
 | Git refs/tags | Read only |
 
 ## Outputs

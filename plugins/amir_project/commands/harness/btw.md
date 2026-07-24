@@ -12,7 +12,7 @@ Temporary read-only side question. Not saved to project state or long-term memor
 
 - **Read-only:** no file edits, no terminal/shell commands, no tool calls that write (including git, npm, state tools, memory MCP writes).
 - **Single turn:** answer the user's question in one response, then close.
-- **No amir state:** do not read or write `ai/state/*`, do not append activity, do not invoke skills or subagents.
+- **No amir state:** do not read or write `.ai/state/*`, do not append activity, do not invoke skills or subagents.
 - **No project side effects:** treat this as ephemeral chat scoped to the question only.
 
 ## UX

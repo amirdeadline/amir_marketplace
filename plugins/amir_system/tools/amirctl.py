@@ -12,6 +12,21 @@ Subcommands:
   registry-add                      register/refresh the current project in the user registry
   registry-remove <id>              remove a project from the registry
   registry-repair [--prune]         report stale registry entries; --prune drops missing roots
+  portfolio-add <dir>               register a project + merge its graphify graph globally
+  portfolio-remove <dir|id>         strip its namespace from the global graph
+      [--keep-registry | --archive-registry] [--remove-local-graph]
+  portfolio-update <dir|id>         refresh registry fields; refresh graph only when stale
+  portfolio-update-all              update every registered project (honest partial-failure status)
+  portfolio-list [filter]           table view; filters: all active paused archived at-risk
+                                    stale graph-stale missing-directory needs-attention
+  portfolio-status                  registry health + global graph freshness overview
+  portfolio-validate                registry/graph consistency + secret sweep (report only)
+  portfolio-rebuild --confirm       full re-merge of the global graph from local graphs
+  portfolio-report                  write the 5 portfolio reports to %USERPROFILE%\\.amir\\portfolio\\reports
+
+The unified registry lives at %USERPROFILE%\\.amir\\registry\\projects.yaml (ONE registry
+for registry-* and portfolio-*; a legacy projects.json is migrated on first use).
+PowerShell 5.1 example:  python amirctl.py portfolio-add "C:\\path\\to\\project"
   catalog-list [--json]             list catalog components
   catalog-resolve <ids...>          run activation-rule resolution for a component set
   remove-project-config [--apply]   plan (default) or apply removal of Amir-managed files only
@@ -222,6 +237,170 @@ def cmd_registry_repair(args) -> int:
     return 0
 
 
+def cmd_portfolio_add(args) -> int:
+    import portfolio  # noqa: PLC0415
+
+    report = portfolio.add(args.dir)
+    print(f"registered '{report['id']}' ({report['root']})")
+    if report["graph_merged"]:
+        print(f"graph merged: {report['node_count']} node(s), {report['edge_count']} edge(s) "
+              f"under namespace '{report['id']}::'")
+    else:
+        print(f"graph NOT merged: {report['reason']}")
+    return 0
+
+
+def cmd_portfolio_remove(args) -> int:
+    import portfolio  # noqa: PLC0415
+
+    report = portfolio.remove(args.target, keep_registry=args.keep_registry,
+                              remove_local_graph=args.remove_local_graph)
+    print(f"'{report['id']}': "
+          f"global-graph namespace {'removed' if report['graph_removed'] else 'not present'}; "
+          f"registry entry {'archived + removed' if report['registry_removed'] else 'kept'}; "
+          f"local graph {'REMOVED' if report['local_graph_removed'] else 'preserved'}")
+    print("project source files were not touched")
+    return 0
+
+
+def _print_update_report(report: dict) -> None:
+    if report.get("status") == "error":
+        print(f"{report['id']}: ERROR -- {report.get('error')}")
+    elif report.get("graph_refreshed"):
+        print(f"{report['id']}: graph refreshed ({report.get('node_count', '?')} nodes; "
+              f"stale reason: {report.get('graph_stale_reason')}) "
+              + ("+ registry metadata" if report.get("registry_refreshed") else ""))
+    elif report.get("registry_refreshed"):
+        print(f"{report['id']}: registry metadata refreshed only "
+              f"({', '.join(report['registry_changes'])}); graph unchanged")
+    else:
+        print(f"{report['id']}: no change")
+
+
+def cmd_portfolio_update(args) -> int:
+    import portfolio  # noqa: PLC0415
+
+    report = portfolio.update(args.target)
+    _print_update_report(report)
+    return 0 if report.get("status") != "error" else 1
+
+
+def cmd_portfolio_update_all(args) -> int:
+    import portfolio  # noqa: PLC0415
+
+    result = portfolio.update_all()
+    for report in result["results"]:
+        _print_update_report(report)
+    print(f"\noverall: {result['status']} ({result['total'] - result['failed']}/"
+          f"{result['total']} succeeded)")
+    return 0 if result["status"] == "ok" else 1
+
+
+def cmd_portfolio_status(args) -> int:
+    import portfolio  # noqa: PLC0415
+
+    overview = portfolio.status()
+    print(f"registered: {overview['registered']}  reachable: {overview['reachable']}  "
+          f"missing: {overview['missing']}")
+    print(f"global graph: {overview['global_nodes']} nodes, {overview['global_links']} edges, "
+          f"{len(overview['namespaces'])} namespace(s)")
+    print(f"last global update: {overview['last_global_update'] or '-'}")
+    for project in overview["projects"]:
+        flags = []
+        if not project["reachable"]:
+            flags.append("MISSING-DIR")
+        if project["needs_status_update"]:
+            flags.append("needs-status-update")
+        print(f"  {project['id']:24} graph={project['graph_state']:22} "
+              f"last-status={(project.get('last_status_update') or '-'):20} "
+              + (" ".join(flags)))
+    return 0
+
+
+PORTFOLIO_FILTERS = ("all", "active", "paused", "archived", "at-risk", "stale",
+                     "graph-stale", "missing-directory", "needs-attention")
+
+
+def _portfolio_filter(project: dict, name: str) -> bool:
+    stale = project.get("needs_status_update", False)
+    graph_stale = str(project.get("graph_state", "")).startswith(("stale", "unknown"))
+    missing = not project.get("reachable", False)
+    at_risk = project.get("health") in ("at-risk", "blocked")
+    return {
+        "all": True,
+        "active": project.get("lifecycle") == "active",
+        "paused": project.get("lifecycle") == "paused",
+        "archived": project.get("lifecycle") == "archived",
+        "at-risk": at_risk,
+        "stale": stale,
+        "graph-stale": graph_stale,
+        "missing-directory": missing,
+        "needs-attention": at_risk or stale or graph_stale or missing,
+    }[name]
+
+
+def cmd_portfolio_list(args) -> int:
+    import portfolio  # noqa: PLC0415
+
+    overview = portfolio.status()
+    rows = [p for p in overview["projects"] if _portfolio_filter(p, args.filter)]
+    if not rows:
+        print(f"no projects match filter '{args.filter}'")
+        return 0
+    fmt = "{:24} {:9} {:7} {:8} {:16} {:>5} {:>5} {:20} {:20}"
+    print(fmt.format("ID", "LIFECYCLE", "PRIO", "HEALTH", "PHASE", "CONF%", "EST%",
+                     "GRAPH", "LAST-STATUS"))
+    for p in rows:
+        print(fmt.format(p["id"][:24], str(p.get("lifecycle") or "-"),
+                         str(p.get("priority") or "-"), str(p.get("health") or "-"),
+                         str(p.get("current_phase") or "-")[:16],
+                         "-" if p.get("confirmed_progress") is None else str(p["confirmed_progress"]),
+                         "-" if p.get("estimated_progress") is None else str(p["estimated_progress"]),
+                         str(p.get("graph_state") or "-")[:20],
+                         str(p.get("last_status_update") or "-")))
+    return 0
+
+
+def cmd_portfolio_validate(args) -> int:
+    import portfolio  # noqa: PLC0415
+
+    issues = portfolio.validate()
+    if not issues:
+        print("portfolio validate: OK (no issues)")
+        return 0
+    for issue in issues:
+        print(f"{issue['level'].upper():8} [{issue['code']}] {issue['message']}")
+    errors = sum(1 for issue in issues if issue["level"] == "error")
+    print(f"\n{len(issues)} issue(s): {errors} error(s)")
+    return 1 if errors else 0
+
+
+def cmd_portfolio_rebuild(args) -> int:
+    import portfolio  # noqa: PLC0415
+
+    if not args.confirm:
+        print("portfolio-rebuild replaces the global graph from all local graphs "
+              "(a backup is taken first). Re-run with --confirm to proceed.")
+        return 1
+    result = portfolio.rebuild()
+    for project in result["projects"]:
+        if project["merged"]:
+            print(f"  merged {project['id']}: {project['node_count']} nodes, "
+                  f"{project['edge_count']} edges")
+        else:
+            print(f"  skipped {project['id']}: {project['reason']}")
+    print(f"rebuilt global graph: {result['node_count']} nodes, {result['edge_count']} edges")
+    return 0
+
+
+def cmd_portfolio_report(args) -> int:
+    import portfolio_reports  # noqa: PLC0415
+
+    for path in portfolio_reports.write_reports():
+        print(f"wrote {path}")
+    return 0
+
+
 def cmd_catalog_list(args) -> int:
     import catalog as catalog_mod  # noqa: PLC0415
 
@@ -396,6 +575,36 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("registry-repair", help="report/prune stale registry entries")
     p.add_argument("--prune", action="store_true")
     p.set_defaults(func=cmd_registry_repair)
+    p = sub.add_parser("portfolio-add", help="register a project + merge its graph globally")
+    p.add_argument("dir", help="project directory (must contain .amir/project.yaml)")
+    p.set_defaults(func=cmd_portfolio_add)
+    p = sub.add_parser("portfolio-remove", help="remove a project's namespace from the global graph")
+    p.add_argument("target", help="project directory or registered id")
+    group = p.add_mutually_exclusive_group()
+    group.add_argument("--keep-registry", action="store_true",
+                       help="keep the registry entry (only strip the graph namespace)")
+    group.add_argument("--archive-registry", action="store_true",
+                       help="archive + remove the registry entry (default behavior)")
+    p.add_argument("--remove-local-graph", action="store_true",
+                   help="also delete the project's local graphify-out/graph.json")
+    p.set_defaults(func=cmd_portfolio_remove)
+    p = sub.add_parser("portfolio-update", help="refresh one project (graph only when stale)")
+    p.add_argument("target", help="project directory or registered id")
+    p.set_defaults(func=cmd_portfolio_update)
+    sub.add_parser("portfolio-update-all",
+                   help="update every registered project").set_defaults(func=cmd_portfolio_update_all)
+    p = sub.add_parser("portfolio-list", help="table of registered projects")
+    p.add_argument("filter", nargs="?", default="all", choices=PORTFOLIO_FILTERS)
+    p.set_defaults(func=cmd_portfolio_list)
+    sub.add_parser("portfolio-status",
+                   help="registry + graph freshness overview").set_defaults(func=cmd_portfolio_status)
+    sub.add_parser("portfolio-validate",
+                   help="consistency + secret sweep (report only)").set_defaults(func=cmd_portfolio_validate)
+    p = sub.add_parser("portfolio-rebuild", help="full re-merge of the global graph")
+    p.add_argument("--confirm", action="store_true")
+    p.set_defaults(func=cmd_portfolio_rebuild)
+    sub.add_parser("portfolio-report",
+                   help="write the 5 portfolio reports").set_defaults(func=cmd_portfolio_report)
     p = sub.add_parser("catalog-list", help="list catalog components")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=cmd_catalog_list)

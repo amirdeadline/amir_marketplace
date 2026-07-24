@@ -8,13 +8,13 @@ Authoritative state lives only in:
 
 | Artifact | Purpose |
 |----------|---------|
-| `ai/project-goal.md` | Product outcome, constraints, non-goals |
-| `ai/state/tasks.json` | Task specs, acceptance criteria, status |
-| `ai/state/decisions.json` | Human and agent decisions |
-| `ai/state/status.json` | Phase, checkpoints, gate flags |
-| `ai/state/activity.jsonl` | Append-only audit log |
+| `.ai/project-goal.md` | Product outcome, constraints, non-goals |
+| `.ai/state/tasks.json` | Task specs, acceptance criteria, status |
+| `.ai/state/decisions.json` | Human and agent decisions |
+| `.ai/state/status.json` | Phase, checkpoints, gate flags |
+| `.ai/state/activity.jsonl` | Append-only audit log |
 
-Markdown under `ai/views/` is **regenerated** from JSON — not authoritative.
+Markdown under `.ai/views/` is **regenerated** from JSON — not authoritative.
 
 **Ignored paths** (e.g. host caches, `node_modules`, build output) are never source-of-truth per `core/security-rules.md`.
 
@@ -23,7 +23,7 @@ Markdown under `ai/views/` is **regenerated** from JSON — not authoritative.
 **"No cached decisions"** means:
 
 - Agents **must read** current project state files at session start and before major actions.
-- Decisions exist **only** in `ai/state/decisions.json` (and goal/tasks derived from approved design).
+- Decisions exist **only** in `.ai/state/decisions.json` (and goal/tasks derived from approved design).
 - Conversation history, old prompts, or agent memory **do not** override project state.
 - If chat contradicts JSON, **JSON wins** unless human explicitly updates state.
 
@@ -68,7 +68,7 @@ If a fix **requires changing expected behavior** (semantics, UX contract, API re
 
 A task **must not** complete when:
 
-- Tests pass but behavior diverges from `ai/project-goal.md`
+- Tests pass but behavior diverges from `.ai/project-goal.md`
 - Features ship that contradict `decisions.json`
 - Non-goals were implemented or must-haves omitted
 - QA goal-alignment review **FAIL** (see `core/qa-loop.md`)
@@ -79,10 +79,10 @@ Orchestrator confirms alignment before `complete` status.
 
 Every **3 completed tasks** (status → `complete` in `tasks.json`), orchestrator runs a **drift check**:
 
-1. Read `ai/project-goal.md` and last 3 completed task records
+1. Read `.ai/project-goal.md` and last 3 completed task records
 2. Compare shipped behavior (QA reports, acceptance evidence) to goal
 3. Produce **≤5 lines** summary: aligned | drift detected
-4. Append entry to `ai/state/activity.jsonl` with type `drift_check`
+4. Append entry to `.ai/state/activity.jsonl` with type `drift_check`
 
 If drift detected → **PROBLEM**, open remediation task, pause dependent work until resolved or accepted as risk.
 

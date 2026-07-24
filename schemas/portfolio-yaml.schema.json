@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://amir.local/schemas/portfolio-yaml.schema.json",
+  "title": "Per-project portfolio metadata (<project>/.amir/portfolio.yaml)",
+  "description": "Optional, human-maintained portfolio metadata. When absent, all derived registry fields stay null -- nothing is fabricated.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "project"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "description": "Must match project.id in .amir/project.yaml."
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": ["string", "null"] },
+        "category": { "type": ["string", "null"] },
+        "lifecycle": { "enum": ["active", "paused", "archived", null] },
+        "priority": { "enum": ["high", "medium", "low", null] },
+        "health": { "enum": ["healthy", "at-risk", "blocked", "unknown", null] }
+      }
+    },
+    "ownership": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "owner": { "type": ["string", "null"] },
+        "collaborators": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "progress": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "confirmed_percent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "estimated_percent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "current_phase": { "type": ["string", "null"] },
+        "current_goal": { "type": ["string", "null"] },
+        "last_updated": { "type": ["string", "null"] }
+      }
+    },
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "accomplishments": { "type": "array", "items": { "type": "string" } },
+        "current_work": { "type": "array", "items": { "type": "string" } },
+        "blockers": { "type": "array", "items": { "type": "string" } },
+        "next_actions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "target_date": { "type": ["string", "null"] },
+          "status": { "type": ["string", "null"] },
+          "completed_at": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": { "type": ["string", "null"] },
+        "asana": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "project_gid": { "type": ["string", "null"] }
+          }
+        },
+        "documentation": { "type": ["string", "null"] }
+      }
+    },
+    "technology": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "languages": { "type": "array", "items": { "type": "string" } },
+        "frameworks": { "type": "array", "items": { "type": "string" } },
+        "platforms": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "global_graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "registered": { "type": "boolean" },
+        "registered_at": { "type": ["string", "null"] },
+        "last_updated": { "type": ["string", "null"] },
+        "namespace": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

@@ -22,4 +22,4 @@ When native **Task** subagents are available, delegate worker/verifier/architect
 
 ## Workspace
 
-`ai/agents/1-orchestrator/` — prompt.md, notes.md, handoff.md
+`.ai/agents/1-orchestrator/` — prompt.md, notes.md, handoff.md

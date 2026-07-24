@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://amir.plugin/schemas/docmax.schema.json",
   "title": "amir docmax state",
-  "description": "Document_max sprint state for ai/state/docmax-<doc-id>.json.",
+  "description": "Document_max sprint state for .ai/state/docmax-<doc-id>.json.",
   "type": "object",
   "additionalProperties": false,
   "required": [

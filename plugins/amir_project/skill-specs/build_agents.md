@@ -13,12 +13,12 @@ Materialize agent workspace folders and seed `prompt.md` / `notes.md` for every 
 | Input | Required | Description |
 |-------|----------|-------------|
 | Project root | Implicit | Current amir project root |
-| `ai/state/agents.json` | Yes | Agent registry from `/design_agents` |
+| `.ai/state/agents.json` | Yes | Agent registry from `/design_agents` |
 
 ## Behavior
 
-1. Read `ai/state/agents.json`; fail if empty or missing orchestrator.
-2. For each agent id, create `ai/agents/<agent-id>/` per `core/workspace-rules.md` and `core/naming-rules.md`.
+1. Read `.ai/state/agents.json`; fail if empty or missing orchestrator.
+2. For each agent id, create `.ai/agents/<agent-id>/` per `core/workspace-rules.md` and `core/naming-rules.md`.
 3. Create `notes.md` with header structure per `core/context-engineering.md` (agent id, task id placeholder, empty sections).
 4. Create `prompt.md` — role-specific seed:
    - Orchestrator: coordination charter + pointers to state tools
@@ -45,11 +45,11 @@ Materialize agent workspace folders and seed `prompt.md` / `notes.md` for every 
 
 | File | Access |
 |------|--------|
-| `ai/state/agents.json` | Read |
-| `ai/agents/**/notes.md` | Write |
-| `ai/agents/**/prompt.md` | Write |
-| `ai/agents/**/logs/` | Create |
-| `ai/state/activity.jsonl` | Append |
+| `.ai/state/agents.json` | Read |
+| `.ai/agents/**/notes.md` | Write |
+| `.ai/agents/**/prompt.md` | Write |
+| `.ai/agents/**/logs/` | Create |
+| `.ai/state/activity.jsonl` | Append |
 
 ## Outputs
 

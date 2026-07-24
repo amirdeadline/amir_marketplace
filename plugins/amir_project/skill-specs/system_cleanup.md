@@ -29,7 +29,7 @@
 4. **Safeguard 2 — Deletion list:** present numbered table of **exact** paths and files to delete (no globs without expanded listing); classify each as amir-managed vs shared host file.
 5. **Safeguard 3 — Typed confirmation:** require human to type exactly `DELETE SYSTEM <ai_app>` in chat; no paraphrase accepted.
 6. If any safeguard incomplete (no backup, no list, wrong phrase, no approval): **REFUSE** — emit **PROBLEM** and stop with zero deletions.
-7. **Safeguard 4 — Log:** before delete, append `system_cleanup` to `ai/state/activity.jsonl` (or `ai/agents/1-orchestrator/logs/system-cleanup-<timestamp>.jsonl` if outside project) with: `{ai_app}`, backup path, deletion list checksum, confirmation timestamp.
+7. **Safeguard 4 — Log:** before delete, append `system_cleanup` to `.ai/state/activity.jsonl` (or `.ai/agents/1-orchestrator/logs/system-cleanup-<timestamp>.jsonl` if outside project) with: `{ai_app}`, backup path, deletion list checksum, confirmation timestamp.
 8. Delete **only** listed paths; never expand scope during execution.
 9. Verify post-delete: re-run `/system_skills {ai_app}` — expect amir entries missing or empty.
 10. Present result per `core/message-contract.md`: backup path, deleted count, failures if any.
@@ -50,8 +50,8 @@
 | `adapters/<ai_app>/capabilities.md` | Read |
 | `<plugin-root>/backups/system-cleanup-*.zip` | Write (backup) |
 | Host system install paths | Delete (listed only) |
-| `ai/state/activity.jsonl` | Append |
-| `ai/state/decisions.json` | Write (cleanup approval record) |
+| `.ai/state/activity.jsonl` | Append |
+| `.ai/state/decisions.json` | Write (cleanup approval record) |
 
 ## Outputs
 
@@ -65,6 +65,6 @@
 - **REFUSE without all three:** (1) backup shown, (2) exact deletion list approved, (3) typed `DELETE SYSTEM <ai_app>` — plus logging before delete.
 - Abort on backup creation failure — zero deletions.
 - Stop on first delete error; report partial completion and backup restore instructions.
-- Never delete user project directories, `ai/state/`, or unrelated host config outside amir install list.
+- Never delete user project directories, `.ai/state/`, or unrelated host config outside amir install list.
 - Never delete backup archive in same operation.
 - Wrong confirmation phrase → refuse and re-prompt.

@@ -1,11 +1,11 @@
 ---
 name: system_rules
-description: The 7 Amir system rules — project-isolation, tool-scope, security-secrets, honest-execution, goal-preservation, context-control, destructive-action. Always in force for Amir-managed work; identical content ships to Cursor as rules/*.mdc.
+description: The 8 Amir system rules — project-isolation, tool-scope, security-secrets, honest-execution, goal-preservation, context-control, destructive-action, global-graph. Always in force for Amir-managed work; identical content ships to Cursor as rules/*.mdc.
 ---
 
 # Amir system rules
 
-These 7 rules are always in force when working in or on Amir-managed projects. They are the
+These 8 rules are always in force when working in or on Amir-managed projects. They are the
 same rules Cursor receives as `rules/*.mdc`. Where a rule conflicts with convenience, the rule
 wins.
 
@@ -53,7 +53,7 @@ through the user explicitly (and in amir-ai projects, through formal change flow
 ## 6. context-control
 
 Keep subagent contexts bounded: minimal file sets, explicit allowed/prohibited paths — never
-the whole repo. Persist durable facts, decisions, and evidence to `ai/` docs as they occur,
+the whole repo. Persist durable facts, decisions, and evidence to `.ai/` docs as they occur,
 not only at the end. When context degradation is likely (long session, repeated corrections),
 trigger `/amir:cleanup_context` and recommend a fresh session. Never claim context was cleared
 unless a new session actually started.
@@ -66,3 +66,30 @@ history, pushing, publishing, changing external systems, modifying Asana data
 (create/update/complete are writes), exposing an MCP server over a network, or clearing any
 data that cannot be recreated. Default posture is read-only; "the user probably wants it" is
 never approval.
+
+## 8. global-graph
+
+Rules for the cross-project portfolio graph (`%USERPROFILE%\.amir\portfolio\`):
+
+- **Explicit registration.** A project enters the global graph only through explicit
+  registration (`/amir:graph_projects_add`), approved by the user. Never register, index, or
+  scan a project into the portfolio implicitly, and never scan the computer for projects —
+  the registry (`%USERPROFILE%\.amir\registry\projects.yaml`) is the only project list.
+- **Project isolation.** Each project lives in its own namespace keyed by its stable
+  `project.id`. Updates replace that namespace only; removal removes that namespace only;
+  other namespaces are never touched, and no duplicate namespaces may exist.
+- **Source correctness.** Answer from the right source: Graphify graphs = technical
+  structure; `.ai\` docs = project state and intent; Asana = external tasks; git = history.
+  Never infer business completion or progress from graph size, node counts, or commit
+  activity — progress claims require milestone/acceptance-criteria evidence, and are labeled
+  Confirmed, Estimated, or Unknown.
+- **Freshness.** Every graph namespace records its build timestamp and source commit. Stale
+  data is always labeled stale. A failed update keeps the previous graph in place — and is
+  reported as a failure with stale data, never as an update.
+- **Security.** Never index secrets, secret stores, or credential files into any graph. No
+  network exposure of the portfolio graph or its MCP surface by default; remote MCP access
+  requires authentication. Redact user-specific absolute paths in shared output where
+  feasible. Confirm before fetching or embedding any external URL content.
+- **Honest reporting.** Portfolio reports separate current / stale / missing / failed —
+  never blended. A registry-metadata change is not a project update. No progress is ever
+  reported without evidence.

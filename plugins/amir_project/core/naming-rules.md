@@ -24,7 +24,7 @@ Format: **`dev-<task-id>`**
 | `dev-T001` | Worker for task T001 |
 | `dev-D003` | Worker for documentation task D003 |
 
-Workspace: `ai/agents/dev-T001/` (or equivalent per `core/workspace-rules.md`).
+Workspace: `.ai/agents/dev-T001/` (or equivalent per `core/workspace-rules.md`).
 
 One primary worker per task id unless orchestrator splits subtasks with explicit ids.
 
@@ -36,7 +36,7 @@ Format: **`qa-<task-id>`**
 |---------|---------|
 | `qa-T001` | Independent verifier for T001 |
 
-Hierarchy: **`qa-<task-id>`** is under **`3-qa`** organizationally and in reporting. Paths may be `ai/agents/3-qa/qa-T001/` or `ai/agents/qa-T001/` — pick one convention per project at create time.
+Hierarchy: **`qa-<task-id>`** is under **`3-qa`** organizationally and in reporting. Paths may be `.ai/agents/3-qa/qa-T001/` or `.ai/agents/qa-T001/` — pick one convention per project at create time.
 
 Verifier sets `qa_passed`; does **not** set `complete`.
 

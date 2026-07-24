@@ -35,8 +35,8 @@ Also follow:
 
 | Artifact | Path |
 |----------|------|
-| Project goal | `ai/project-goal.md` |
-| Task spec | `ai/state/tasks.json` (task `{{TASK_ID}}`) |
+| Project goal | `.ai/project-goal.md` |
+| Task spec | `.ai/state/tasks.json` (task `{{TASK_ID}}`) |
 | Worker implementation notes | {{IMPLEMENTATION_NOTES_PATH}} |
 | Worker workspace | {{WORKER_WORKSPACE_PATH}} |
 | Changed files (claimed) | {{CHANGED_FILES_LIST}} |
@@ -105,7 +105,7 @@ You **must not** assign **PASS** or **PASS_WITH_WARNINGS** when:
 - Evidence is worker-only with no verifier re-execution
 - Goal-alignment review is **failed**
 - Secrets scan failed or was NOT RUN when required
-- Drift detected vs `ai/project-goal.md`
+- Drift detected vs `.ai/project-goal.md`
 
 Maximum status without compensating static review: **FAIL** or **BLOCKED**.
 

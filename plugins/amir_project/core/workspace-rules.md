@@ -2,12 +2,12 @@
 
 Project layout, agent workspaces, write permissions, and isolation.
 
-## Project layout under `ai/`
+## Project layout under `.ai/`
 
 Every amir project uses this structure:
 
 ```
-ai/
+.ai/
 ├── project-goal.md          # Approved product goal (human-readable, versioned)
 ├── state/                   # Source of truth (JSON)
 │   ├── tasks.json
@@ -29,22 +29,22 @@ ai/
     └── ...
 ```
 
-Templates from plugin `templates/` are instantiated at `/project_create`. Tools under `tools/` read/write `ai/state/` and render `ai/views/`.
+Templates from plugin `templates/` are instantiated at `/project_create`. Tools under `tools/` read/write `.ai/state/` and render `.ai/views/`.
 
 ## Authoritative vs generated
 
 | Path | Role |
 |------|------|
-| `ai/state/*.json` | **Truth** — orchestrator updates via state tools |
-| `ai/project-goal.md` | **Truth** for goal — updated only through approved design/decision flow |
-| `ai/views/*.md` | **Generated** — never edit by hand except via regenerate |
-| `ai/agents/*` | **Workspace** — drafts, QA reports, logs, notes |
+| `.ai/state/*.json` | **Truth** — orchestrator updates via state tools |
+| `.ai/project-goal.md` | **Truth** for goal — updated only through approved design/decision flow |
+| `.ai/views/*.md` | **Generated** — never edit by hand except via regenerate |
+| `.ai/agents/*` | **Workspace** — drafts, QA reports, logs, notes |
 
 If hand-edited JSON conflicts with tools, run doctor and reconcile — do not fork truth in chat.
 
 ## Agent workspace rules
 
-Each agent id (`core/naming-rules.md`) gets `ai/agents/<agent-id>/`:
+Each agent id (`core/naming-rules.md`) gets `.ai/agents/<agent-id>/`:
 
 | Allowed | Purpose |
 |---------|---------|
@@ -57,8 +57,8 @@ Rules:
 
 - Workspace files are **evidence**, not decisions — promote outcomes to JSON
 - Do not store secrets in workspace; use **PROBLEM** if task requires it
-- Verifier workspaces (`qa-<task-id>`) live under `3-qa/` or `ai/agents/qa-<task-id>/` per project template — be consistent within project
-- Sub-agents use nested paths: `ai/agents/dev-T001/sub-<name>/`
+- Verifier workspaces (`qa-<task-id>`) live under `3-qa/` or `.ai/agents/qa-<task-id>/` per project template — be consistent within project
+- Sub-agents use nested paths: `.ai/agents/dev-T001/sub-<name>/`
 
 ## Single-writer discipline
 
@@ -85,8 +85,8 @@ Used for: budget events, drift checks, discovery batches, gate transitions, audi
 
 ## Project isolation
 
-- One `ai/` tree **per project** repository or workspace root
-- Agents must not read or write another project's `ai/state/` unless explicit multi-repo spec in goal
+- One `.ai/` tree **per project** repository or workspace root
+- Agents must not read or write another project's `.ai/state/` unless explicit multi-repo spec in goal
 - Host global config does not override project `decisions.json`
 - `/project_create` initializes fresh state — no carryover of task ids or decisions
 

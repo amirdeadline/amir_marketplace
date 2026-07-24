@@ -14,7 +14,7 @@
     "onView:amir.project",
     "onView:amir.agents",
     "onView:amir.tasks",
-    "workspaceContains:ai/state/tasks.json"
+    "workspaceContains:.ai/state/tasks.json"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -388,7 +388,7 @@
         "amir.watchDebounceMs": {
           "type": "number",
           "default": 250,
-          "description": "Debounce for ai/state file watcher (ms)."
+          "description": "Debounce for .ai/state file watcher (ms)."
         },
         "amir.staleAfterMinutes": {
           "type": "number",

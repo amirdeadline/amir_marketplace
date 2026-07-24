@@ -12,7 +12,7 @@ Use this packet when pausing work (`/handoff`) or resuming (`/resume_build`).
 
 {{GOAL_SUMMARY}}
 
-Full goal: `ai/project-goal.md`
+Full goal: `.ai/project-goal.md`
 
 ---
 
@@ -66,7 +66,7 @@ If none: _None — all reviewed issues resolved or accepted._
 
 If none: _None_
 
-Source: `ai/state/status.json` → `pending_approvals`
+Source: `.ai/state/status.json` → `pending_approvals`
 
 ---
 
@@ -92,14 +92,14 @@ Source: `ai/state/status.json` → `pending_approvals`
 
 {{KNOWN_RISKS_TABLE}}
 
-Summary from `ai/state/risks.json` and recent activity.
+Summary from `.ai/state/risks.json` and recent activity.
 
 ---
 
 ## Resume Checklist
 
-- [ ] Read this handoff packet and current `ai/state/*.json`
-- [ ] Read `ai/project-goal.md` (no cached decisions)
+- [ ] Read this handoff packet and current `.ai/state/*.json`
+- [ ] Read `.ai/project-goal.md` (no cached decisions)
 - [ ] Confirm checkpoint tag {{CHECKPOINT_TAG}} is checked out if resuming mid-task
 - [ ] Regenerate worker or verifier prompt from templates
 - [ ] Log `handoff_resume` to `activity.jsonl`

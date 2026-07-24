@@ -1,6 +1,6 @@
 ---
 name: security_scan
-description: "Run secrets scanning and host-native security audit tools; triage findings into `ai/state/risks.json` via `4-security` review."
+description: "Run secrets scanning and host-native security audit tools; triage findings into `.ai/state/risks.json` via `4-security` review."
 ---
 
 # security_scan

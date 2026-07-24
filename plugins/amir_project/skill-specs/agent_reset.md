@@ -18,13 +18,13 @@ Archive an agent workspace and respawn a fresh prompt/notes shell without deleti
 
 ## Behavior
 
-1. Validate `{agent-id}` exists in `ai/state/agents.json`.
+1. Validate `{agent-id}` exists in `.ai/state/agents.json`.
 2. Confirm agent is not mid-critical transition without orchestrator approval (check task `in_progress` linkage).
-3. **Archive** workspace: move `ai/agents/<agent-id>/` to `ai/agents/<agent-id>/archive/<timestamp>/` or copy-all-then-truncate — **never delete** workspace files.
-4. Recreate fresh `ai/agents/<agent-id>/` with empty `notes.md` and regenerated `prompt.md` per role (same rules as `/build_agents`).
+3. **Archive** workspace: move `.ai/agents/<agent-id>/` to `.ai/agents/<agent-id>/archive/<timestamp>/` or copy-all-then-truncate — **never delete** workspace files.
+4. Recreate fresh `.ai/agents/<agent-id>/` with empty `notes.md` and regenerated `prompt.md` per role (same rules as `/build_agents`).
 5. Preserve registry row; set `state: active`, clear `last_heartbeat_ts`, update `task_id` if respawning for new assignment.
-6. Append `agent_reset` to `ai/state/activity.jsonl` with agent id, archive path, reason.
-7. Log reset decision to `ai/state/decisions.json` if human requested or task-scoped respawn.
+6. Append `agent_reset` to `.ai/state/activity.jsonl` with agent id, archive path, reason.
+7. Log reset decision to `.ai/state/decisions.json` if human requested or task-scoped respawn.
 8. If resetting `qa-<task-id>` or `dev-<task-id>` during active task, coordinate with orchestrator — may require task note `agent_reset` without status change.
 9. Message per `core/message-contract.md` with archive location.
 
@@ -40,11 +40,11 @@ Archive an agent workspace and respawn a fresh prompt/notes shell without deleti
 
 | File | Access |
 |------|--------|
-| `ai/agents/<agent-id>/**` | Archive + recreate |
-| `ai/state/agents.json` | Write (state, heartbeat, task_id) |
-| `ai/state/decisions.json` | Write (optional) |
-| `ai/state/activity.jsonl` | Append |
-| `ai/state/tasks.json` | Read |
+| `.ai/agents/<agent-id>/**` | Archive + recreate |
+| `.ai/state/agents.json` | Write (state, heartbeat, task_id) |
+| `.ai/state/decisions.json` | Write (optional) |
+| `.ai/state/activity.jsonl` | Append |
+| `.ai/state/tasks.json` | Read |
 
 ## Outputs
 

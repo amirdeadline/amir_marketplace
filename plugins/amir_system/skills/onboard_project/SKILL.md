@@ -37,7 +37,12 @@ Inspect and record (with the file paths that prove each finding):
 - existing rules/skills/agents/MCP servers/connectors from any other system
 - existing Graphify (`graphify-out/`, hooks), Serena, Context7, Semgrep configs
 - observability (Langfuse or similar), benchmarks (SWE-bench/Terminal-Bench artifacts)
-- AI docs (`ai/`, docs/ with agent-oriented content)
+- AI docs (`.ai/`, docs/ with agent-oriented content)
+- **legacy `ai/` workspace** (the pre-rename convention, no leading dot): record its file
+  inventory — it is a migration candidate (see "Legacy ai/ → .ai/ migration" below)
+- existing PM/portfolio docs anywhere in the repo (roadmaps, milestone lists, status docs,
+  CHANGELOG, project boards exports) — candidates to IMPORT/map into `.ai\` and
+  `.amir\portfolio.yaml`, never to overwrite
 - secrets: detect PRESENCE ONLY (.env files, *credential* files, key-looking entries in
   configs). **NEVER read, print, or copy secret values. Report file names and variable NAMES
   only.**
@@ -70,8 +75,17 @@ Present the classification table, then run the same selection controls as create
 (`recommended` / individual / `all` / `none` [default] / `search` / `details` / `back` /
 `review` / `cancel`), showing per-option catalog details (deps, credentials, network/secret
 access, security/performance implications). Ask remaining interview questions the discovery
-could not answer (hosts to enable, testing/security requirements, per-tool choices) — ONE
-question at a time. Recommendations never auto-select.
+could not answer (hosts to enable, testing/security requirements, per-tool choices, and the
+portfolio questions from create_project Phase 1 items 25–36 — lifecycle, priority, deadline,
+milestones, phase, owner, Asana link, **global-graph join [default: no]**, related projects,
+progress source, staleness threshold, reporting) — ONE question at a time. Where discovery
+found existing PM docs, propose a mapping ("your ROADMAP.md milestones → portfolio.yaml
+milestones; your STATUS.md → seed for .ai\status.md") and let the user confirm or adjust
+each mapping — import, never invent, and never delete the originals.
+
+Also check the registry (`portfolio-list`) for already-registered projects this repo relates
+to (shared org, imports, same product): present detected candidates as suggestions for the
+related-projects answer — suggestions only, user-confirmed.
 
 ## Phase 3 — Migration plan and confirmation
 
@@ -86,7 +100,36 @@ Show the full plan before any write:
 - detected COLLISIONS (same command/rule name from different sources) and the proposed
   resolution for each
 - detected global-config leakage and the proposed fix
+- legacy `ai/` found → the migration offer (procedure below) with its full file mapping
+- the `.amir\portfolio.yaml` that will be created (imported values labeled with their source
+  doc; everything unknown left blank — never fabricated)
+- registration: the registry entry (`%USERPROFILE%\.amir\registry\projects.yaml`) and the
+  global-graph decision (join / metadata-only / no) — **the project is NEVER registered in
+  the registry or the global graph without the user's explicit approval of this plan**
 - files created/modified; dependencies installed; credentials still required (names only)
+
+### Legacy `ai/` → `.ai/` migration (offer when Phase 1 found `ai/`; safe, reversible)
+
+Offer, never force. If declined, record the decision and leave `ai/` untouched. If accepted:
+
+1. Back up BOTH directories (`ai/` and any existing `.ai/`) to
+   `.amir\backups\<timestamp>\` and verify the backup before anything else.
+2. Collision check: for every `ai/<file>` that also exists in `.ai/`, show both and ask
+   which wins (or merge) — per file, no bulk overwrite.
+3. Move with history: `git mv ai/<file> .ai/<file>` when the repo is git-tracked (preserves
+   history); plain move otherwise. Say which was used.
+4. Update every internal reference to `ai/` paths: links within the moved docs, CLAUDE.md,
+   AGENTS.md, `.cursor\rules\*`, skills, manifests (`.amir\project.yaml`), scripts, and
+   tests. Show the per-file reference diff.
+5. Validate ZERO old references remain (search the repo for `ai/` path references, excluding
+   backups and false positives like "main/", and show the empty result).
+6. **Do not delete the old `ai/` directory until validation passes** (with `git mv` it is
+   already gone; for the plain-move case, remove it only after step 5, with confirmation).
+7. Write the migration report `.amir\migration\ai-to-dot-ai.md` containing: timestamp; who
+   ran it (host/session); backup locations; the complete old→new file inventory; collisions
+   found and how each was resolved; every reference updated (file + what changed);
+   validation evidence (the search command and its empty output); old-directory removal
+   status; and rollback instructions (restore from the named backup / git revert).
 
 **MERGE, not overwrite**: existing `.cursor/mcp.json` entries, rules, commands, and Claude
 config that Amir does not own are kept untouched; Amir entries are added alongside. Require
@@ -102,9 +145,20 @@ explicit confirmation. Cancel = zero side effects (backups may already exist; sa
 5. Install ONLY selected components (renderer subset or full amir_project fast path — see
    create_project Phase 4 step 5).
 6. Render both hosts as selected (Cursor flat commands/rules/mcp merge; Claude files).
-7. Validate: startup checks per component (run catalog `health_check`s), isolation check (no
+7. Run the legacy `ai/` → `.ai/` migration if it was accepted in the plan (procedure above,
+   including the `.amir\migration\ai-to-dot-ai.md` report).
+8. Create `.amir\portfolio.yaml` from this plugin's `templates\portfolio.yaml.tmpl`, filled
+   only with confirmed interview answers and confirmed imports from existing PM docs —
+   blanks stay blank. Seed missing `.ai\` files from `templates\dot-ai\` (imports win over
+   empty templates; existing `.ai\` files are preserved, merge-not-overwrite).
+9. Validate: startup checks per component (run catalog `health_check`s), isolation check (no
    Amir writes outside root).
-8. Register in `%USERPROFILE%\.amir\registry\projects.json`.
+10. Register in `%USERPROFILE%\.amir\registry\projects.yaml` (the ONE shared registry) — only
+    because the approved plan included it; approval is per-plan, never assumed.
+11. If the approved plan included joining the global graph: run the
+    `/amir:graph_projects_add` procedure (graphify gate, scope display, namespace merge,
+    `.amir\reports\global-graph-registration.md`). Metadata-only or declined → do exactly
+    that and nothing more.
 
 ## Phase 5 — Onboarding report (mandatory file)
 
@@ -116,7 +170,11 @@ considered item gets exactly one primary status:
 
 plus per-host activation flags: `active-in-cursor: yes|no`, `active-in-claude: yes|no`.
 
+Include in the ledger: the `ai/` → `.ai/` migration outcome (migrated / declined / n-a, with
+a pointer to `.amir\migration\ai-to-dot-ai.md`), the portfolio.yaml creation, the registry
+registration, and the global-graph decision + outcome.
+
 Honesty rules for the report: a component is "added" and healthy ONLY if its health check ran
 and passed (include evidence); failures include the real error; nothing is omitted. Summarize
 the report in chat and end with next steps (credentials to place, `/amir:project_status`,
-tool-specific setup commands).
+tool-specific setup commands, and `/amir:graph_projects_list` if the project was registered).

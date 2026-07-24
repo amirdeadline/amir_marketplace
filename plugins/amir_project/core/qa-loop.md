@@ -44,7 +44,7 @@ Repeat until one of:
 - Worker-only evidence with no verifier re-execution
 - Goal-alignment review **FAIL**
 - Secrets scan failed or was NOT RUN when required
-- Drift detected vs `ai/project-goal.md` (`core/no-drift-rules.md`)
+- Drift detected vs `.ai/project-goal.md` (`core/no-drift-rules.md`)
 
 ## Commands not run
 
@@ -69,7 +69,7 @@ Instantiate from project `templates/` (copied at project create):
 | `templates/goal-alignment-review.md.tmpl` | Goal vs shipped behavior |
 | `templates/fix-prompt.md.tmpl` | Worker fix instructions scoped to failures only |
 
-Render filled copies to agent workspace and/or `ai/views/`; link from activity.
+Render filled copies to agent workspace and/or `.ai/views/`; link from activity.
 
 ## Orchestrator issue review
 
@@ -91,7 +91,7 @@ Record review in `qa-issue-review` artifact and activity.jsonl.
 
 Compare:
 
-- `ai/project-goal.md` (must-haves, non-goals)
+- `.ai/project-goal.md` (must-haves, non-goals)
 - Task acceptance criteria in `tasks.json`
 - Actual behavior (demo steps, test scenarios, API samples)
 

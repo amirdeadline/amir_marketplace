@@ -2,7 +2,7 @@
 
 Side panel cockpit for the amir multi-agent project-execution plugin: **Project**, **Agents**, and **Tasks**.
 
-JSON under `ai/state/` is the only data source. Mutations go through `node tools/state.js` (never direct JSON writes from this extension).
+JSON under `.ai/state/` is the only data source. Mutations go through `node tools/state.js` (never direct JSON writes from this extension).
 
 ## Install
 
@@ -73,11 +73,11 @@ npm test
 npm run watch   # rebuild on change
 ```
 
-Unit tests cover task sort, JSONL offset tailing (incl. 50MB smoke), Windows path joins, and a grep gate against direct `ai/state` writes.
+Unit tests cover task sort, JSONL offset tailing (incl. 50MB smoke), Windows path joins, and a grep gate against direct `.ai/state` writes.
 
 ## Architecture
 
-- `StateStore` + `createFileSystemWatcher('ai/state/**')` (debounced)
+- `StateStore` + `createFileSystemWatcher('.ai/state/**')` (debounced)
 - `ActivityTail` byte-offset JSONL reader
 - `StateCli` spawns `node <pluginRoot>/tools/state.js`
 - New CLI commands (in amir plugin): `add-agent`, `delete-agent`, `approve`, `reject`, `set-agent-state`, `reset-agent`, `generate-prompt`

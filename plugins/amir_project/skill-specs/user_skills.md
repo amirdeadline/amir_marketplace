@@ -48,13 +48,13 @@ Enumerate and present a table of skills installed at the **user level** for the 
 | `skills/*.md` (plugin) | Read (catalog) |
 | Project `.cursor/`, `.claude/`, `.codex/` skill dirs | Read only |
 | User home skill dirs | Read only |
-| `ai/state/activity.jsonl` | Append |
+| `.ai/state/activity.jsonl` | Append |
 
 ## Outputs
 
 - User-level skills table for `{ai_app}`
 - Override/duplicate warnings
-- Optional saved artifact: `ai/agents/1-orchestrator/logs/user-skills-<ai_app>-<timestamp>.md`
+- Optional saved artifact: `.ai/agents/1-orchestrator/logs/user-skills-<ai_app>-<timestamp>.md`
 
 ## Failure/abort behavior
 
@@ -62,4 +62,4 @@ Enumerate and present a table of skills installed at the **user level** for the 
 - Read-only — never create, edit, or delete user skills.
 - Do not invent skill names; VERIFIED filesystem listing only.
 - If no user skills found, report empty table explicitly (not an error).
-- If project root has no amir `ai/` tree, still scan user paths but note non-amir context.
+- If project root has no amir `.ai/` tree, still scan user paths but note non-amir context.

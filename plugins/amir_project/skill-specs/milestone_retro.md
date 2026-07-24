@@ -19,14 +19,14 @@ Aggregate reflections at a milestone into durable decisions, risks, and prompt-t
 ## Behavior
 
 1. Define milestone boundary (last N complete tasks, phase end, or human-specified range).
-2. Collect evidence: `ai/state/activity.jsonl` filtered events, completed task `qa-report.md` paths, orchestrator/architect notes.
+2. Collect evidence: `.ai/state/activity.jsonl` filtered events, completed task `qa-report.md` paths, orchestrator/architect notes.
 3. Synthesize reflections: what worked, what failed, budget/cycle outliers, drift events, two-strike incidents per `core/budget-rules.md`.
-4. Produce **decisions** candidates → append to `ai/state/decisions.json` after human approval (process changes, defaults, scope adjustments).
-5. Produce **risks** candidates → append to `ai/state/risks.json` with severity and mitigation.
+4. Produce **decisions** candidates → append to `.ai/state/decisions.json` after human approval (process changes, defaults, scope adjustments).
+5. Produce **risks** candidates → append to `.ai/state/risks.json` with severity and mitigation.
 6. Propose **prompt template** tweaks (file paths in `templates/` only — do not paste full core rules); record as decisions with template version note.
 7. Present retro summary per `core/interaction-style.md`; obtain human approval before writing JSON.
 8. Append `milestone_retro` to activity with milestone id and counts.
-9. Update `ai/state/status.json` risks_summary if material risks added.
+9. Update `.ai/state/status.json` risks_summary if material risks added.
 
 ## Core modules referenced
 
@@ -42,17 +42,17 @@ Aggregate reflections at a milestone into durable decisions, risks, and prompt-t
 
 | File | Access |
 |------|--------|
-| `ai/state/decisions.json` | Write (approved) |
-| `ai/state/risks.json` | Write (approved) |
-| `ai/state/status.json` | Write (risks_summary) |
-| `ai/state/activity.jsonl` | Append / Read |
-| `ai/state/tasks.json` | Read |
-| `ai/agents/**/qa-report.md` | Read |
-| `ai/agents/**/notes.md` | Read |
+| `.ai/state/decisions.json` | Write (approved) |
+| `.ai/state/risks.json` | Write (approved) |
+| `.ai/state/status.json` | Write (risks_summary) |
+| `.ai/state/activity.jsonl` | Append / Read |
+| `.ai/state/tasks.json` | Read |
+| `.ai/agents/**/qa-report.md` | Read |
+| `.ai/agents/**/notes.md` | Read |
 
 ## Outputs
 
-- Retro summary document (optional `ai/agents/1-orchestrator/logs/retro-<milestone>.md`)
+- Retro summary document (optional `.ai/agents/1-orchestrator/logs/retro-<milestone>.md`)
 - New/updated decisions and risks in JSON
 - Template change tickets as decision records
 

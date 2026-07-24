@@ -36,10 +36,10 @@ Run structural and operational health checks; present findings as a severity tab
 
 | File | Access |
 |------|--------|
-| `ai/state/*.json` | Read |
-| `ai/state/activity.jsonl` | Read |
-| `ai/views/*.md` | Read |
-| `ai/agents/**` | Read (scan) |
+| `.ai/state/*.json` | Read |
+| `.ai/state/activity.jsonl` | Read |
+| `.ai/views/*.md` | Read |
+| `.ai/agents/**` | Read (scan) |
 
 ## Outputs
 

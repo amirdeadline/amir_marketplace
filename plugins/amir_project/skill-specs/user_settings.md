@@ -29,7 +29,7 @@ Produce a clean, human-readable artifact of **user-level** settings for the spec
 4. Read each file; **redact** secrets per `core/security-rules.md` (`***REDACTED***` at key).
 5. Classify by importance (Critical → High → Medium → Low) same tiers as `/system_settings`.
 6. Render markdown artifact grouped by tier; note which scope (project vs user home) each entry comes from.
-7. Save to `ai/agents/1-orchestrator/logs/user-settings-<ai_app>-<timestamp>.md`.
+7. Save to `.ai/agents/1-orchestrator/logs/user-settings-<ai_app>-<timestamp>.md`.
 8. Chat summary per `core/message-contract.md`: artifact path, tier counts, override notes — no full dump.
 9. Append `user_settings` activity.
 
@@ -48,8 +48,8 @@ Produce a clean, human-readable artifact of **user-level** settings for the spec
 | `adapters/<ai_app>/capabilities.md` | Read |
 | Project host config dirs (`.cursor/`, `.claude/`, etc.) | Read only |
 | User home host config | Read only |
-| `ai/agents/1-orchestrator/logs/user-settings-*.md` | Write |
-| `ai/state/activity.jsonl` | Append |
+| `.ai/agents/1-orchestrator/logs/user-settings-*.md` | Write |
+| `.ai/state/activity.jsonl` | Append |
 
 ## Outputs
 

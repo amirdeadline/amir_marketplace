@@ -1,6 +1,6 @@
 ---
 name: design_agents
-description: "Populate `ai/state/agents.json` with the project agent registry using canonical naming, and render the human-readable `ai/views/agents.md` view."
+description: "Populate `.ai/state/agents.json` with the project agent registry using canonical naming, and render the human-readable `.ai/views/agents.md` view."
 ---
 
 # design_agents

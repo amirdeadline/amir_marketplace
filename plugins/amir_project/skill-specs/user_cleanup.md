@@ -26,14 +26,14 @@
    - Project: `.cursor/`, `.claude/`, `.codex/` amir-related skills, rules, commands
    - User home: `~/.cursor/skills/`, `~/.claude/skills/`, etc. — **only** amir-copied artifacts (not entire host config unless amir-only subpaths)
 3. **Safeguard 1 — Backup:** timestamped archive:
-   - `ai/agents/1-orchestrator/archive/user-cleanup-<ai_app>-<YYYYMMDD-HHMMSS>.zip` (project context)
+   - `.ai/agents/1-orchestrator/archive/user-cleanup-<ai_app>-<YYYYMMDD-HHMMSS>.zip` (project context)
    - Or `<project-root>/backups/user-cleanup-<ai_app>-<timestamp>.zip`
    - Manifest with paths and hashes
    - **Show human the backup path** before delete
-4. **Safeguard 2 — Deletion list:** numbered table of exact files/dirs to delete; **exclude** `ai/state/`, `ai/project-goal.md`, and git history unless human explicitly adds via separate decision.
+4. **Safeguard 2 — Deletion list:** numbered table of exact files/dirs to delete; **exclude** `.ai/state/`, `.ai/project-goal.md`, and git history unless human explicitly adds via separate decision.
 5. **Safeguard 3 — Typed confirmation:** require exactly `DELETE USER <ai_app>`; refuse paraphrase.
 6. Without backup + list + correct phrase + approval: **REFUSE** — zero deletions.
-7. **Safeguard 4 — Log:** append `user_cleanup` to `ai/state/activity.jsonl` with backup path, list checksum, `{ai_app}`, confirmation timestamp; record approval in `ai/state/decisions.json`.
+7. **Safeguard 4 — Log:** append `user_cleanup` to `.ai/state/activity.jsonl` with backup path, list checksum, `{ai_app}`, confirmation timestamp; record approval in `.ai/state/decisions.json`.
 8. Delete only listed paths; do not touch system-level install dirs.
 9. Post-verify with `/user_skills {ai_app}` — expect amir user entries cleared.
 10. Emit summary per `core/message-contract.md`: backup path, deleted count, protected paths preserved.
@@ -53,23 +53,23 @@
 |------|--------|
 | `adapters/<ai_app>/capabilities.md` | Read |
 | Project/user amir skill paths | Delete (listed only) |
-| `ai/agents/1-orchestrator/archive/user-cleanup-*.zip` | Write (backup) |
-| `ai/state/activity.jsonl` | Append |
-| `ai/state/decisions.json` | Write |
-| `ai/state/**` | Read — **never delete** unless explicitly listed with separate human gate |
+| `.ai/agents/1-orchestrator/archive/user-cleanup-*.zip` | Write (backup) |
+| `.ai/state/activity.jsonl` | Append |
+| `.ai/state/decisions.json` | Write |
+| `.ai/state/**` | Read — **never delete** unless explicitly listed with separate human gate |
 
 ## Outputs
 
 - Timestamped backup archive path (mandatory)
 - Executed deletion report
-- Protected paths confirmation (`ai/state/` preserved by default)
+- Protected paths confirmation (`.ai/state/` preserved by default)
 - Audit log entry
 
 ## Failure/abort behavior
 
 - **REFUSE without all three:** (1) backup shown, (2) exact deletion list approved, (3) typed `DELETE USER <ai_app>` — plus logging before delete.
 - Abort if backup fails — no deletions.
-- Never delete `ai/state/`, `ai/project-goal.md`, or checkpoint evidence by default.
+- Never delete `.ai/state/`, `.ai/project-goal.md`, or checkpoint evidence by default.
 - Stop on delete error; report partial completion; backup remains for restore.
 - Wrong phrase → refuse.
 - Do not conflate with `/project_cleanup` — user_cleanup targets host user install artifacts, not general workspace hygiene.

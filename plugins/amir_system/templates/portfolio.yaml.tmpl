@@ -1,0 +1,55 @@
+# .amir/portfolio.yaml — portfolio/PM metadata for one project.
+# Filled from interview answers and confirmed imports ONLY.
+# Blank/unset fields are the correct representation of "unknown" — never fabricate values.
+# Progress rule: `progress.confirmed` may hold a number ONLY when backed by milestone /
+# acceptance-criteria evidence; otherwise leave it blank. Estimates go in
+# `progress.estimated` and are always presented as estimates.
+
+schema_version: 1
+
+project:
+  id: ""            # MUST equal project.id in .amir/project.yaml — the stable registry and
+                    # graph-namespace key. Never the folder name.
+  name: ""
+
+lifecycle: active   # active | paused | archived
+priority:           # p0 | p1 | p2 | p3 — blank = unset
+owner: ""
+stakeholders: []    # names/handles — no credentials, no personal data beyond what the user provided
+
+phase:
+  current: ""       # e.g. "design", "mvp", "hardening"
+  milestones: []
+  # - name: ""
+  #   due: ""             # YYYY-MM-DD
+  #   status: planned     # planned | in-progress | done
+  #   evidence: ""        # REQUIRED when status: done — link/path proving completion
+
+progress:
+  confirmed:        # 0-100, ONLY from milestone/acceptance-criteria evidence; blank = unknown
+  estimated:        # 0-100, explicitly an estimate; blank allowed
+  source: ""        # milestones | .ai/tasks.md | asana | none
+
+deadlines:
+  target:           # YYYY-MM-DD — blank = none
+
+health:
+  risk_level: ""    # low | medium | high | at-risk — blank = unknown
+  blockers: []      # one line each
+
+next_action: ""     # the single concrete next step, if known
+
+related_projects: []  # registry ids of related/dependent projects — registered ids only
+
+integrations:
+  asana:
+    project_gid: ""   # blank = not linked; reference only, never credentials
+
+global_graph:
+  join: false          # explicit opt-in; joining is never implicit
+  registration: ""     # full | metadata-only | "" (not registered)
+  last_registered:     # timestamp written by /amir:graph_projects_add
+
+reporting:
+  include_in_portfolio_reports: true
+  status_stale_after_days: 14   # .ai/status.md older than this counts as stale

@@ -12,7 +12,7 @@ Interactive, human-controlled troubleshooting. Read-only investigation may run w
 
 ## Independence
 
-This skill does **not** require amir project JSON (`ai/state/*`). It works in any repository or workspace. Optional: if an amir project exists, you may mention it but must not write troubleshooting scratch into `ai/` unless the user explicitly requests that as a deliverable.
+This skill does **not** require amir project JSON (`.ai/state/*`). It works in any repository or workspace. Optional: if an amir project exists, you may mention it but must not write troubleshooting scratch into `.ai/` unless the user explicitly requests that as a deliverable.
 
 ## Temporary artifacts
 

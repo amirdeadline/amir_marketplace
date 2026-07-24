@@ -13,7 +13,7 @@ Safe workspace hygiene: verify version control, snapshot before changes, present
 | Input | Required | Description |
 |-------|----------|-------------|
 | Project root | Implicit | Current amir project root |
-| Scope flags | Optional | Human may narrow to `ai/agents/`, build artifacts, temp logs, etc. |
+| Scope flags | Optional | Human may narrow to `.ai/agents/`, build artifacts, temp logs, etc. |
 | Approval | Required | Explicit human approval of cleanup PLAN before execution |
 
 ## Behavior
@@ -23,14 +23,14 @@ Safe workspace hygiene: verify version control, snapshot before changes, present
 3. Create **pre-cleanup commit** (or stash with decision record): all tracked changes committed with message `chore: pre-cleanup snapshot` per host git workflow.
 4. Scan candidates: orphan temp files, stale logs, duplicate drafts, empty dirs, unreferenced build output — **exclude protected paths** per `core/workspace-rules.md`.
 5. Produce **PLAN** table: path, reason, risk tier, reversible (yes/no), requires human (yes/no). Present per `core/interaction-style.md`.
-6. Wait for human approval; record approved item ids in `ai/state/approvals.json` or `decisions.json`.
+6. Wait for human approval; record approved item ids in `.ai/state/approvals.json` or `decisions.json`.
 7. Execute **only** approved items; never delete:
-   - `ai/state/` (any file)
-   - `ai/project-goal.md`
+   - `.ai/state/` (any file)
+   - `.ai/project-goal.md`
    - checkpoint-tagged evidence (`qa-report.md`, alignment reviews, logs referenced by `tasks.json`)
    - `.git/`
-8. Archive instead of delete when uncertain: move to `ai/agents/1-orchestrator/archive/<timestamp>/`.
-9. Append each action to `ai/state/activity.jsonl` with event `cleanup` and details.
+8. Archive instead of delete when uncertain: move to `.ai/agents/1-orchestrator/archive/<timestamp>/`.
+9. Append each action to `.ai/state/activity.jsonl` with event `cleanup` and details.
 10. Regenerate views if state-adjacent files changed; re-run doctor if agents or tasks touched.
 
 ## Core modules referenced
@@ -45,17 +45,17 @@ Safe workspace hygiene: verify version control, snapshot before changes, present
 
 | File | Access |
 |------|--------|
-| `ai/state/activity.jsonl` | Append |
-| `ai/state/decisions.json` | Write (waivers, approvals) |
-| `ai/state/approvals.json` | Write |
-| `ai/state/tasks.json` | Read (protect referenced evidence paths) |
-| `ai/agents/**` | Read; selective delete/archive per approved PLAN |
+| `.ai/state/activity.jsonl` | Append |
+| `.ai/state/decisions.json` | Write (waivers, approvals) |
+| `.ai/state/approvals.json` | Write |
+| `.ai/state/tasks.json` | Read (protect referenced evidence paths) |
+| `.ai/agents/**` | Read; selective delete/archive per approved PLAN |
 | Git history | Write (pre-cleanup commit) |
 
 ## Outputs
 
 - Pre-cleanup git snapshot
-- Human-approved PLAN (presented in chat and optionally saved to `ai/agents/1-orchestrator/logs/cleanup-plan.md`)
+- Human-approved PLAN (presented in chat and optionally saved to `.ai/agents/1-orchestrator/logs/cleanup-plan.md`)
 - Executed cleanup log in `activity.jsonl`
 - Post-cleanup doctor summary if requested
 
@@ -64,5 +64,5 @@ Safe workspace hygiene: verify version control, snapshot before changes, present
 - Abort without git and without recorded human waiver.
 - Abort if human rejects PLAN; no file deletions.
 - Never execute unapproved PLAN rows.
-- Stop immediately if an operation would touch `ai/state/` or `ai/project-goal.md`; emit **PROBLEM**.
+- Stop immediately if an operation would touch `.ai/state/` or `.ai/project-goal.md`; emit **PROBLEM**.
 - On delete/archive error, stop remaining items, report partial completion, recommend `/rollback` if git commit was made.

@@ -10,7 +10,7 @@ Every unknown or ambiguous item is classified into exactly one tier before askin
 |------|-------------|----------------|
 | **Blocking** | Work cannot proceed safely or correctly without an answer | Ask **now**; stop related work until answered |
 | **Material** | Answer changes design, cost, security, or acceptance materially | **Batch** ask; continue only on paths that do not depend on the answer |
-| **Minor** | Reasonable default exists; wrong default is recoverable | **Do not ask**; apply default, log to `ai/state/decisions.json`, note in activity |
+| **Minor** | Reasonable default exists; wrong default is recoverable | **Do not ask**; apply default, log to `.ai/state/decisions.json`, note in activity |
 
 ### Default tier assignment
 
@@ -66,7 +66,7 @@ When the human selects **D**:
 4. **Compare** options A/B/C with a small table or bullet list when helpful.
 5. **Recommend one** option explicitly: *"Recommendation: A because …"*
 6. Ask **confirmation**: *"Confirm A, or reply with B/C/E + brief reason."*
-7. **Record the decision** in `ai/state/decisions.json` and append to `ai/state/activity.jsonl`.
+7. **Record the decision** in `.ai/state/decisions.json` and append to `.ai/state/activity.jsonl`.
 
 If after argument the human still refuses to choose and the item is **Blocking**, escalate with **DECISION REQUIRED** and stop dependent work.
 
@@ -91,7 +91,7 @@ Question batches consume **discovery budget** per `core/budget-rules.md`. Log ea
 
 ## Output integration
 
-- Answers update `ai/state/decisions.json` and relevant task/spec JSON.
+- Answers update `.ai/state/decisions.json` and relevant task/spec JSON.
 - Regenerate views per `core/context-engineering.md`.
 - Routine status after a batch still uses `core/message-contract.md` with `NEED: nothing` once decisions are recorded.
 

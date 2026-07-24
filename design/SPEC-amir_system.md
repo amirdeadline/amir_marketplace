@@ -29,7 +29,7 @@ dependencies installed). Require final confirmation before destructive/credentia
 After approval: create project → write `.amir/project.yaml` (schema v2) → resolve dependencies (tools/validator)
 → write `.amir/components.lock.json` → install ONLY selected components (render via tools/renderer.py or
 `claude plugin install amir_project@amir-marketplace --scope project` when full plugin selected) → generate
-Cursor project files → generate Claude project files → init docs (`ai/`) → git init if selected → worktrees
+Cursor project files → generate Claude project files → init docs (`.ai/`) → git init if selected → worktrees
 config if selected → run validation (tools/validator.py) → report exact results. Register project in
 `~/.amir/registry/projects.json`. NEVER report a component installed unless its executable/integration was
 actually tested (run its health_check from catalog.json).
@@ -55,7 +55,7 @@ Read project goal + manifest + rules → decompose into ordered, independently v
 context package per subagent → separate git worktrees when parallel code modification (only if worktrees
 enabled in manifest) → never give every agent the whole repo → per-task: acceptance criteria, allowed paths,
 prohibited paths, required tests, required evidence → agents must not change the project end goal → merge only
-validated work → record decisions/results in ai/ docs. Graphify/Serena usable only when manifest-enabled.
+validated work → record decisions/results in .ai/ docs. Graphify/Serena usable only when manifest-enabled.
 
 ### /amir:list_projects (spec §4.4)
 Registry `~/.amir/registry/projects.json` — non-secret metadata only: id, name, root, type, cursor_enabled,
@@ -65,8 +65,8 @@ validation. NEVER scan the whole computer; use registered roots only. Do not dup
 
 ### /amir:cleanup_context (spec §4.5)
 Durable context handoff, NOT fake context clearing. Extract: durable facts, completed work, pending work,
-decisions, risks, unresolved questions, modified files, validation evidence, rollback info. Update ai/status.md,
-ai/tasks.md, ai/decisions.md, ai/risks.md, ai/context_handoff.md. Handoff must state: project goal, current
+decisions, risks, unresolved questions, modified files, validation evidence, rollback info. Update .ai/status.md,
+.ai/tasks.md, .ai/decisions.md, .ai/risks.md, .ai/context_handoff.md. Handoff must state: project goal, current
 task/state, completed, pending, files changed, files to read first, commands already run, tests passed/failed,
 known risks, do-not-change list, next exact action. Recommend fresh session when degradation likely. Never
 claim context was cleared unless a new session actually started.
@@ -86,7 +86,7 @@ full build via /graphify skill flow (project-local `.claude/skills/graphify`), r
 graphify_update: incremental; record timestamp + source commit; never claim current on failure. graphify_query/
 graphify_explain: answer from graph, cite source_location, fall back to repo inspection when graph missing/stale.
 graphify_impact: `graphify affected` + graph traversal; distinguish graph evidence from inference. 
-graphify_architecture: generate/update ai/architecture.md (module map, dependency map, entry points, data flows,
+graphify_architecture: generate/update .ai/architecture.md (module map, dependency map, entry points, data flows,
 external systems); never replace manual decisions without review. graphify_status: enabled?, CLI version, last
 build, source commit, staleness, ignored dirs, output size; never silently rebuild. graphify_clean: remove only
 this project's graphify-out/ after showing exactly what's removed; preserve config unless asked. graphify_disable:

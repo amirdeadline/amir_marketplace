@@ -35,7 +35,7 @@ Run a multi-phase documentation sprint with `doc-lead`, `doc-worker`, and `doc-v
 1. Act as **`doc-lead`** per `core/naming-rules.md`; assign or resume Doc ID (`D###`).
 2. Parse `{prompt}`, `--out`, `--mode`, `--scope`; verify `--out` parent path writable.
 3. **Full mode:** inventory candidate source files, existing docs, and gaps; draft `scope_statement` and `non_goals`.
-4. **Update mode:** load `ai/state/docmax-<doc-id>.json` and progress companion; read current `--out` document; determine which sections are affected by prompt/scope changes.
+4. **Update mode:** load `.ai/state/docmax-<doc-id>.json` and progress companion; read current `--out` document; determine which sections are affected by prompt/scope changes.
 5. Record phase `inspect` → `complete` in docmax state; append `document_max` activity with mode and doc id.
 
 ### Phase 2 — Coverage matrix, glossary, approval gate (`doc-lead`)
@@ -50,14 +50,14 @@ Run a multi-phase documentation sprint with `doc-lead`, `doc-worker`, and `doc-v
     - Coverage matrix summary
     - Glossary draft
     - Cost estimate
-11. Wait for explicit human approval; record in `ai/state/decisions.json` and `ai/state/approvals.json`.
-12. Initialize or update `ai/state/docmax-<doc-id>.json` conforming to `schemas/docmax.schema.json`; write progress companion `ai/state/docmax-<doc-id>-progress.json` (sections queued, current section, checkpoint counters, merge status).
-13. Register documentation task in `ai/state/tasks.json` if new (`D###`, status `in_progress`).
+11. Wait for explicit human approval; record in `.ai/state/decisions.json` and `.ai/state/approvals.json`.
+12. Initialize or update `.ai/state/docmax-<doc-id>.json` conforming to `schemas/docmax.schema.json`; write progress companion `.ai/state/docmax-<doc-id>-progress.json` (sections queued, current section, checkpoint counters, merge status).
+13. Register documentation task in `.ai/state/tasks.json` if new (`D###`, status `in_progress`).
 
 ### Phase 3 — Incremental sections (`doc-worker` + `doc-verifier`)
 
 14. For each outline section (full: in order; **update:** only affected section ids and dependents):
-    1. **doc-lead** assigns section; render worker prompt from `templates/docmax-section-worker-prompt.md.tmpl` into `ai/agents/doc-lead/workspaces/<doc-id>/<section-id>/worker-prompt.md` (or project-consistent doc agent path).
+    1. **doc-lead** assigns section; render worker prompt from `templates/docmax-section-worker-prompt.md.tmpl` into `.ai/agents/doc-lead/workspaces/<doc-id>/<section-id>/worker-prompt.md` (or project-consistent doc agent path).
     2. **doc-worker** writes section file per template **Section Detail Template**; tag every factual claim **VERIFIED | INFERRED | ASSUMED | UNKNOWN** per `core/honesty-rules.md`; use **UNKNOWN block format** from template when evidence missing; reject and rewrite **banned lazy phrases** (etc., and so on, standard implementation, handled elsewhere, similar logic applies, refer to the code, implementation details omitted, additional cases may exist, as needed, various, typically, should be straightforward).
     3. Include **Mermaid** diagrams only when they clarify architecture or flow; diagrams must match cited sources; omit subsection if not useful.
     4. Append `doc_section` activity: `node tools/activity.js <root> append --agent doc-worker --action doc_section --task <doc-id> --result "drafted <section-id>"`.
@@ -67,7 +67,7 @@ Run a multi-phase documentation sprint with `doc-lead`, `doc-worker`, and `doc-v
 15. **Budget checkpoint:** after every **15** completed sections (`budget.checkpoint_every`, default 15), pause per `core/budget-rules.md`:
     - **doc-verifier** batch review
     - Human checkpoint if material drift
-    - Log `document_max_checkpoint` to `ai/state/activity.jsonl`
+    - Log `document_max_checkpoint` to `.ai/state/activity.jsonl`
     - Update `budget.sections_completed` in docmax state
     - Do not start section 16+ without checkpoint completion
 16. Register new unknowns in `unknowns_register`; never silently omit gaps.
@@ -85,7 +85,7 @@ Run a multi-phase documentation sprint with `doc-lead`, `doc-worker`, and `doc-v
 22. Transition task toward `qa_passed` / `complete` per orchestrator workflow; append `document_max` completion activity.
 23. Emit chat summary per `core/message-contract.md` — **chat output ONLY:**
     - Output path (`--out`)
-    - Progress/state paths (`ai/state/docmax-<doc-id>.json`, progress companion)
+    - Progress/state paths (`.ai/state/docmax-<doc-id>.json`, progress companion)
     - **Unknowns summary** (open count + ids)
     - **Coverage summary** (sections complete/total, matrix rows blocked/missing)
     - Do **not** dump section bodies or full matrix in chat; offer `/details` for artifacts.
@@ -112,16 +112,16 @@ Run a multi-phase documentation sprint with `doc-lead`, `doc-worker`, and `doc-v
 
 | File | Access |
 |------|--------|
-| `ai/state/docmax-<doc-id>.json` | Read/Write |
-| `ai/state/docmax-<doc-id>-progress.json` | Read/Write |
-| `ai/state/tasks.json` | Read/Write (Doc task `D###`) |
-| `ai/state/decisions.json` | Write (outline approval, unknown acceptances) |
-| `ai/state/approvals.json` | Write |
-| `ai/state/activity.jsonl` | Append (`document_max`, `doc_section`, `document_max_checkpoint`, `cost_estimate`) |
-| `ai/state/status.json` | Write (current doc task, phase) |
-| `ai/agents/doc-lead/**` | Write (prompts, plans, merge staging) |
-| `ai/agents/doc-worker/**` | Write (section drafts) |
-| `ai/agents/doc-verifier/**` | Write (section reviews) |
+| `.ai/state/docmax-<doc-id>.json` | Read/Write |
+| `.ai/state/docmax-<doc-id>-progress.json` | Read/Write |
+| `.ai/state/tasks.json` | Read/Write (Doc task `D###`) |
+| `.ai/state/decisions.json` | Write (outline approval, unknown acceptances) |
+| `.ai/state/approvals.json` | Write |
+| `.ai/state/activity.jsonl` | Append (`document_max`, `doc_section`, `document_max_checkpoint`, `cost_estimate`) |
+| `.ai/state/status.json` | Write (current doc task, phase) |
+| `.ai/agents/doc-lead/**` | Write (prompts, plans, merge staging) |
+| `.ai/agents/doc-worker/**` | Write (section drafts) |
+| `.ai/agents/doc-verifier/**` | Write (section reviews) |
 | `{--out}` | Write (final assembled document) |
 | `templates/docmax-section-worker-prompt.md.tmpl` | Read |
 | `templates/docmax-section-verifier-prompt.md.tmpl` | Read |
@@ -130,8 +130,8 @@ Run a multi-phase documentation sprint with `doc-lead`, `doc-worker`, and `doc-v
 ## Outputs
 
 - Final document at `--out`
-- `ai/state/docmax-<doc-id>.json` (complete sprint state)
-- `ai/state/docmax-<doc-id>-progress.json` (progress companion)
+- `.ai/state/docmax-<doc-id>.json` (complete sprint state)
+- `.ai/state/docmax-<doc-id>-progress.json` (progress companion)
 - Section drafts and verifier reports under doc agent workspaces
 - Chat summary: paths, unknowns count/ids, coverage summary only
 

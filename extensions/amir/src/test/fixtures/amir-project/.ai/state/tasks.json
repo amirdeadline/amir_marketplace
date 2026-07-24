@@ -16,7 +16,7 @@
       "risk_level": "medium",
       "cycles": { "used": 2, "budget": 10, "extensions_granted": 0 },
       "acceptance_criteria": ["Panel renders", "JSON is truth"],
-      "dev_agent_folder": "ai/agents/dev-T001"
+      "dev_agent_folder": ".ai/agents/dev-T001"
     },
     {
       "id": "T002",

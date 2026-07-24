@@ -22,7 +22,7 @@ argument-hint: [--force]
    Pass `--force` only if the user supplied it in `$ARGUMENTS` (forces refresh even when
    graphify considers the graph current).
 3. Show the CLI's actual output. On success, record in the report (and in
-   `ai/status.md` if the project keeps one): update timestamp and the current source commit
+   `.ai/status.md` if the project keeps one): update timestamp and the current source commit
    (`git rev-parse HEAD` if a git repo).
 4. HONESTY RULE: if `graphify update` exits non-zero or reports errors, the graph is NOT current.
    Report the failure verbatim, keep the previous timestamp, and never claim freshness. Suggest

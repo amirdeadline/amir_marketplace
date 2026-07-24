@@ -13,11 +13,11 @@ How amir layers memory, retrieves context, and handoffs work without stuffing pr
 
 | Layer | Location | Lifetime | Contents |
 |-------|----------|----------|----------|
-| **Project durable** | `ai/state/*.json`, `ai/project-goal.md` | Whole project | Goals, tasks, decisions, status |
-| **Views** | `ai/views/*.md` | Regenerated | Human-readable projections of JSON |
-| **Agent workspace** | `ai/agents/<agent-id>/` | Per agent / task | notes, drafts, QA artifacts |
-| **Working notes** | `ai/agents/<agent-id>/notes.md` | Session / task | Scratch, hypotheses — not authoritative |
-| **Activity audit** | `ai/state/activity.jsonl` | Append-only | Events, budgets, drift checks |
+| **Project durable** | `.ai/state/*.json`, `.ai/project-goal.md` | Whole project | Goals, tasks, decisions, status |
+| **Views** | `.ai/views/*.md` | Regenerated | Human-readable projections of JSON |
+| **Agent workspace** | `.ai/agents/<agent-id>/` | Per agent / task | notes, drafts, QA artifacts |
+| **Working notes** | `.ai/agents/<agent-id>/notes.md` | Session / task | Scratch, hypotheses — not authoritative |
+| **Activity audit** | `.ai/state/activity.jsonl` | Append-only | Events, budgets, drift checks |
 | **Ephemeral chat** | Host conversation | Session | Not source of truth |
 
 Never treat chat history or `notes.md` as decisions — promote to `decisions.json` via orchestrator tools.
@@ -93,7 +93,7 @@ Stale prompts are forbidden — if JSON changed, regenerate before build/QA.
 After every QA cycle (PASS or FAIL):
 
 1. Update task status and QA artifact paths in JSON
-2. Regenerate affected `ai/views/`
+2. Regenerate affected `.ai/views/`
 3. If FAIL: render new **fix-prompt** from template with failed criterion ids
 4. If PASS: trim worker notes; archive verbose logs to workspace files
 5. Log `context_rebuild` event to activity.jsonl

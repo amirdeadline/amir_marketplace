@@ -1,10 +1,10 @@
 ---
-description: "Populate `ai/state/agents.json` with the project agent registry using canonical naming, and render the human-readable `ai/views/agents.md..."
+description: "Populate `.ai/state/agents.json` with the project agent registry using canonical naming, and render the human-readable `.ai/views/agents.md..."
 ---
 
 # /amir:design_agents
 
-Populate `ai/state/agents.json` with the project agent registry using canonical naming, and render the human-readable `ai/views/agents.md` view.
+Populate `.ai/state/agents.json` with the project agent registry using canonical naming, and render the human-readable `.ai/views/agents.md` view.
 
 ## Instructions
 

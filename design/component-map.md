@@ -41,6 +41,17 @@ No hyphen/underscore twin variants. Deprecation aliases are temporary and print 
 | `/amir:help` | command | retained |
 | `/amir:asana_status` | command | new (MCP health-check, spec §6.1) |
 | `/amir:asana_auth_check` | command | new (auth check, spec §6.1) |
+| `/amir:graph_projects_list` | command | portfolio graph (2026-07-24 .ai update §5) |
+| `/amir:graph_projects_add` | command | portfolio graph (§6, arg: project_directory) |
+| `/amir:graph_projects_remove` | command | portfolio graph (§7) |
+| `/amir:graph_projects_update` | command | portfolio graph (§8) |
+| `/amir:graph_projects_update_all` | command | portfolio graph (§9) |
+| `/amir:graph_projects_status` | command | portfolio graph (§9) |
+| `/amir:graph_projects_query` | command | portfolio graph (§9, source-selection table) |
+| `/amir:graph_projects_dependencies` | command | portfolio graph (§9) |
+| `/amir:graph_projects_report` | command | portfolio graph (§9, 5 reports) |
+| `/amir:graph_projects_rebuild` | command | portfolio graph (§9, confirm-gated) |
+| `/amir:graph_projects_validate` | command | portfolio graph (§9) |
 | `/amir:plugins_list` | command | new (user request 2026-07-24: available plugins table — name, source, summary) |
 | `/amir:project_list_plugins` | command | new (project's enabled plugins table) |
 | `/amir:project_add_plugin` | command | new (resolve → render → lock pipeline for one addition) |

@@ -153,7 +153,7 @@ function checkOrphanAgents(projectRoot, findings) {
         findings,
         'MEDIUM',
         'orphan_agent_workspace',
-        `Workspace ai/agents/${entry.name} is not in agents.json registry`,
+        `Workspace .ai/agents/${entry.name} is not in agents.json registry`,
         'Register agent or remove orphan workspace',
       );
     }
@@ -255,7 +255,7 @@ function checkStaleViews(projectRoot, findings) {
         findings,
         'MEDIUM',
         'stale_tasks_view',
-        'ai/views/tasks.md is stale compared to tasks.json',
+        '.ai/views/tasks.md is stale compared to tasks.json',
         'Run: node tools/render.js <project_root> tasks',
       );
     }
@@ -269,7 +269,7 @@ function checkStaleViews(projectRoot, findings) {
         findings,
         'MEDIUM',
         'stale_status_view',
-        'ai/views/status.md is stale compared to status.json',
+        '.ai/views/status.md is stale compared to status.json',
         'Run: node tools/render.js <project_root> status',
       );
     }

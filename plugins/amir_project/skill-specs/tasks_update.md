@@ -18,13 +18,13 @@ Reconcile reported task or scope changes through state tools and regenerate task
 
 ## Behavior
 
-1. Read current `ai/state/tasks.json` and `ai/state/status.json` — establish baseline.
+1. Read current `.ai/state/tasks.json` and `.ai/state/status.json` — establish baseline.
 2. Parse change report: task id, field updates, proposed transitions, new tasks, cancellations.
 3. Validate all changes against `schemas/tasks.schema.json` and transition rules in `tools/state.js`.
 4. Apply status changes only via `node tools/state.js <root> transition --task <id> --to <status> --by <agent> [--note ...] [--qa-report ...] [--checkpoint-tag ...]`.
 5. Apply non-status field updates via `node tools/state.js <root> set-task-field --task <id> --field <name> --value <value> --by 1-orchestrator`.
-6. Update `ai/state/status.json` if `current_task` or phase changes: `update-status --by 1-orchestrator`.
-7. Record Material scope changes in `ai/state/decisions.json` when acceptance criteria shift per `core/no-drift-rules.md`.
+6. Update `.ai/state/status.json` if `current_task` or phase changes: `update-status --by 1-orchestrator`.
+7. Record Material scope changes in `.ai/state/decisions.json` when acceptance criteria shift per `core/no-drift-rules.md`.
 8. Run `node tools/render.js <root> tasks` and optionally `status`.
 9. Append `tasks_update` to activity with changed task ids.
 10. Present diff summary per `core/message-contract.md`.
@@ -42,12 +42,12 @@ Reconcile reported task or scope changes through state tools and regenerate task
 
 | File | Access |
 |------|--------|
-| `ai/state/tasks.json` | Write (via state tools) |
-| `ai/state/status.json` | Write |
-| `ai/state/decisions.json` | Write (if scope changed) |
-| `ai/state/activity.jsonl` | Append |
-| `ai/views/tasks.md` | Write (via render) |
-| `ai/views/status.md` | Write (optional via render) |
+| `.ai/state/tasks.json` | Write (via state tools) |
+| `.ai/state/status.json` | Write |
+| `.ai/state/decisions.json` | Write (if scope changed) |
+| `.ai/state/activity.jsonl` | Append |
+| `.ai/views/tasks.md` | Write (via render) |
+| `.ai/views/status.md` | Write (optional via render) |
 
 ## Outputs
 

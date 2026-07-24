@@ -29,7 +29,7 @@ description: Health report for the current Amir project — manifest, components
    as the manifest declares.
 5. **Credentials**: required credential NAMES per component and whether each is present
    (env/secrets file EXISTS — never read or print values).
-6. **Docs**: `ai/` files present (status, tasks, decisions, risks, architecture,
+6. **Docs**: `.ai/` files present (status, tasks, decisions, risks, architecture,
    context_handoff) with last-modified dates.
 7. **Validation**: last validation timestamp/result from lock/registry; current drift signal if
    the engine ran. Recommend `/amir:validate_project` if stale.

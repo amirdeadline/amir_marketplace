@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://amir.plugin/schemas/status.schema.json",
   "title": "amir status.json",
-  "description": "Dashboard state for ai/state/status.json (Section 5.2). Tools may populate a subset; unused optional fields may be omitted.",
+  "description": "Dashboard state for .ai/state/status.json (Section 5.2). Tools may populate a subset; unused optional fields may be omitted.",
   "type": "object",
   "required": ["pending_approvals"],
   "additionalProperties": false,

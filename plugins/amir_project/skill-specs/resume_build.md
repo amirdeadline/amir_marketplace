@@ -13,15 +13,15 @@ Safely resume an interrupted build: diagnose health, repair or flag issues, cons
 | Input | Required | Description |
 |-------|----------|-------------|
 | Project root | Implicit | Current amir project root |
-| Handoff artifacts | Optional | `ai/agents/1-orchestrator/notes.md`, `handoff.md`, `ai/state/status.json` resume fields |
+| Handoff artifacts | Optional | `.ai/agents/1-orchestrator/notes.md`, `handoff.md`, `.ai/state/status.json` resume fields |
 
 ## Behavior
 
 1. Run `node tools/doctor.js <root>` first; present CRITICAL/HIGH findings table.
 2. Auto-repair safe items only: regenerate stale views via `node tools/render.js <root> all`; run `node tools/activity.js <root> heartbeat-check`.
 3. Flag non-repairable findings for human (illegal status, secrets, budget overrun, missing QA reports).
-4. Read handoff: `ai/agents/1-orchestrator/handoff.md` or handoff snippet in `notes.md` per `core/context-engineering.md`.
-5. Read `ai/state/status.json` (`current_task`, `phase`, `resume_token`, pending approvals).
+4. Read handoff: `.ai/agents/1-orchestrator/handoff.md` or handoff snippet in `notes.md` per `core/context-engineering.md`.
+5. Read `.ai/state/status.json` (`current_task`, `phase`, `resume_token`, pending approvals).
 6. Re-read JSON truth per `core/no-drift-rules.md` — no cached decisions from prior chat.
 7. Regenerate orchestrator `prompt.md` from current state + templates; trim stale chat context.
 8. Determine **next action**: continue `in_progress` task, resume fix loop, start next `pending` task, or escalate `blocked`.
@@ -43,14 +43,14 @@ Safely resume an interrupted build: diagnose health, repair or flag issues, cons
 
 | File | Access |
 |------|--------|
-| `ai/state/status.json` | Read/Write (clear pause, set current_task) |
-| `ai/state/tasks.json` | Read |
-| `ai/state/agents.json` | Read/Write (stale repair) |
-| `ai/state/activity.jsonl` | Append |
-| `ai/views/*.md` | Write (via render) |
-| `ai/agents/1-orchestrator/prompt.md` | Write (regenerate) |
-| `ai/agents/1-orchestrator/notes.md` | Read |
-| `ai/agents/1-orchestrator/handoff.md` | Read |
+| `.ai/state/status.json` | Read/Write (clear pause, set current_task) |
+| `.ai/state/tasks.json` | Read |
+| `.ai/state/agents.json` | Read/Write (stale repair) |
+| `.ai/state/activity.jsonl` | Append |
+| `.ai/views/*.md` | Write (via render) |
+| `.ai/agents/1-orchestrator/prompt.md` | Write (regenerate) |
+| `.ai/agents/1-orchestrator/notes.md` | Read |
+| `.ai/agents/1-orchestrator/handoff.md` | Read |
 
 ## Outputs
 

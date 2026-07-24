@@ -19,4 +19,4 @@ If Task is unavailable, use isolated task execution contexts and label them — 
 
 - Clarifications: `core/question-format.md` A–E
 - Do not write scratch into the project tree; use `%TEMP%\subagent-work\<id>\` only if needed
-- Independent of `ai/state` unless user asks to persist
+- Independent of `.ai/state` unless user asks to persist

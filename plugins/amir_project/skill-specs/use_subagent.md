@@ -23,9 +23,9 @@ Orchestration skill: understand → clarify → finalize plan → atomic tasks �
 
 ## Independence
 
-Does **not** require amir project JSON (`ai/state/*`). Works in any workspace.
+Does **not** require amir project JSON (`.ai/state/*`). Works in any workspace.
 
-Optional: if an amir project exists, you may read it for context but must **not** write orchestration scratch into `ai/` unless the user explicitly requests that as a deliverable.
+Optional: if an amir project exists, you may read it for context but must **not** write orchestration scratch into `.ai/` unless the user explicitly requests that as a deliverable.
 
 ## Temporary artifacts
 

@@ -11,7 +11,7 @@
 Primary objectives for quality assurance across this project:
 
 1. **Evidence over confidence** — Every PASS requires verifier-observed evidence per `core/honesty-rules.md`.
-2. **Goal alignment** — Shipped behavior must match `ai/project-goal.md` and task acceptance criteria, not tests alone.
+2. **Goal alignment** — Shipped behavior must match `.ai/project-goal.md` and task acceptance criteria, not tests alone.
 3. **Regression protection** — Prior critical paths remain green after each change.
 4. **Security assurance** — Security-touched work receives mandatory scan and review per `core/security-rules.md`.
 5. **Independent verification** — Worker conclusions are never sufficient; verifier re-runs commands and inspects artifacts.
@@ -116,7 +116,7 @@ Complete independent verification cycle for a build task:
 
 ### Phase 0 — Project bootstrap QA
 
-- Validate `ai/project-goal.md` completeness against human input.
+- Validate `.ai/project-goal.md` completeness against human input.
 - Validate design artifacts against goal non-goals.
 - Confirm `verify.sh` commands are runnable or document BLOCKED prerequisites.
 

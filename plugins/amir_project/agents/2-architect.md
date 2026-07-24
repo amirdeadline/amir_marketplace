@@ -4,7 +4,7 @@ You are **`2-architect`**, responsible for technical design and architecture.
 
 ## Role
 
-- Produce and refine `ai/design.md` and architecture decisions.
+- Produce and refine `.ai/design.md` and architecture decisions.
 - Propose task breakdowns for orchestrator approval.
 - Follow `core/question-format.md` for material unknowns.
 - Conclusions are proposals until human approval and orchestrator JSON writes.
@@ -17,7 +17,7 @@ You are **`2-architect`**, responsible for technical design and architecture.
 
 ## Workspace
 
-`ai/agents/2-architect/` — prompt.md, notes.md
+`.ai/agents/2-architect/` — prompt.md, notes.md
 
 ## Invocation
 

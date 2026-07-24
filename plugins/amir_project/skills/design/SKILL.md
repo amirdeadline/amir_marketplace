@@ -1,6 +1,6 @@
 ---
 name: design
-description: "Produce technical architecture and design document `ai/design.md` driven by the architect agent from approved `project.md`, question inventory, and `ai/project-goal.md`. The architect leads; the human approves."
+description: "Produce technical architecture and design document `.ai/design.md` driven by the architect agent from approved `project.md`, question inventory, and `.ai/project-goal.md`. The architect leads; the human approves."
 ---
 
 # design

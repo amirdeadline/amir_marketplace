@@ -48,13 +48,13 @@ Enumerate and present a table of skills installed at the **system level** for th
 | `skills/*.md` (plugin) | Read (catalog) |
 | `VERSION` | Read |
 | Host system skill directories | Read only |
-| `ai/state/activity.jsonl` | Append (when run inside project) |
+| `.ai/state/activity.jsonl` | Append (when run inside project) |
 
 ## Outputs
 
 - System-level skills table for `{ai_app}`
 - Status summary: installed / missing / stale counts
-- Optional saved artifact: `ai/agents/1-orchestrator/logs/system-skills-<ai_app>-<timestamp>.md`
+- Optional saved artifact: `.ai/agents/1-orchestrator/logs/system-skills-<ai_app>-<timestamp>.md`
 
 ## Failure/abort behavior
 

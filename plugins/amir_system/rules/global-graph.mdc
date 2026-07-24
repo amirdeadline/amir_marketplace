@@ -1,0 +1,31 @@
+---
+description: Amir rule 8 — cross-project portfolio graph: explicit registration, namespace isolation, source correctness, labeled freshness, no secrets indexed, honest reporting
+alwaysApply: true
+---
+
+# global-graph
+
+Rules for the cross-project portfolio graph (`%USERPROFILE%\.amir\portfolio\`):
+
+- **Explicit registration.** A project enters the global graph only through explicit
+  registration (`/amir:graph_projects_add`), approved by the user. Never register, index, or
+  scan a project into the portfolio implicitly, and never scan the computer for projects —
+  the registry (`%USERPROFILE%\.amir\registry\projects.yaml`) is the only project list.
+- **Project isolation.** Each project lives in its own namespace keyed by its stable
+  `project.id`. Updates replace that namespace only; removal removes that namespace only;
+  other namespaces are never touched, and no duplicate namespaces may exist.
+- **Source correctness.** Answer from the right source: Graphify graphs = technical
+  structure; `.ai\` docs = project state and intent; Asana = external tasks; git = history.
+  Never infer business completion or progress from graph size, node counts, or commit
+  activity — progress claims require milestone/acceptance-criteria evidence, and are labeled
+  Confirmed, Estimated, or Unknown.
+- **Freshness.** Every graph namespace records its build timestamp and source commit. Stale
+  data is always labeled stale. A failed update keeps the previous graph in place — and is
+  reported as a failure with stale data, never as an update.
+- **Security.** Never index secrets, secret stores, or credential files into any graph. No
+  network exposure of the portfolio graph or its MCP surface by default; remote MCP access
+  requires authentication. Redact user-specific absolute paths in shared output where
+  feasible. Confirm before fetching or embedding any external URL content.
+- **Honest reporting.** Portfolio reports separate current / stale / missing / failed —
+  never blended. A registry-metadata change is not a project update. No progress is ever
+  reported without evidence.

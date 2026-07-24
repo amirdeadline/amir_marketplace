@@ -6,16 +6,16 @@
 
 ## Purpose
 
-Produce a phased implementation plan, run context-engineering quality review, obtain human approval, and populate `ai/state/tasks.json`.
+Produce a phased implementation plan, run context-engineering quality review, obtain human approval, and populate `.ai/state/tasks.json`.
 
 ## Inputs
 
 | Input | Required | Description |
 |-------|----------|-------------|
 | Project root | Implicit | Current amir project root |
-| `ai/design.md` | Yes | Approved design |
-| `ai/qa-objectives.md` | Yes | QA criteria mapping |
-| `ai/project-goal.md` | Yes | Goal constraints |
+| `.ai/design.md` | Yes | Approved design |
+| `.ai/qa-objectives.md` | Yes | QA criteria mapping |
+| `.ai/project-goal.md` | Yes | Goal constraints |
 
 ## Behavior
 
@@ -26,8 +26,8 @@ Produce a phased implementation plan, run context-engineering quality review, ob
 5. Invoke **review sub-agent** (native Task if available) to audit plan for context-engineering quality, dependency order, acceptance testability, and sizing violations.
 6. If sub-agent unavailable, simulate review sequentially and state degrade per `core/honesty-rules.md` and host `adapters/<host>/capabilities.md`.
 7. Present plan table to human per `core/interaction-style.md`; batch Material questions if scope forks remain.
-8. On human approval, write tasks to `ai/state/tasks.json` (orchestrator via `set-task-field` / bulk JSON update + schema validation).
-9. Update `ai/state/status.json` phase to `plan` complete; append `plan_approved` to activity.
+8. On human approval, write tasks to `.ai/state/tasks.json` (orchestrator via `set-task-field` / bulk JSON update + schema validation).
+9. Update `.ai/state/status.json` phase to `plan` complete; append `plan_approved` to activity.
 10. Run `node tools/render.js <root> tasks`; recommend `/build_goal`.
 
 ## Core modules referenced
@@ -47,19 +47,19 @@ Produce a phased implementation plan, run context-engineering quality review, ob
 
 | File | Access |
 |------|--------|
-| `ai/state/tasks.json` | Write |
-| `ai/state/status.json` | Write |
-| `ai/state/decisions.json` | Write (plan approval) |
-| `ai/state/activity.jsonl` | Append |
-| `ai/views/tasks.md` | Write (via render) |
-| `ai/design.md` | Read |
-| `ai/qa-objectives.md` | Read |
-| `ai/project-goal.md` | Read |
+| `.ai/state/tasks.json` | Write |
+| `.ai/state/status.json` | Write |
+| `.ai/state/decisions.json` | Write (plan approval) |
+| `.ai/state/activity.jsonl` | Append |
+| `.ai/views/tasks.md` | Write (via render) |
+| `.ai/design.md` | Read |
+| `.ai/qa-objectives.md` | Read |
+| `.ai/project-goal.md` | Read |
 
 ## Outputs
 
-- Populated `ai/state/tasks.json` with phased tasks
-- Regenerated `ai/views/tasks.md`
+- Populated `.ai/state/tasks.json` with phased tasks
+- Regenerated `.ai/views/tasks.md`
 - Plan approval decision
 - Review sub-agent findings (if run)
 

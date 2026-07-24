@@ -31,7 +31,7 @@ Produce a clean, human-readable artifact of **system-level** settings for the sp
    - **Medium:** UI/UX preferences, telemetry
    - **Low:** cosmetic, experimental flags
 5. Render **human-readable artifact** (markdown): grouped sections highest tier first; each entry = setting name, value (redacted), source file path, notes.
-6. Save to `ai/agents/1-orchestrator/logs/system-settings-<ai_app>-<timestamp>.md` when project context exists; otherwise present inline.
+6. Save to `.ai/agents/1-orchestrator/logs/system-settings-<ai_app>-<timestamp>.md` when project context exists; otherwise present inline.
 7. Present chat summary per `core/message-contract.md`: file count, critical/high counts, artifact path — not full dump.
 8. Append read-only `system_settings` activity.
 
@@ -49,8 +49,8 @@ Produce a clean, human-readable artifact of **system-level** settings for the sp
 | `adapters/<ai_app>/capabilities.md` | Read |
 | `adapters/<ai_app>/install-paths.md` | Read |
 | Host system config files | Read only |
-| `ai/agents/1-orchestrator/logs/system-settings-*.md` | Write |
-| `ai/state/activity.jsonl` | Append |
+| `.ai/agents/1-orchestrator/logs/system-settings-*.md` | Write |
+| `.ai/state/activity.jsonl` | Append |
 
 ## Outputs
 

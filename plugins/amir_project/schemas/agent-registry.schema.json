@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://amir.plugin/schemas/agent-registry.schema.json",
   "title": "amir agents.json",
-  "description": "Agent registry for ai/state/agents.json.",
+  "description": "Agent registry for .ai/state/agents.json.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -64,7 +64,7 @@
         "workspace": {
           "type": "string",
           "minLength": 1,
-          "description": "Filesystem path to the agent workspace under ai/agents/."
+          "description": "Filesystem path to the agent workspace under .ai/agents/."
         },
         "model": {
           "type": "string",

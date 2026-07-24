@@ -75,7 +75,7 @@ function slugify(value) {
 }
 
 function agentWorkspacePath(projectRoot, agentId) {
-  // Flat convention: ai/agents/<id with / replaced by __>
+  // Flat convention: .ai/agents/<id with / replaced by __>
   const safe = agentId.replace(/\//g, '__');
   return path.join(agentsDir(projectRoot), safe);
 }

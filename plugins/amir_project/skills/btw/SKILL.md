@@ -18,7 +18,7 @@ Temporary read-only side question outside the amir project loop.
 
 - Read-only: no filesystem writes, no shell, no state tool invocations, no memory persistence.
 - Single turn: answer once, then emit `Temporary session closed.`
-- Do not load or mutate `ai/state/*` or run other amir skills.
+- Do not load or mutate `.ai/state/*` or run other amir skills.
 
 ## Residual limitations (honest)
 

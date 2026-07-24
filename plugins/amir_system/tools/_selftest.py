@@ -17,9 +17,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import catalog as catalog_mod  # noqa: E402
 import lockfile  # noqa: E402
 import manifest as manifest_mod  # noqa: E402
+import portfolio  # noqa: E402
+import registry as registry_mod  # noqa: E402
 import renderer  # noqa: E402
 import validator  # noqa: E402
-from util import GENERATED_HEADER, GENERATED_MARKER_KEY, default_catalog_root, dump_json, require_yaml, write_text  # noqa: E402
+from util import AmirError, GENERATED_HEADER, GENERATED_MARKER_KEY, default_catalog_root, dump_json, require_yaml, write_text  # noqa: E402
 
 yaml = require_yaml()
 REAL_CATALOG_ROOT = default_catalog_root()
@@ -93,7 +95,7 @@ def good_manifest(root: str, components=("fakegrp",)) -> dict:
             "secrets": {"default": "deny", "allowed_references": []},
             "destructive_actions": {"require_confirmation": True},
         },
-        "documentation": {"enabled": True, "files": {"status": "ai/status.md"}},
+        "documentation": {"enabled": True, "files": {"status": ".ai/status.md"}},
         "generated_artifacts": {"commit_graphify_output": False,
                                 "commit_playwright_artifacts": False,
                                 "commit_benchmark_results": False},
@@ -531,6 +533,397 @@ def test_validator_detects_duplicate_commands():
 def test_validator_real_catalog_has_no_duplicates():
     cat = catalog_mod.load_catalog(REAL_CATALOG_ROOT)
     assert validator.find_duplicate_commands(cat) == {}
+
+
+# ---------------------------------------------------------------- registry (unified YAML)
+
+def mk_local_graph(node_ids, edges=()) -> dict:
+    return {"directed": False, "multigraph": False, "graph": {},
+            "nodes": [{"id": nid, "label": nid} for nid in node_ids],
+            "links": [{"source": a, "target": b, "relation": "uses"} for a, b in edges],
+            "hyperedges": []}
+
+
+def make_portfolio_project(base: Path, pid: str, folder: str | None = None,
+                           graph_nodes=None, graph_edges=(), graphify: bool = True) -> Path:
+    project = base / (folder or pid)
+    data = copy.deepcopy(good_manifest(str(project)))
+    data["project"].update({"id": pid, "name": pid, "root": str(project)})
+    data["plugins"]["amir_project"]["components"] = []
+    data["project_tools"]["graphify"]["enabled"] = graphify
+    write_text(project / ".amir" / "project.yaml", yaml.safe_dump(data, sort_keys=True,
+                                                                 allow_unicode=True))
+    for fname in ("project.md", "status.md", "risks.md"):
+        write_text(project / ".ai" / fname, f"# {fname}\ncontent for {pid}\n")
+    if graph_nodes is not None:
+        write_text(project / "graphify-out" / "graph.json",
+                   dump_json(mk_local_graph(graph_nodes, graph_edges)))
+    return project
+
+
+PORTFOLIO_YAML = """schema_version: 1
+project:
+  id: {pid}
+  name: {pid}
+  lifecycle: active
+  priority: high
+  health: at-risk
+progress:
+  confirmed_percent: 40
+  estimated_percent: 60
+  current_phase: phase-2
+references:
+  asana:
+    enabled: true
+    project_gid: "12345"
+technology:
+  languages: [python]
+"""
+
+
+def test_registry_yaml_roundtrip_and_null_honesty():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        project = make_portfolio_project(base, "rt-proj", graph_nodes=["n1"])
+        entry = registry_mod.entry_from_sources(project)
+        # no portfolio.yaml -> progress/lifecycle stay null, health defaults to unknown
+        assert entry["lifecycle"] is None and entry["confirmed_progress"] is None
+        assert entry["health"] == "unknown" and entry["last_status_update"] is not None
+        assert entry["graph_enabled"] is True and entry["last_graph_update"] is None
+        registry_mod.save_registry(registry_mod.upsert_project(
+            registry_mod.load_registry(home), entry), home)
+        loaded = registry_mod.load_registry(home)
+        assert loaded["schema_version"] == 2 and loaded["projects"] == [entry], loaded
+        assert registry_mod.registry_path(home).name == "projects.yaml"
+        # with portfolio.yaml -> fields populate from the source, still schema-valid
+        write_text(project / ".amir" / "portfolio.yaml", PORTFOLIO_YAML.format(pid="rt-proj"))
+        entry2 = registry_mod.entry_from_sources(project)
+        assert (entry2["lifecycle"], entry2["priority"], entry2["health"]) == \
+            ("active", "high", "at-risk")
+        assert (entry2["confirmed_progress"], entry2["estimated_progress"]) == (40, 60)
+        assert entry2["current_phase"] == "phase-2" and entry2["asana_reference"] == "12345"
+        registry = registry_mod.upsert_project(loaded, entry2)
+        assert registry_mod.validate_registry_data(registry, REAL_CATALOG_ROOT) == []
+
+
+def test_registry_migrates_legacy_json():
+    with tempfile.TemporaryDirectory() as tmp:
+        home = Path(tmp) / "home"
+        legacy = {"schema_version": 1, "projects": [{
+            "id": "oldproj", "name": "Old", "root": "C:/nowhere/oldproj",
+            "type": "created", "cursor_enabled": True, "claude_enabled": True,
+            "last_validation": None, "last_opened": "2026-01-01T00:00:00Z",
+            "manifest_path": "C:/nowhere/oldproj/.amir/project.yaml",
+            "enabled_component_ids": ["harness"]}]}
+        write_text(registry_mod.legacy_registry_path(home), dump_json(legacy))
+        loaded = registry_mod.load_registry(home)
+        assert [p["id"] for p in loaded["projects"]] == ["oldproj"]
+        entry = loaded["projects"][0]
+        assert entry["claude_code_enabled"] is True and entry["cursor_enabled"] is True
+        assert entry["manifest"] == "C:/nowhere/oldproj/.amir/project.yaml"
+        assert entry["confirmed_progress"] is None  # nothing fabricated
+        assert registry_mod.registry_path(home).is_file()
+        assert not registry_mod.legacy_registry_path(home).exists()
+        migrated = registry_mod.legacy_registry_path(home).with_name("projects.json.migrated")
+        assert migrated.is_file(), "legacy file must be kept with .migrated suffix"
+
+
+def test_registry_refuses_duplicate_ids():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        p1 = make_portfolio_project(base, "dupe-id", folder="first")
+        p2 = make_portfolio_project(base, "dupe-id", folder="second")
+        registry = registry_mod.upsert_project(
+            {"schema_version": 2, "projects": []}, registry_mod.entry_from_sources(p1))
+        try:
+            registry_mod.upsert_project(registry, registry_mod.entry_from_sources(p2))
+            raise AssertionError("duplicate id at a different root must be refused")
+        except AmirError as exc:
+            assert "duplicate project id" in str(exc)
+        # same id at the SAME root is a refresh, not a duplicate
+        registry2 = registry_mod.upsert_project(registry, registry_mod.entry_from_sources(p1))
+        assert len(registry2["projects"]) == 1
+
+
+def test_registry_history_snapshot_per_mutation():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        project = make_portfolio_project(base, "hist-proj")
+        entry = registry_mod.entry_from_sources(project)
+        registry_mod.save_registry(registry_mod.upsert_project(
+            registry_mod.load_registry(home), entry), home)
+        registry_mod.save_registry(registry_mod.remove_project(
+            registry_mod.load_registry(home), "hist-proj"), home)
+        snapshots = list(registry_mod.history_dir(home).glob("*-projects.yaml"))
+        assert len(snapshots) == 2, snapshots
+
+
+def test_registry_lock_blocks_concurrent_save():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        project = make_portfolio_project(base, "lock-proj")
+        entry = registry_mod.entry_from_sources(project)
+        registry = registry_mod.upsert_project(registry_mod.load_registry(home), entry)
+        lock = registry_mod.lock_path(home)
+        write_text(lock, "{}")
+        try:
+            registry_mod.save_registry(registry, home)
+            raise AssertionError("save must refuse while a fresh lock is held")
+        except AmirError as exc:
+            assert "locked" in str(exc)
+        import os as _os
+        stale = 1000 + registry_mod.LOCK_STALE_SECONDS
+        _os.utime(lock, (lock.stat().st_atime - stale, lock.stat().st_mtime - stale))
+        registry_mod.save_registry(registry, home)  # stale lock is broken and taken over
+        assert registry_mod.registry_path(home).is_file()
+
+
+# ---------------------------------------------------------------- portfolio engine
+
+def _global_node_ids(home: Path) -> list[str]:
+    return sorted(str(n["id"]) for n in portfolio.load_global(home)["nodes"])
+
+
+def test_portfolio_add_idempotent_single_namespace():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        project = make_portfolio_project(base, "p1", graph_nodes=["a", "b"],
+                                         graph_edges=[("a", "b")])
+        first = portfolio.add(project, home)
+        assert first["graph_merged"] and first["node_count"] == 2
+        second = portfolio.add(project, home)  # re-add replaces the namespace, no dupes
+        assert second["graph_merged"] and second["node_count"] == 2
+        assert _global_node_ids(home) == ["p1::a", "p1::b"]
+        graph = portfolio.load_global(home)
+        assert len(graph["links"]) == 1
+        assert (graph["links"][0]["source"], graph["links"][0]["target"]) == ("p1::a", "p1::b")
+        metadata = portfolio.load_metadata(home)
+        assert list(metadata["projects"]) == ["p1"]
+        assert metadata["projects"]["p1"]["node_count"] == 2
+        entry = registry_mod.find_entry(registry_mod.load_registry(home), "p1")
+        assert entry["last_graph_update"] is not None
+
+
+def test_portfolio_add_without_graph_is_honest():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        enabled = make_portfolio_project(base, "nograph", graph_nodes=None, graphify=True)
+        report = portfolio.add(enabled, home)
+        assert report["registered"] and not report["graph_merged"]
+        assert "no local graph" in report["reason"], report
+        disabled = make_portfolio_project(base, "gfy-off", graphify=False)
+        report2 = portfolio.add(disabled, home)
+        assert not report2["graph_merged"] and "not enabled" in report2["reason"]
+        assert _global_node_ids(home) == []
+        assert len(registry_mod.load_registry(home)["projects"]) == 2
+
+
+def test_portfolio_namespace_collision_prevention():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        portfolio.add(make_portfolio_project(base, "p1", graph_nodes=["shared"]), home)
+        portfolio.add(make_portfolio_project(base, "p2", graph_nodes=["shared"]), home)
+        assert _global_node_ids(home) == ["p1::shared", "p2::shared"]
+        codes = [i["code"] for i in portfolio.validate(home, REAL_CATALOG_ROOT)]
+        assert "duplicate-node" not in codes, codes
+
+
+def test_portfolio_remove_preserves_files_and_other_namespaces():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        p1 = make_portfolio_project(base, "p1", graph_nodes=["a"])
+        p2 = make_portfolio_project(base, "p2", graph_nodes=["x", "y"])
+        portfolio.add(p1, home)
+        portfolio.add(p2, home)
+        report = portfolio.remove("p2", home)
+        assert report["graph_removed"] and report["registry_removed"]
+        assert (p2 / ".amir" / "project.yaml").is_file(), "project sources must be untouched"
+        assert (p2 / "graphify-out" / "graph.json").is_file(), "local graph preserved by default"
+        assert _global_node_ids(home) == ["p1::a"], "other namespaces must survive"
+        assert [p["id"] for p in registry_mod.load_registry(home)["projects"]] == ["p1"]
+        archived = list(registry_mod.history_dir(home).glob("removed-p2-*.yaml"))
+        assert archived, "removed entry must be archived to project-history"
+        report2 = portfolio.remove("p1", home, remove_local_graph=True)
+        assert report2["local_graph_removed"]
+        assert not (p1 / "graphify-out" / "graph.json").exists()
+        assert (p1 / ".amir" / "project.yaml").is_file()
+
+
+def _set_mtime(path: Path, epoch: float) -> None:
+    import os as _os
+    _os.utime(path, (epoch, epoch))
+
+
+def _forbidden_runner(_root):
+    raise AssertionError("graphify runner must not be invoked when the graph is fresh")
+
+
+def test_portfolio_update_distinguishes_metadata_vs_graph():
+    import time
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        project = make_portfolio_project(base, "p1", graph_nodes=["a"])
+        now = time.time()
+        for path in project.rglob("*"):
+            if path.is_file():
+                _set_mtime(path, now - 100)
+        _set_mtime(project / "graphify-out" / "graph.json", now - 50)
+        portfolio.add(project, home)
+        fresh_report = portfolio.update("p1", home, graphify_runner=_forbidden_runner)
+        assert fresh_report["status"] == "no-change" and not fresh_report["graph_refreshed"]
+        # metadata-only change: portfolio.yaml appears, but graph stays fresh
+        write_text(project / ".amir" / "portfolio.yaml", PORTFOLIO_YAML.format(pid="p1"))
+        _set_mtime(project / ".amir" / "portfolio.yaml", now - 90)
+        meta_report = portfolio.update("p1", home, graphify_runner=_forbidden_runner)
+        assert meta_report["status"] == "metadata-refreshed", meta_report
+        assert meta_report["registry_refreshed"] and not meta_report["graph_refreshed"]
+        assert "lifecycle" in meta_report["registry_changes"]
+        # source newer than graph -> stale -> runner regenerates -> graph refresh reported
+        write_text(project / "newfile.py", "print('hi')\n")
+        def fake_runner(root):
+            write_text(Path(root) / "graphify-out" / "graph.json",
+                       dump_json(mk_local_graph(["a", "b", "c"])))
+            return True, "regenerated"
+        graph_report = portfolio.update("p1", home, graphify_runner=fake_runner)
+        assert graph_report["status"] == "graph-refreshed", graph_report
+        assert graph_report["graph_refreshed"]
+        assert graph_report["graph_stale_reason"] == "source-newer"
+        assert _global_node_ids(home) == ["p1::a", "p1::b", "p1::c"]
+        # failed regeneration keeps the previous global graph
+        write_text(project / "newer.py", "x = 1\n")
+        fail_report = portfolio.update("p1", home,
+                                       graphify_runner=lambda root: (False, "boom"))
+        assert fail_report["status"] == "error" and "boom" in fail_report["error"]
+        assert _global_node_ids(home) == ["p1::a", "p1::b", "p1::c"], \
+            "failed update must retain the previous valid global graph"
+
+
+def test_portfolio_update_all_partial_failure_and_lock():
+    import shutil as _shutil
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        portfolio.add(make_portfolio_project(base, "p1", graph_nodes=["a"]), home)
+        p2 = make_portfolio_project(base, "p2", graph_nodes=["x"])
+        portfolio.add(p2, home)
+        _shutil.rmtree(p2)
+        result = portfolio.update_all(home, graphify_runner=lambda root: (False, "unavailable"))
+        assert result["status"] == "partial", result
+        assert result["failed"] == 1 and result["total"] == 2
+        errors = [r for r in result["results"] if r["status"] == "error"]
+        assert errors and "root missing" in errors[0]["error"]
+        # a fresh portfolio lock blocks a concurrent update_all
+        write_text(portfolio.portfolio_lock_path(home), "{}")
+        try:
+            portfolio.update_all(home)
+            raise AssertionError("update_all must refuse while the portfolio lock is held")
+        except AmirError as exc:
+            assert "locked" in str(exc)
+        lock = portfolio.portfolio_lock_path(home)
+        stale = 1000 + portfolio.PORTFOLIO_LOCK_STALE_SECONDS
+        _set_mtime(lock, lock.stat().st_mtime - stale)
+        result2 = portfolio.update_all(home, graphify_runner=lambda root: (False, "unavailable"))
+        assert result2["status"] == "partial"  # stale lock broken; run proceeds
+        assert not lock.exists(), "lock must be released afterwards"
+
+
+def test_portfolio_stale_detection_mtime():
+    import time
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        project = make_portfolio_project(base, "p1", graph_nodes=["a"])
+        graph = project / "graphify-out" / "graph.json"
+        now = time.time()
+        for path in project.rglob("*"):
+            if path.is_file():
+                _set_mtime(path, now - 100)
+        _set_mtime(graph, now - 50)
+        assert portfolio.graph_staleness(project, graph, None) == (False, None)
+        _set_mtime(project / "code.py" if (project / "code.py").is_file()
+                   else project / ".ai" / "status.md", now - 10)
+        assert portfolio.graph_staleness(project, graph, None) == (True, "source-newer")
+        assert portfolio.graph_staleness(project, project / "graphify-out" / "missing.json",
+                                         None) == (True, "missing")
+
+
+def test_portfolio_secret_scan_flags_planted_token():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        fake_token = "ghp_" + "a" * 36  # planted, synthetic
+        project = make_portfolio_project(base, "p1", graph_nodes=["safe"])
+        write_text(project / "graphify-out" / "graph.json",
+                   dump_json(mk_local_graph(["safe", f"leaky {fake_token}"])))
+        portfolio.add(project, home)
+        issues = portfolio.validate(home, REAL_CATALOG_ROOT)
+        leaks = [i for i in issues if i["code"] == "secret-leak"]
+        assert leaks, f"planted token must be flagged: {issues}"
+        assert all(fake_token not in i["message"] for i in leaks), \
+            "the secret value itself must never be echoed"
+        # global graph still intact (scan is report-only)
+        assert len(portfolio.load_global(home)["nodes"]) == 2
+
+
+def test_portfolio_validate_detects_graph_inconsistencies():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        portfolio.add(make_portfolio_project(base, "p1", graph_nodes=["a", "b"]), home)
+        metadata = portfolio.load_metadata(home)
+        metadata["projects"]["p1"]["node_count"] = 99  # tamper
+        write_text(portfolio.metadata_path(home), dump_json(metadata))
+        graph = portfolio.load_global(home)
+        graph["nodes"].append({"id": "ghost::x", "label": "orphan"})
+        write_text(portfolio.global_graph_path(home), dump_json(graph))
+        codes = [i["code"] for i in portfolio.validate(home, REAL_CATALOG_ROOT)]
+        assert "namespace-count-mismatch" in codes, codes
+        assert "orphaned-namespace" in codes, codes
+
+
+def test_portfolio_rebuild_and_backups():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        p1 = make_portfolio_project(base, "p1", graph_nodes=["a"])
+        portfolio.add(p1, home)
+        portfolio.add(make_portfolio_project(base, "p2", graph_nodes=["x", "y"]), home)
+        write_text(portfolio.global_graph_path(home), dump_json(portfolio.empty_graph()))
+        result = portfolio.rebuild(home)
+        assert result["node_count"] == 3 and result["edge_count"] == 0
+        assert _global_node_ids(home) == ["p1::a", "p2::x", "p2::y"]
+        assert sorted(portfolio.load_metadata(home)["projects"]) == ["p1", "p2"]
+        for _ in range(7):  # backup rotation caps at BACKUP_KEEP
+            portfolio.add(p1, home)
+        backups = list(portfolio.backups_dir(home).glob("global-graph-*.json"))
+        assert len(backups) <= portfolio.BACKUP_KEEP, backups
+
+
+def test_portfolio_unicode_and_spaces_in_path():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        home = base / "home"
+        project = make_portfolio_project(base, "unicode-proj", folder="pröj  spåce dir",
+                                         graph_nodes=["nöde one", "n2"],
+                                         graph_edges=[("nöde one", "n2")])
+        report = portfolio.add(project, home)
+        assert report["graph_merged"] and report["node_count"] == 2
+        assert "unicode-proj::nöde one" in _global_node_ids(home)
+        entry = registry_mod.find_entry(registry_mod.load_registry(home), "unicode-proj")
+        assert "pröj  spåce dir" in entry["root"]
+        update_report = portfolio.update(str(project), home,
+                                         graphify_runner=lambda root: (False, "off"))
+        assert update_report["status"] in ("no-change", "metadata-refreshed", "graph-refreshed")
+        remove_report = portfolio.remove("unicode-proj", home)
+        assert remove_report["graph_removed"]
+        assert _global_node_ids(home) == []
 
 
 # ---------------------------------------------------------------- runner

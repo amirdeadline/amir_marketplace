@@ -119,13 +119,13 @@ describe('agent ops', () => {
         id: '1-orchestrator',
         role: 'orchestrator',
         state: 'active',
-        workspace: 'E:\\proj\\ai\\agents\\1-orchestrator',
+        workspace: 'E:\\proj\\.ai\\agents\\1-orchestrator',
         last_heartbeat_ts: null,
         task_id: null,
       },
     ]);
     const agents = loadAgents(root);
-    assert.equal(agents.agents[0].workspace, 'E:\\proj\\ai\\agents\\1-orchestrator');
+    assert.equal(agents.agents[0].workspace, 'E:\\proj\\.ai\\agents\\1-orchestrator');
     const result = setAgentState(root, {
       agentId: '1-orchestrator',
       to: 'idle',

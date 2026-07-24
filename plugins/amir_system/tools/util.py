@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -105,6 +106,55 @@ def write_text(path: Path, text: str) -> None:
 
 def utc_now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def utc_stamp() -> str:
+    """Filesystem-safe UTC timestamp with microseconds (for snapshots/backups)."""
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+
+
+def atomic_write_text(path: Path, text: str) -> None:
+    """Crash-safe write: temp file in the same directory, then os.replace."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f"{path.name}.tmp-{os.getpid()}")
+    with open(tmp, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(text)
+    os.replace(tmp, path)
+
+
+def acquire_lock_file(path: Path, stale_seconds: int) -> Path:
+    """Exclusive-create lock file; a lock older than stale_seconds is broken and taken over."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = dump_json({"pid": os.getpid(), "acquired_at": utc_now_iso()})
+    for _attempt in (1, 2):
+        try:
+            fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            try:
+                age = datetime.now(timezone.utc).timestamp() - path.stat().st_mtime
+            except OSError:
+                continue  # holder released between the open and the stat -- retry
+            if age > stale_seconds:
+                try:
+                    path.unlink()
+                except OSError:
+                    pass
+                continue
+            raise AmirError(f"locked by another process: {path} (held {int(age)}s; "
+                            f"stale after {stale_seconds}s -- retry later or delete the lock if orphaned)")
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(payload)
+        return path
+    raise AmirError(f"could not acquire lock: {path}")
+
+
+def release_lock_file(path: Path) -> None:
+    try:
+        Path(path).unlink()
+    except OSError:
+        pass
 
 
 def comment_header_for(path: Path) -> str | None:

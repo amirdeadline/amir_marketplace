@@ -1,10 +1,10 @@
 ---
-description: "Define QA strategy: produce `ai/qa-objectives.md`, QA environment design, and project-level QA skill hooks so verification is testable be..."
+description: "Define QA strategy: produce `.ai/qa-objectives.md`, QA environment design, and project-level QA skill hooks so verification is testable be..."
 ---
 
 # /amir:design_qa
 
-Define QA strategy: produce `ai/qa-objectives.md`, QA environment design, and project-level QA skill hooks so verification is testable before build.
+Define QA strategy: produce `.ai/qa-objectives.md`, QA environment design, and project-level QA skill hooks so verification is testable before build.
 
 ## Instructions
 

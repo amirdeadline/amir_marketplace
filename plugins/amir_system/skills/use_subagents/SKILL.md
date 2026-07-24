@@ -7,7 +7,7 @@ description: Decompose project work into bounded, independently verifiable subag
 
 ## Step 1 — Ground yourself (before any decomposition)
 
-1. Read the project goal (from `ai/` docs or the user), `.amir/project.yaml`, and the system
+1. Read the project goal (from `.ai/` docs or the user), `.amir/project.yaml`, and the system
    rules (this plugin's `system_rules` skill / `rules/*.mdc`).
 2. If no `.amir/project.yaml` exists: say so; ad-hoc mode is allowed only after the user agrees,
    and manifest-gated tools (Graphify, Serena, worktrees) are then OFF.
@@ -19,6 +19,15 @@ description: Decompose project work into bounded, independently verifiable subag
 Break the goal into ordered, **independently verifiable** tasks. Good tasks: single
 responsibility, clear done-condition, verifiable without trusting the agent's word. Identify
 which tasks are parallelizable (no shared files, no ordering dependency) vs. sequential.
+
+## Step 2b — Agent workspaces (under `.ai\agents\`)
+
+Each subagent role gets a workspace directory `.ai\agents\<role>\` inside the project.
+Recognized roles: `orchestrator`, `architect`, `developer`, `qa`, `security`, `research`.
+Create ONLY the role directories the current work actually needs — with `orchestrator\` and
+`qa\` as the mandatory minimum whenever subagent orchestration is enabled for the project.
+A role's workspace holds its task briefs, returned evidence, and notes; agents write inside
+their own workspace (plus their allowed code paths), never in another role's.
 
 ## Step 3 — Context packages (one per subagent)
 
@@ -52,8 +61,9 @@ Each subagent receives ONE bounded package — **never the whole repository**:
 
 ## Step 6 — Record and report
 
-- Record decisions, task outcomes, and evidence in `ai/` docs (`ai/tasks.md`, `ai/decisions.md`;
-  risks discovered → `ai/risks.md`).
+- Record decisions, task outcomes, and evidence in `.ai/` docs (`.ai/tasks.md`, `.ai/decisions.md`;
+  risks discovered → `.ai/risks.md`; per-agent evidence stays in that agent's
+  `.ai/agents/<role>/` workspace).
 - Final report separates: **completed (with evidence) / failed (with errors) / skipped /
   blocked (with blocker)**. Never blend these. Recommend `/amir:cleanup_context` if the
   orchestration consumed substantial context.

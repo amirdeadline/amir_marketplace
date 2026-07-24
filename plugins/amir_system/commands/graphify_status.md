@@ -18,7 +18,7 @@ description: Report Graphify status for the current Amir project (never rebuilds
 2. CLI: `graphify --version` output (or "CLI not installed").
 3. Hooks: `graphify hook status` output.
 4. Graph output: does `graphify-out/graph.json` exist; file size; last-modified time.
-5. Last build/update metadata: timestamp and source commit if recorded (project `ai/status.md`
+5. Last build/update metadata: timestamp and source commit if recorded (project `.ai/status.md`
    or graphify-out metadata); otherwise "not recorded".
 6. Staleness: compare graph mtime against latest source change (`git log -1 --format=%ci` or
    newest source file mtime). State the comparison honestly — "stale" / "fresh" / "cannot

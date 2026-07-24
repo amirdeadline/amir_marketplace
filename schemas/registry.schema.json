@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://amir.local/schemas/registry.schema.json",
+  "title": "Amir unified project registry (%USERPROFILE%\\.amir\\registry\\projects.yaml)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "projects"],
+  "properties": {
+    "schema_version": {
+      "const": 2,
+      "description": "Registry format version. 1 was the legacy projects.json; 2 is the unified YAML registry."
+    },
+    "projects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/registryEntry" }
+    }
+  },
+  "$defs": {
+    "nullableString": { "type": ["string", "null"] },
+    "nullableIsoTimestamp": {
+      "type": ["string", "null"],
+      "description": "ISO-8601 UTC timestamp or null when unknown (never fabricated)."
+    },
+    "nullablePercent": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Progress percentage 0-100 or null when unknown (never fabricated)."
+    },
+    "registryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "name", "root", "manifest", "lifecycle", "priority", "health",
+        "current_phase", "confirmed_progress", "estimated_progress",
+        "last_status_update", "last_graph_update", "graph_source_commit",
+        "graph_path", "graph_enabled", "cursor_enabled", "claude_code_enabled",
+        "asana_reference"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "description": "Stable machine id from .amir/project.yaml project.id (never the folder name alone)."
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "root": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Absolute path of the project root on this machine."
+        },
+        "manifest": {
+          "type": ["string", "null"],
+          "description": "Absolute path of the project's .amir/project.yaml."
+        },
+        "lifecycle": { "enum": ["active", "paused", "archived", null] },
+        "priority": { "enum": ["high", "medium", "low", null] },
+        "health": { "enum": ["healthy", "at-risk", "blocked", "unknown"] },
+        "current_phase": { "$ref": "#/$defs/nullableString" },
+        "confirmed_progress": { "$ref": "#/$defs/nullablePercent" },
+        "estimated_progress": { "$ref": "#/$defs/nullablePercent" },
+        "last_status_update": { "$ref": "#/$defs/nullableIsoTimestamp" },
+        "last_graph_update": { "$ref": "#/$defs/nullableIsoTimestamp" },
+        "graph_source_commit": {
+          "type": ["string", "null"],
+          "description": "Commit sha the merged graph was built from, with '-dirty' suffix when the worktree had uncommitted changes; null outside git."
+        },
+        "graph_path": {
+          "type": ["string", "null"],
+          "description": "Absolute path of the local graphify-out/graph.json when it exists."
+        },
+        "graph_enabled": { "type": ["boolean", "null"] },
+        "cursor_enabled": { "type": ["boolean", "null"] },
+        "claude_code_enabled": { "type": ["boolean", "null"] },
+        "asana_reference": {
+          "type": ["string", "null"],
+          "description": "Asana project GID from .amir/portfolio.yaml references.asana (when enabled)."
+        }
+      }
+    }
+  }
+}

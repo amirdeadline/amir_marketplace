@@ -25,7 +25,7 @@ Revert project codebase to a prior checkpoint safely. Prefer git revert; allow `
 4. **Prefer `git revert`** for shared branches — create revert commit preserving history.
 5. If human requests hard reset, require typed confirmation phrase (e.g. `ROLLBACK HARD <ref>`) logged to `decisions.json` before `git reset --hard <ref>`.
 6. Mark downstream tasks for re-verification: any task after rolled-back checkpoint with `complete` status → orchestrator sets note `needs_reverify` via `set-task-field` or human-approved bulk update.
-7. Do not delete `ai/state/` or `ai/project-goal.md`; state may need manual reconciliation after rollback.
+7. Do not delete `.ai/state/` or `.ai/project-goal.md`; state may need manual reconciliation after rollback.
 8. Append `rollback` event to activity with ref, method (revert|hard), and affected task ids.
 9. Recommend `./verify.sh` and `/resume_build`.
 
@@ -41,9 +41,9 @@ Revert project codebase to a prior checkpoint safely. Prefer git revert; allow `
 
 | File | Access |
 |------|--------|
-| `ai/state/tasks.json` | Write (reverify flags, notes) |
-| `ai/state/decisions.json` | Write (hard reset approval) |
-| `ai/state/activity.jsonl` | Append |
+| `.ai/state/tasks.json` | Write (reverify flags, notes) |
+| `.ai/state/decisions.json` | Write (hard reset approval) |
+| `.ai/state/activity.jsonl` | Append |
 | Git tree | Write (revert or reset) |
 
 ## Outputs
@@ -58,4 +58,4 @@ Revert project codebase to a prior checkpoint safely. Prefer git revert; allow `
 - Abort if target ref not found.
 - Never run `git push --force` unless explicit separate human approval per `core/security-rules.md`.
 - Emit **PROBLEM** if rollback would orphan QA evidence; archive evidence paths in decision note first.
-- Do not rollback `ai/state/` JSON automatically — human must reconcile task status vs code state.
+- Do not rollback `.ai/state/` JSON automatically — human must reconcile task status vs code state.

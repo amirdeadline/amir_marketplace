@@ -69,7 +69,7 @@ Log `context_compact` and `context_handoff` to activity.
 
 ## Activity logging — all budget events
 
-Append to `ai/state/activity.jsonl` (any agent may append; see workspace rules):
+Append to `.ai/state/activity.jsonl` (any agent may append; see workspace rules):
 
 | Event type | When |
 |------------|------|

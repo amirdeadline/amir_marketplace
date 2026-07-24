@@ -18,12 +18,12 @@ Manually compact working context per context-engineering thresholds without losi
 
 ## Behavior
 
-1. Identify agent workspace `ai/agents/<agent-id>/notes.md` and active prompt files.
+1. Identify agent workspace `.ai/agents/<agent-id>/notes.md` and active prompt files.
 2. Follow compaction rules in `core/context-engineering.md`: summarize completed steps; drop redundant file pastes; retain acceptance criteria ids, failing QA ids, open DECISION REQUIRED, security constraints.
-3. Do not remove references to `ai/state/*.json` paths — convert blobs to pointers.
-4. Archive verbose superseded sections to `ai/agents/<agent-id>/logs/compact-<timestamp>.md` before trimming `notes.md`.
+3. Do not remove references to `.ai/state/*.json` paths — convert blobs to pointers.
+4. Archive verbose superseded sections to `.ai/agents/<agent-id>/logs/compact-<timestamp>.md` before trimming `notes.md`.
 5. Regenerate worker/verifier prompt from JSON if task active — stale prompts forbidden per `core/context-engineering.md`.
-6. Append `context_compact` event to `ai/state/activity.jsonl` per `core/budget-rules.md` with agent id and estimated savings note.
+6. Append `context_compact` event to `.ai/state/activity.jsonl` per `core/budget-rules.md` with agent id and estimated savings note.
 7. If usage still >75% after compact, recommend `/handoff` for fresh instance.
 8. Message human per `core/message-contract.md` with what was retained vs archived.
 
@@ -39,12 +39,12 @@ Manually compact working context per context-engineering thresholds without losi
 
 | File | Access |
 |------|--------|
-| `ai/agents/<agent-id>/notes.md` | Write (trim) |
-| `ai/agents/<agent-id>/prompt.md` | Write (regenerate if needed) |
-| `ai/agents/<agent-id>/logs/*` | Write (archive) |
-| `ai/state/activity.jsonl` | Append |
-| `ai/state/tasks.json` | Read |
-| `ai/state/decisions.json` | Read |
+| `.ai/agents/<agent-id>/notes.md` | Write (trim) |
+| `.ai/agents/<agent-id>/prompt.md` | Write (regenerate if needed) |
+| `.ai/agents/<agent-id>/logs/*` | Write (archive) |
+| `.ai/state/activity.jsonl` | Append |
+| `.ai/state/tasks.json` | Read |
+| `.ai/state/decisions.json` | Read |
 
 ## Outputs
 
@@ -56,5 +56,5 @@ Manually compact working context per context-engineering thresholds without losi
 ## Failure/abort behavior
 
 - Abort if compaction would remove active acceptance criteria or open BLOCKED items — emit **PROBLEM**.
-- Do not compact `ai/state/` JSON or `ai/project-goal.md`.
+- Do not compact `.ai/state/` JSON or `.ai/project-goal.md`.
 - Never treat compacted notes as new decisions — promote separately via orchestrator.

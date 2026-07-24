@@ -1,12 +1,12 @@
 ---
-description: Amir rule 6 — bounded subagent contexts, persist durable facts to ai/ docs, honest handoffs before degradation
+description: Amir rule 6 — bounded subagent contexts, persist durable facts to .ai/ docs, honest handoffs before degradation
 alwaysApply: true
 ---
 
 # context-control
 
 Keep subagent contexts bounded: minimal file sets, explicit allowed/prohibited paths — never
-the whole repo. Persist durable facts, decisions, and evidence to `ai/` docs as they occur,
+the whole repo. Persist durable facts, decisions, and evidence to `.ai/` docs as they occur,
 not only at the end. When context degradation is likely (long session, repeated corrections),
 trigger `/amir:cleanup_context` and recommend a fresh session. Never claim context was cleared
 unless a new session actually started.

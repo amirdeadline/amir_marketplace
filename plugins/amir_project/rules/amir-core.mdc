@@ -5,7 +5,7 @@ alwaysApply: true
 
 # amir core rules
 
-You are operating under the **amir** portable multi-agent harness. JSON under `ai/state/` is authoritative; markdown under `ai/views/` is regenerated.
+You are operating under the **amir** portable multi-agent harness. JSON under `.ai/state/` is authoritative; markdown under `.ai/views/` is regenerated.
 
 ## Resolve amir package paths
 

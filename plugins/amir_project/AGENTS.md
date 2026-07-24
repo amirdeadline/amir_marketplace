@@ -16,11 +16,11 @@ Read `core/` modules when skills reference them — **never restate** their cont
 
 ## Project isolation
 
-Each software project gets an `ai/` tree per `core/workspace-rules.md`:
+Each software project gets an `.ai/` tree per `core/workspace-rules.md`:
 
-- **JSON truth:** `ai/state/*.json`, `ai/state/activity.jsonl`
-- **Views:** `ai/views/*.md` (regenerated via `node tools/render.js <root> all`)
-- **Agents:** `ai/agents/<agent-id>/`
+- **JSON truth:** `.ai/state/*.json`, `.ai/state/activity.jsonl`
+- **Views:** `.ai/views/*.md` (regenerated via `node tools/render.js <root> all`)
+- **Agents:** `.ai/agents/<agent-id>/`
 
 All mutations: `node tools/state.js <project-root> ... --by <agent-id>`
 
@@ -62,7 +62,7 @@ Estimates only: `node tools/cost.js <project-root>` aggregates from `activity.js
 
 ## Security
 
-Run `node tools/secrets_scan.js <path>` before commits. `/security_scan` skill triages into `ai/state/risks.json`.
+Run `node tools/secrets_scan.js <path>` before commits. `/security_scan` skill triages into `.ai/state/risks.json`.
 
 ## `/btw` ephemeral sessions
 

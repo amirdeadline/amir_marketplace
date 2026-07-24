@@ -30,7 +30,7 @@ NEED: <"nothing" or one specific ask/decision>
 ### NEED: default and exceptions
 
 - **`NEED: nothing`** is the default for routine updates.
-- Put detail in workspace files (`ai/views/`, agent workspace under `ai/agents/`), not in the message body.
+- Put detail in workspace files (`.ai/views/`, agent workspace under `.ai/agents/`), not in the message body.
 - Human invokes **`/details`** (or host equivalent) to dump the relevant workspace file or view.
 
 **Exceptions** — may exceed the five-line schema:
@@ -63,7 +63,7 @@ Needs decision:
 DID: Reviewed architect proposal against project-goal.md
 RESULT: 2 acceptance criteria still untestable
 NEXT: Pause T003 until criteria are fixed
-NEED: Confirm revised acceptance criteria in ai/state/tasks.json
+NEED: Confirm revised acceptance criteria in .ai/state/tasks.json
 ```
 
 ## Prohibited in routine messages

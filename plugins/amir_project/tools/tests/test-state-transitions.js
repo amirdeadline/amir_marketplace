@@ -44,7 +44,7 @@ describe('state transitions', () => {
       taskId: 'T001',
       toStatus: 'qa_passed',
       by: 'qa-T001',
-      qaReport: 'ai/agents/qa-T001/qa-report.md',
+      qaReport: '.ai/agents/qa-T001/qa-report.md',
     });
     assert.equal(result.toStatus, 'qa_passed');
   });
@@ -70,7 +70,7 @@ describe('state transitions', () => {
   it('allows qa_passed to complete with required artifacts', () => {
     const root = makeTempProject();
     addTask(root, { id: 'T001', status: 'qa_passed' });
-    const alignPath = 'ai/agents/qa-T001/alignment.md';
+    const alignPath = '.ai/agents/qa-T001/alignment.md';
     fs.mkdirSync(path.dirname(path.join(root, alignPath)), { recursive: true });
     fs.writeFileSync(path.join(root, alignPath), 'PASS');
 

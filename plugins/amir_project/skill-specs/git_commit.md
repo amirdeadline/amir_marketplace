@@ -21,12 +21,12 @@ Create a git commit with message metadata derived from activity and implementati
 
 1. Verify git repository (`git rev-parse --is-inside-work-tree`); if absent, offer `/git_setup` and stop.
 2. Run `git status` and `git diff --stat`; if no changes, report clean tree and stop.
-3. **Mandatory gate:** run `node tools/secrets_scan.js <root>` (or documented project scope). Archive raw JSON to `ai/agents/4-security/logs/secrets_scan-<timestamp>.json`.
+3. **Mandatory gate:** run `node tools/secrets_scan.js <root>` (or documented project scope). Archive raw JSON to `.ai/agents/4-security/logs/secrets_scan-<timestamp>.json`.
 4. If scan reports **any findings**: **hard FAIL** — do not stage, do not commit. Present table: `path:line`, finding type, masked snippet. Recommend removal/rotation per `core/security-rules.md`. Stop until clean re-scan passes.
 5. If scan did not run (tool missing/error): **BLOCKED** — log Reason/Impact; do not commit.
 6. Collect commit metadata:
-   - Recent `ai/state/activity.jsonl` events for active task(s)
-   - `ai/agents/dev-<task-id>/notes.md` and `implementation-notes` if present
+   - Recent `.ai/state/activity.jsonl` events for active task(s)
+   - `.ai/agents/dev-<task-id>/notes.md` and `implementation-notes` if present
    - Task id, phase, files changed summary from worker artifacts
 7. Compose commit message: subject (`feat|fix|chore|docs: <task-id> <summary>`) + body bullets from metadata (VERIFIED actions only).
 8. Present proposed message and file list to human per `core/interaction-style.md` (**Material** approval unless orchestrator checkpoint mode with pre-approval).
@@ -48,11 +48,11 @@ Create a git commit with message metadata derived from activity and implementati
 
 | File | Access |
 |------|--------|
-| `ai/state/activity.jsonl` | Read/Append |
-| `ai/state/tasks.json` | Read (active task, checkpoint tag) |
-| `ai/agents/dev-*/notes.md` | Read |
-| `ai/agents/dev-*/implementation-notes.md` | Read |
-| `ai/agents/4-security/logs/secrets_scan-*.json` | Write |
+| `.ai/state/activity.jsonl` | Read/Append |
+| `.ai/state/tasks.json` | Read (active task, checkpoint tag) |
+| `.ai/agents/dev-*/notes.md` | Read |
+| `.ai/agents/dev-*/implementation-notes.md` | Read |
+| `.ai/agents/4-security/logs/secrets_scan-*.json` | Write |
 | Git index/commits/tags | Write |
 
 ## Outputs

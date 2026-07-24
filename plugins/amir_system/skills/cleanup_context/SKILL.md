@@ -1,6 +1,6 @@
 ---
 name: cleanup_context
-description: Durable context handoff — persist facts, decisions, state, and the exact next action into ai/ docs before context degrades; recommend a fresh session honestly. Use for /amir:cleanup_context.
+description: Durable context handoff — persist facts, decisions, state, and the exact next action into .ai/ docs before context degrades; recommend a fresh session honestly. Use for /amir:cleanup_context.
 ---
 
 # cleanup_context — durable handoff workflow
@@ -28,14 +28,17 @@ Systematically collect:
 
 Update the project docs by MERGING new content (append/update sections, preserve history):
 
-- `ai/status.md` — current state summary
-- `ai/tasks.md` — completed marked done (with evidence refs), pending re-ordered
-- `ai/decisions.md` — new decisions appended with date
-- `ai/risks.md` — new/changed risks
-- `ai/context_handoff.md` — REWRITTEN each time (it is the fresh-session entry point)
+- `.ai/status.md` — current state summary
+- `.ai/tasks.md` — completed marked done (with evidence refs), pending re-ordered
+- `.ai/decisions.md` — new decisions appended with date
+- `.ai/risks.md` — new/changed risks
+- `.ai/changelog.md` — APPEND one dated entry per session: what changed in the project this
+  session (files, behavior, config), one line each — facts with evidence, never planned-but-
+  not-done work (that belongs in tasks.md)
+- `.ai/context_handoff.md` — REWRITTEN each time (it is the fresh-session entry point)
 
-If not an Amir project (no `.amir/` and no `ai/`), confirm a location with the user before
-writing; default suggestion `ai/context_handoff.md`.
+If not an Amir project (no `.amir/` and no `.ai/`), confirm a location with the user before
+writing; default suggestion `.ai/context_handoff.md`.
 
 ## Step 3 — The handoff document must contain (all of these, explicitly)
 
@@ -55,5 +58,5 @@ writing; default suggestion `ai/context_handoff.md`.
 
 Assess degradation risk (long session, many corrections, repeated confusion, large file dumps in
 context). If degradation is likely, say so and recommend the user start a fresh session pointed
-at `ai/context_handoff.md`. State plainly: "I cannot clear my own context — a new session is the
+at `.ai/context_handoff.md`. State plainly: "I cannot clear my own context — a new session is the
 only real reset." If the session is still healthy, say that too and continue.

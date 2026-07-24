@@ -1,6 +1,6 @@
 ---
 name: plan
-description: "Produce a phased implementation plan, run context-engineering quality review, obtain human approval, and populate `ai/state/tasks.json`."
+description: "Produce a phased implementation plan, run context-engineering quality review, obtain human approval, and populate `.ai/state/tasks.json`."
 ---
 
 # plan

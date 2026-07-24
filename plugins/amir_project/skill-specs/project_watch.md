@@ -17,10 +17,10 @@ Live operational snapshot: last N activity events, agents table with heartbeat/s
 
 ## Behavior
 
-1. Read last `N` events from `ai/state/activity.jsonl` (tail, chronological).
-2. Read `ai/state/agents.json` for agent registry.
+1. Read last `N` events from `.ai/state/activity.jsonl` (tail, chronological).
+2. Read `.ai/state/agents.json` for agent registry.
 3. Run `node tools/activity.js <root> heartbeat-check` to mark stale agents and obtain stale id list.
-4. Cross-reference `in_progress` tasks in `ai/state/tasks.json` with `dev-<id>` and `qa-<id>` agent rows.
+4. Cross-reference `in_progress` tasks in `.ai/state/tasks.json` with `dev-<id>` and `qa-<id>` agent rows.
 5. Present compact table: agent id, role, state, task_id, last heartbeat, stale flag — per `core/message-contract.md`.
 6. Summarize recent actions (transitions, fix cycles, drift checks, discovery batches).
 7. Read-only except heartbeat-check side effect on `agents.json` state field (stale marking).
@@ -36,10 +36,10 @@ Live operational snapshot: last N activity events, agents table with heartbeat/s
 
 | File | Access |
 |------|--------|
-| `ai/state/activity.jsonl` | Read |
-| `ai/state/agents.json` | Read; Write (stale flags via heartbeat-check) |
-| `ai/state/tasks.json` | Read |
-| `ai/state/status.json` | Read |
+| `.ai/state/activity.jsonl` | Read |
+| `.ai/state/agents.json` | Read; Write (stale flags via heartbeat-check) |
+| `.ai/state/tasks.json` | Read |
+| `.ai/state/status.json` | Read |
 
 ## Outputs
 

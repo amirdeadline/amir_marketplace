@@ -18,12 +18,12 @@ Generate a structured pause handoff from template so a fresh orchestrator instan
 
 ## Behavior
 
-1. Read current `ai/state/status.json`, `tasks.json`, and active task QA artifacts.
+1. Read current `.ai/state/status.json`, `tasks.json`, and active task QA artifacts.
 2. Build handoff block per `core/context-engineering.md` structure (≤10 lines in snippet + extended detail in file).
-3. Write `ai/agents/1-orchestrator/handoff.md` with: last VERIFIED state, open NEED items, next action, cycle counts, failing criteria ids if any.
-4. Mirror concise snippet into `ai/agents/1-orchestrator/notes.md` under `## Handoff snippet`.
-5. Update `ai/state/status.json` via `node tools/state.js <root> update-status --by 1-orchestrator` with `paused: true` and `resume_token` (uuid or timestamp slug).
-6. Append `context_handoff` event to `ai/state/activity.jsonl` per `core/budget-rules.md`.
+3. Write `.ai/agents/1-orchestrator/handoff.md` with: last VERIFIED state, open NEED items, next action, cycle counts, failing criteria ids if any.
+4. Mirror concise snippet into `.ai/agents/1-orchestrator/notes.md` under `## Handoff snippet`.
+5. Update `.ai/state/status.json` via `node tools/state.js <root> update-status --by 1-orchestrator` with `paused: true` and `resume_token` (uuid or timestamp slug).
+6. Append `context_handoff` event to `.ai/state/activity.jsonl` per `core/budget-rules.md`.
 7. Present human summary per `core/message-contract.md` with resume instructions (`/resume_build`).
 8. Do not compact or delete evidence files during handoff.
 
@@ -40,11 +40,11 @@ Generate a structured pause handoff from template so a fresh orchestrator instan
 
 | File | Access |
 |------|--------|
-| `ai/agents/1-orchestrator/handoff.md` | Write |
-| `ai/agents/1-orchestrator/notes.md` | Write (snippet) |
-| `ai/state/status.json` | Write (paused, resume_token) |
-| `ai/state/tasks.json` | Read |
-| `ai/state/activity.jsonl` | Append |
+| `.ai/agents/1-orchestrator/handoff.md` | Write |
+| `.ai/agents/1-orchestrator/notes.md` | Write (snippet) |
+| `.ai/state/status.json` | Write (paused, resume_token) |
+| `.ai/state/tasks.json` | Read |
+| `.ai/state/activity.jsonl` | Append |
 
 ## Outputs
 

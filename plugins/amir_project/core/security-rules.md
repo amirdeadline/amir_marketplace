@@ -25,7 +25,7 @@ If a task requires modifying a **protected** path:
 3. **Wait** for human approval recorded in `decisions.json`
 4. Do not proceed with edit until approved
 
-Protected patterns include (project may extend via `ai/state/security.json` if present):
+Protected patterns include (project may extend via `.ai/state/security.json` if present):
 
 - `**/.env`, `**/.env.*` (except `.env.example`)
 - `**/credentials*`, `**/*secret*`, `**/*token*` (case-insensitive, sensible globs)

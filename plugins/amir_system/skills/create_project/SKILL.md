@@ -56,9 +56,29 @@ sensible default in brackets where one exists. Accept "back" to revisit the prev
 24. Per-tool selection, one question each: Graphify, Serena, Context7, Semgrep, Langfuse,
     OpenHands, Git worktrees, SWE-bench, Terminal-Bench (**default for each: disabled**)
 
+Portfolio/PM questions (these feed `.amir\portfolio.yaml` and the shared registry — blanks
+are valid answers; NEVER fabricate values the user did not give):
+
+25. Lifecycle stage at creation (active / paused / planned) [active]
+26. Priority (p0 / p1 / p2 / p3, or unset) [unset]
+27. Target deadline (date, or none) [none]
+28. Initial milestones (names + rough dates, or none yet) [none]
+29. Current phase name (e.g. "design", "mvp") [blank]
+30. Owner and stakeholders [blank]
+31. Link an Asana project? (**default: no**; if yes, the GID/reference — configured later via
+    the asana capability, value names only)
+32. Join the global portfolio graph? (**default: no** — joining is always explicit; requires
+    Graphify enabled for a code graph, otherwise metadata-only registration)
+33. Related registered projects (dependencies on / from other portfolio projects, picked from
+    the registry list — never guessed) [none]
+34. Progress tracking source (milestones / .ai tasks / Asana / none) [milestones]
+35. Status staleness threshold in days (when is `.ai\status.md` considered stale) [14]
+36. Include in portfolio reports? (y/n) [y]
+
 ## Phase 2 — Catalog display mechanics (applies to every selectable category)
 
-For every category (14–17, 24), read the matching entries from `catalog/catalog.json` and show,
+For every category (14–17, 24; and question 33's registry picker), read the matching entries
+from `catalog/catalog.json` (registry entries for 33) and show,
 per option:
 
 - short explanation and why it is useful for THIS project
@@ -90,8 +110,46 @@ Present the complete configuration plan:
   each one)
 - credentials still required from the user (names + where they must be placed, e.g.
   `%USERPROFILE%\.amir\secrets\asana.env` → `ASANA_ACCESS_TOKEN`) — values never handled in chat
-- exact files/directories that will be created or modified
+- exact files/directories that will be created or modified — including the FULL folder
+  structure below, so the user sees every path before approval
 - dependencies that will be installed
+- portfolio/PM display (from questions 25–36): the exact `.amir\portfolio.yaml` content that
+  will be written (lifecycle, priority, deadline, milestones, phase, owner/stakeholders,
+  progress source, staleness threshold, reporting flag — with blanks shown AS blanks), the
+  registry entry that will be added to `%USERPROFILE%\.amir\registry\projects.yaml`, the
+  Asana link decision, the related-projects list, and the global-graph decision (join /
+  metadata-only / no — restated explicitly, since joining is never implicit)
+
+### Folder structure that will be created (show it in the plan, then build exactly this)
+
+Mandatory, every project:
+
+```
+<project>\
+  .amir\project.yaml            # manifest (schema v2)
+  .amir\portfolio.yaml          # from templates\portfolio.yaml.tmpl — blanks, not fabrications
+  .amir\components.lock.json
+  .ai\project.md  .ai\status.md  .ai\tasks.md  .ai\decisions.md  .ai\risks.md
+  .ai\architecture.md  .ai\references.md  .ai\changelog.md  .ai\context_handoff.md
+  README.md  AGENTS.md  CLAUDE.md  .gitignore
+```
+
+The 9 `.ai\` files are seeded from `templates\dot-ai\` in this plugin — structured headers,
+empty content sections; never pre-filled with invented state.
+
+Conditional (only when selected/applicable):
+
+- `.cursor\` (commands/rules/mcp.json) — Cursor selected
+- `.claude\` (settings, rendered subset) — Claude Code selected
+- `tests\` — testing requirements selected (adapt name to the framework's convention)
+- `docs\` — user opted into docs scaffold
+- graphify config — Graphify enabled
+- `.ai\agents\<role>\` — subagent orchestration enabled: create ONLY the roles needed, with
+  `.ai\agents\orchestrator\` and `.ai\agents\qa\` as the mandatory minimum
+- source layout — **language/framework-specific adaptation**: use the framework's canonical
+  layout (e.g. a Next.js `app\`, a Rust `src\` via cargo, a Python package dir). Do NOT
+  create an empty generic `src\` when the chosen framework scaffolds or expects a different
+  layout; if a framework generator will be run, let it own the layout.
 
 Then require an explicit confirmation. Destructive, credential-touching, or network-enabling
 actions each get called out in the plan. "Cancel" here still means zero side effects.
@@ -111,12 +169,44 @@ actions each get called out in the plan. "Cancel" here still means zero side eff
 6. Generate Cursor project files (flat `.cursor/commands/amir_<name>.md`, `.cursor/rules/
    amir_*.mdc`, merge-preserving `.cursor/mcp.json`) — only if Cursor was selected.
 7. Generate Claude project files — only if Claude Code was selected.
-8. Initialize docs: `ai/status.md`, `ai/tasks.md`, `ai/decisions.md`, `ai/risks.md`
-   (+ `ai/architecture.md` stub).
+8. Initialize the FULL `.ai\` workspace from `templates\dot-ai\`: `project.md`, `status.md`,
+   `tasks.md`, `decisions.md`, `risks.md`, `architecture.md`, `references.md`,
+   `changelog.md`, `context_handoff.md` — plus `.ai\agents\orchestrator\` and
+   `.ai\agents\qa\` (and only the additional role dirs actually needed) when subagent
+   orchestration is enabled.
 9. Worktrees config if selected.
 10. Run validation (`amirctl validate` / validator) and capture its real output.
-11. Register the project in `%USERPROFILE%\.amir\registry\projects.json` (non-secret metadata
-    only).
+11. Continue with the post-creation portfolio steps below (they include registration).
+
+## Phase 4b — Post-creation portfolio steps (ordered 1–11; stop-and-report on failure)
+
+1. Write `.amir\portfolio.yaml` from this plugin's `templates\portfolio.yaml.tmpl`, filled
+   ONLY with interview answers (questions 25–36). Unanswered fields stay blank/unset —
+   **never fabricate progress, health, or dates**; a brand-new project has confirmed
+   progress blank, not "0%" pretending to be measured.
+2. Verify the stable `project.id` in `.amir\project.yaml` — it is the permanent registry and
+   namespace key (never the folder name).
+3. Register in `%USERPROFILE%\.amir\registry\projects.yaml` (the ONE shared registry;
+   non-secret metadata only), via the engine when present.
+4. Record the related-projects answers (question 33) in `portfolio.yaml` — links to registry
+   ids, never to unregistered guesses.
+5. If Asana linking was chosen: record the reference in `portfolio.yaml`
+   (`integrations.asana`) — reference/GID only, never credentials.
+6. If the user chose to join the global graph AND Graphify is enabled: run the
+   `/amir:graph_projects_add` procedure for the new project (build graph, merge namespace,
+   registration report). If they chose to join but Graphify is disabled: register
+   metadata-only and state the 4 limitations from that command. If they declined: do
+   nothing graph-related — joining is never implicit.
+7. Confirm the registration report exists when step 6 ran
+   (`.amir\reports\global-graph-registration.md`).
+8. Seed `.ai\status.md` with the true initial state ("project created, no work done") and
+   `.ai\changelog.md` with the creation entry — facts only.
+9. Validate the registry entry: `amirctl portfolio-list` (or `registry-list`) shows the new
+   project with correct id/path.
+10. Run `amirctl portfolio-status` and confirm the new entry introduces no findings
+    (missing files, invalid manifest).
+11. Fold results into the Phase 5 report: registry status, portfolio.yaml path, global-graph
+    decision and outcome — each as completed / failed / skipped / blocked, never blended.
 
 ## Phase 5 — Honest final report
 
@@ -127,5 +217,6 @@ NEVER report a component as installed/working unless its executable/integration 
 tested. List every file created. State validation result verbatim. If the engine was missing,
 the report's first line must say the build ran in manual mode.
 
-Finish with next steps: place required credentials, run `/amir:project_status`, and (if
-Graphify enabled) `/amir:graphify_setup` → `/amir:graphify_build`.
+Finish with next steps: place required credentials, run `/amir:project_status`, (if
+Graphify enabled) `/amir:graphify_setup` → `/amir:graphify_build`, and (if the project
+joined the portfolio graph) `/amir:graph_projects_list` to see it in the portfolio view.

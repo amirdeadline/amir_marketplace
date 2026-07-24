@@ -9,7 +9,7 @@ Cross-host comparison for **Claude Code**, **Cursor**, and **OpenAI Codex CLI**.
 | Process rules | `core/*.md` | Single source; skills reference, never restate |
 | Skill definitions | `skills/*.md` | Host-agnostic behavior spec |
 | State & views | `tools/*.js` + `schemas/` | JSON is truth; markdown views regenerated |
-| Workspace layout | `core/workspace-rules.md` | `ai/state/`, `ai/views/`, agent workspaces |
+| Workspace layout | `core/workspace-rules.md` | `.ai/state/`, `.ai/views/`, agent workspaces |
 | Message contract | `core/message-contract.md` | Five-field routine status |
 | Budgets | `core/budget-rules.md` | QA cycles, discovery batches, token caps |
 | Approvals | `core/interaction-style.md` + `schemas/approvals.schema.json` | Human gates for material decisions |
@@ -87,7 +87,7 @@ Native subagents available?
 └── Codex: usually Mode C (simulated / isolated) unless host adds delegation
          ├── Announce mode once; label [AGENT <id>] / isolated context
          ├── /use_subagent: one fresh context per atomic task
-         └── amir project JSON optional — use_subagent is independent of ai/state
+         └── amir project JSON optional — use_subagent is independent of .ai/state
 
 /btw requested?
 ├── Claude Code: refuse / not registered — use fresh chat for side questions

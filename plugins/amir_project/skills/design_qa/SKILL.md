@@ -1,6 +1,6 @@
 ---
 name: design_qa
-description: "Define QA strategy: produce `ai/qa-objectives.md`, QA environment design, and project-level QA skill hooks so verification is testable before build."
+description: "Define QA strategy: produce `.ai/qa-objectives.md`, QA environment design, and project-level QA skill hooks so verification is testable before build."
 ---
 
 # design_qa

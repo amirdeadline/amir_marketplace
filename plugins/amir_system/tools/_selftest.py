@@ -100,8 +100,12 @@ def good_manifest(root: str, components=("fakegrp",)) -> dict:
     }
 
 
-def make_fake_catalog_root(base: Path) -> tuple[Path, dict]:
-    """A synthetic marketplace checkout with two amir_project groups + one system rule."""
+def make_fake_catalog_root(base: Path, extra_components=()) -> tuple[Path, dict]:
+    """A synthetic marketplace checkout with two amir_project groups + one system rule.
+
+    Also writes catalog/catalog.json and copies the real schemas so amirctl's CLI paths
+    (which load + schema-validate the catalog) work against this root.
+    """
     root = base / "catalog_repo"
     write_text(root / "plugins" / "amir_project" / "commands" / "fakegrp" / "fake_cmd.md",
                "---\ndescription: fake command\n---\n\n# fake_cmd\nbody\n")
@@ -119,7 +123,13 @@ def make_fake_catalog_root(base: Path) -> tuple[Path, dict]:
     cat = mk_catalog(
         mk_comp("fakegrp", commands=["fake_cmd"], skills=["fake_skill"]),
         mk_comp("othergrp", commands=["other_cmd"], mcp_servers=["fakesrv"]),
+        *extra_components,
     )
+    write_text(root / "catalog" / "catalog.json", dump_json(cat))
+    for schema in ("component-metadata.schema.json", "project-manifest.schema.json",
+                   "components-lock.schema.json"):
+        write_text(root / "schemas" / schema,
+                   (REAL_CATALOG_ROOT / "schemas" / schema).read_text(encoding="utf-8"))
     return root, cat
 
 
@@ -394,6 +404,120 @@ def test_renderer_full_selection_fast_path():
         assert marker.is_file()
         assert "claude plugin install amir_project@amir-marketplace" in marker.read_text(encoding="utf-8")
         assert not (project / ".amir" / "generated" / "claude" / "marketplace").exists()
+
+
+# ---------------------------------------------------------------- CLI gating (amirctl)
+
+def run_cli(argv) -> tuple[int, str, str]:
+    import contextlib
+    import io
+
+    import amirctl  # noqa: PLC0415
+
+    out, err = io.StringIO(), io.StringIO()
+    with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+        rc = amirctl.main(argv)
+    return rc, out.getvalue(), err.getvalue()
+
+
+def test_cli_generate_refuses_blocked_selection_no_writes():
+    """DEFECT 1: generate must run the resolver on the effective selection and refuse."""
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        blocked = mk_comp("blockedgrp", required_executables=["amir_selftest_missing_exe"])
+        root, _cat = make_fake_catalog_root(base, extra_components=(blocked,))
+        data = good_manifest(str(base / "project"), components=("blockedgrp",))
+        project = make_project(base, data)
+        rc, _out, err = run_cli(["--project", str(project), "--catalog", str(root), "generate"])
+        assert rc != 0, "generate must refuse a blocked selection"
+        assert "BLOCKED [missing-executable]" in err, err
+        assert "no files written" in err, err
+        assert not (project / ".cursor").exists(), "no partial writes on refusal"
+        assert not (project / ".amir" / "generated").exists()
+
+
+def test_cli_generate_dry_run_shows_blocks():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        blocked = mk_comp("blockedgrp", required_executables=["amir_selftest_missing_exe"])
+        root, _cat = make_fake_catalog_root(base, extra_components=(blocked,))
+        project = make_project(base, good_manifest(str(base / "project"), components=("blockedgrp",)))
+        rc, _out, err = run_cli(["--project", str(project), "--catalog", str(root),
+                                 "generate", "--dry-run"])
+        assert rc != 0 and "BLOCKED [missing-executable]" in err, (rc, err)
+
+
+def test_cli_generate_gates_project_tools_mapped_components():
+    """DEFECT 1: project_tools-enabled components (e.g. serena) go through the resolver too."""
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        serena = mk_comp("serena", required_executables=["amir_selftest_missing_uv"])
+        root, _cat = make_fake_catalog_root(base, extra_components=(serena,))
+        data = good_manifest(str(base / "project"), components=())
+        data["project_tools"]["serena"]["enabled"] = True
+        project = make_project(base, data)
+        rc, _out, err = run_cli(["--project", str(project), "--catalog", str(root), "generate"])
+        assert rc != 0, "project_tools-mapped component must be resolution-gated"
+        assert "'serena'" in err and "BLOCKED [missing-executable]" in err, err
+
+
+def test_cli_generate_gates_denied_network_permission():
+    """DEFECT 1: manifest permissions are the granted-permissions input to the resolver."""
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        netgrp = mk_comp("netgrp", network_access="required")
+        root, _cat = make_fake_catalog_root(base, extra_components=(netgrp,))
+        data = good_manifest(str(base / "project"), components=("netgrp",))
+        project = make_project(base, data)
+        rc, _out, err = run_cli(["--project", str(project), "--catalog", str(root), "generate"])
+        assert rc != 0 and "BLOCKED [permission-rejected]" in err, (rc, err)
+        # granting network to the component unblocks it
+        data["permissions"]["network"]["allowed_components"] = ["netgrp"]
+        make_project(base, data)
+        rc2, out2, _err2 = run_cli(["--project", str(project), "--catalog", str(root), "generate"])
+        assert rc2 == 0, out2
+
+
+def test_cli_generate_and_lock_refuse_invalid_manifest():
+    """DEFECT 2: generate/lock validate the manifest schema first and refuse without writing."""
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        root, _cat = make_fake_catalog_root(base)
+        data = good_manifest(str(base / "project"))
+        data["unknown_toplevel_key"] = True
+        project = make_project(base, data)
+        for command in (["generate"], ["generate", "--dry-run"], ["lock"], ["repair"]):
+            rc, _out, err = run_cli(["--project", str(project), "--catalog", str(root), *command])
+            assert rc != 0, f"{command} must refuse an invalid manifest"
+            assert "manifest failed schema validation" in err, (command, err)
+        assert not (project / ".cursor").exists()
+        assert not (project / ".amir" / "components.lock.json").exists()
+
+
+def test_cli_validate_exits_nonzero_on_error():
+    """DEFECT 2 regression guard: any ERROR row must make validate exit nonzero."""
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        root, _cat = make_fake_catalog_root(base)
+        data = good_manifest(str(base / "project"))
+        data["unknown_toplevel_key"] = True
+        project = make_project(base, data)
+        rc, out, _err = run_cli(["--project", str(project), "--catalog", str(root), "validate"])
+        assert rc != 0 and "ERROR" in out, (rc, out)
+
+
+def test_cli_generate_hints_missing_lock_then_quiet():
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+        root, _cat = make_fake_catalog_root(base)
+        project = make_project(base, good_manifest(str(base / "project")))
+        args = ["--project", str(project), "--catalog", str(root)]
+        rc, out, _err = run_cli([*args, "generate"])
+        assert rc == 0 and "hint:" in out and "amirctl lock" in out, out
+        rc_lock, _out, _err = run_cli([*args, "lock"])
+        assert rc_lock == 0
+        rc2, out2, _err = run_cli([*args, "generate"])
+        assert rc2 == 0 and "hint:" not in out2, out2
 
 
 # ---------------------------------------------------------------- validator

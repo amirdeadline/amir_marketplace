@@ -76,6 +76,34 @@ def _load_project(args):
     return project_root, catalog_root, cat, data
 
 
+def _load_project_gated(args, require_resolution: bool = True):
+    """Load the project, refusing (before any write) on schema errors or blocked activation.
+
+    The resolution gate maps the FULL effective selection -- plugins.amir_project.components,
+    every enabled project_tools entry, and system_capabilities grants -- through the same
+    resolver as catalog-resolve, with the manifest permissions block as granted permissions.
+    """
+    import catalog as catalog_mod  # noqa: PLC0415
+    import manifest as manifest_mod  # noqa: PLC0415
+
+    catalog_root = _catalog_root(args)
+    project_root = _project_root(args)
+    cat = catalog_mod.load_catalog(catalog_root)
+    data, errors = manifest_mod.validate_manifest_file(project_root, catalog_root)
+    if errors:
+        raise AmirError("manifest failed schema validation; refusing to proceed (no files written):\n  "
+                        + "\n  ".join(errors))
+    if require_resolution:
+        selection = manifest_mod.selected_component_ids(data)
+        result = catalog_mod.resolve(cat, selection, manifest_mod.host_matrix(data),
+                                     manifest_mod.granted_permissions(data))
+        if not result.ok:
+            blocked = "\n".join(f"BLOCKED [{i.rule}] {i.message}" for i in result.issues)
+            raise AmirError("component selection cannot be activated; refusing to render "
+                            f"(no files written):\n{blocked}")
+    return project_root, catalog_root, cat, data
+
+
 def cmd_validate(args) -> int:
     import validator  # noqa: PLC0415
 
@@ -89,11 +117,15 @@ def cmd_validate(args) -> int:
 
 
 def cmd_generate(args) -> int:
+    import lockfile  # noqa: PLC0415
     import renderer  # noqa: PLC0415
 
-    project_root, catalog_root, cat, data = _load_project(args)
+    project_root, catalog_root, cat, data = _load_project_gated(args)
     plan, actions = renderer.render(project_root, data, cat, catalog_root, dry_run=args.dry_run)
     print(renderer.format_plan(plan, actions, args.dry_run))
+    if not args.dry_run and not (project_root / lockfile.LOCK_RELPATH).is_file():
+        print("hint: no .amir/components.lock.json yet -- run 'amirctl lock' "
+              "to pin source checksums (validate reports an error until then)")
     return 0
 
 
@@ -101,7 +133,7 @@ def cmd_lock(args) -> int:
     import lockfile  # noqa: PLC0415
     import manifest as manifest_mod  # noqa: PLC0415
 
-    project_root, catalog_root, cat, data = _load_project(args)
+    project_root, catalog_root, cat, data = _load_project_gated(args, require_resolution=False)
     selection = manifest_mod.selected_component_ids(data)
     lock = lockfile.build_lock(catalog_root, cat, selection)
     path = lockfile.write_lock(project_root, lock)
@@ -136,7 +168,7 @@ def cmd_repair(args) -> int:
     import manifest as manifest_mod  # noqa: PLC0415
     import renderer  # noqa: PLC0415
 
-    project_root, catalog_root, cat, data = _load_project(args)
+    project_root, catalog_root, cat, data = _load_project_gated(args)
     plan, actions = renderer.render(project_root, data, cat, catalog_root, dry_run=False)
     selection = manifest_mod.selected_component_ids(data)
     lockfile.write_lock(project_root, lockfile.build_lock(catalog_root, cat, selection))

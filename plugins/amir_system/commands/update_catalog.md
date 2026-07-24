@@ -17,6 +17,14 @@ claude plugin marketplace update amir-marketplace
 # 4. re-verify tooling + catalog integrity
 python "$env:USERPROFILE\.amir\bin\amirctl.py" doctor
 ```
+
+CRITICAL cache rule (learned 2026-07-24): `claude plugin update` refreshes the installed cache ONLY
+when the plugin.json version CHANGED — same-version updates report "already at the latest version"
+and silently keep stale files, while `claude plugin details` reads the source and masks the gap.
+After any catalog content change: bump `version` in the plugin's plugin.json AND the three
+marketplace manifests, then `claude plugin update amir_system@amir-marketplace`, then verify the new
+`~/.claude/plugins/cache/amir-marketplace/amir_system/<version>/` contains the change. A restart of
+Claude Code is required for the running session to pick it up.
 If `amirctl.py` is missing → report "amirctl engine not provisioned at
 %USERPROFILE%\.amir\bin\amirctl.py" and stop after steps 2–3.
 

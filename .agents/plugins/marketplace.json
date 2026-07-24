@@ -16,7 +16,7 @@
       },
       "category": "integrations",
       "description": "User-scope core: project lifecycle (create/onboard/orchestrate/inspect/manage), Graphify wrappers, Asana + Playwright MCP, system rules. Available before any project exists.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "amir_project",
@@ -30,7 +30,7 @@
       },
       "category": "integrations",
       "description": "Project-scope component groups (harness, cloud, security, network, dev tooling, evaluation). Never auto-enabled; installed per project or rendered as a manifest-selected subset.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   ]
 }

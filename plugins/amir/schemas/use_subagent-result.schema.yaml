@@ -1,0 +1,22 @@
+$id: use_subagent.result
+title: Subagent or isolated-context result
+type: object
+required: [task_id, summary, files_changed, validation_performed, unresolved_issues]
+properties:
+  task_id: { type: string }
+  summary: { type: string }
+  files_changed: { type: array, items: { type: string } }
+  key_decisions: { type: array, items: { type: string } }
+  validation_performed:
+    type: array
+    items:
+      type: object
+      required: [description, result]
+      properties:
+        description: { type: string }
+        command: { type: string }
+        result: { type: string, enum: [passed, failed, not_run, skipped] }
+        evidence: { type: string }
+  unresolved_issues: { type: array, items: { type: string } }
+  risks_or_assumptions: { type: array, items: { type: string } }
+  artifact_notes: { type: string }

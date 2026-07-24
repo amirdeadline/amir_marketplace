@@ -1,5 +1,5 @@
 ---
-name: asana-complete-task
+name: amir-asana-complete-task
 description: >
   Complete (mark done) or remove one or more Asana tasks. Use when the user says
   "complete task", "mark done", "mark as complete", "remove task", "finish task",

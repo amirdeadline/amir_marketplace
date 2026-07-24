@@ -1,4 +1,9 @@
-# /system_settings
+---
+name: "amir:system_settings"
+description: "Produce a clean, human-readable artifact of **system-level** settings for the specified AI application, ordered by importance — for audit..."
+---
+
+# /amir:system_settings
 
 Produce a clean, human-readable artifact of **system-level** settings for the specified AI application, ordered by importance — for audit, backup review, and troubleshooting.
 

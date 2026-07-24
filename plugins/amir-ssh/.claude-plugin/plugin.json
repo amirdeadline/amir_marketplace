@@ -1,0 +1,12 @@
+{
+  "name": "amir-ssh",
+  "version": "0.1.0",
+  "description": "SSH/SCP via system OpenSSH. Confirm host+command before run; block destructive remote commands unless host-named typed confirm; no password inline; no multi-host loops without per-host confirm.",
+  "author": {
+    "name": "Amir",
+    "email": "amir.rashidi2016@gmail.com"
+  },
+  "keywords": [
+    "ssh-terminal"
+  ]
+}

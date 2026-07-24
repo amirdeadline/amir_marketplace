@@ -1,4 +1,9 @@
-# /document_max
+---
+name: "amir:document_max"
+description: "Run a multi-phase documentation sprint with `doc-lead`, `doc-worker`, and `doc-verifier` roles: inspect sources, obtain human approval on..."
+---
+
+# /amir:document_max
 
 Run a multi-phase documentation sprint with `doc-lead`, `doc-worker`, and `doc-verifier` roles: inspect sources, obtain human approval on outline and budget, write sections incrementally with strict traceability, checkpoint every 15 sections, and complete only after three final verification passes.
 

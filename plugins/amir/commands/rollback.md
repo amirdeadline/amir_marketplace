@@ -1,4 +1,9 @@
-# /rollback
+---
+name: "amir:rollback"
+description: "Revert project codebase to a prior checkpoint safely. Prefer git revert; allow `git reset --hard` only with explicit typed human confirma..."
+---
+
+# /amir:rollback
 
 Revert project codebase to a prior checkpoint safely. Prefer git revert; allow `git reset --hard` only with explicit typed human confirmation.
 

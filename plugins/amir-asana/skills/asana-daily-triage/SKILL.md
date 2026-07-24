@@ -1,5 +1,5 @@
 ---
-name: asana-daily-triage
+name: amir-asana-daily-triage
 description: >
   Triage the day's Asana tasks and apply updates after confirmation. Use when
   the user says "triage my tasks", "triage my day", "clean up my tasks", or

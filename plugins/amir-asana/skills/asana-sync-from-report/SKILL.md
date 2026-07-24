@@ -1,5 +1,5 @@
 ---
-name: asana-sync-from-report
+name: amir-asana-sync-from-report
 description: >
   Sync Asana from a conversation, status report, or log file. Use when the user
   says "sync Asana from this report", "update tasks from log", "process this status

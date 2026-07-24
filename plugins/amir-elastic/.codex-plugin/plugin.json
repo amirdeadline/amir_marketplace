@@ -1,0 +1,6 @@
+{
+  "name": "amir-elastic",
+  "version": "0.1.0",
+  "description": "Elasticsearch/Kibana REST helper + ES|QL/DSL and detections skills. Index delete requires typed confirmation. Optional MCP to Kibana Agent Builder.",
+  "skills": "./skills/"
+}

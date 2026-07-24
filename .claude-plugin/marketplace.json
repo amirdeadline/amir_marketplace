@@ -4,49 +4,307 @@
     "name": "amir"
   },
   "metadata": {
-    "description": "Private/cross-host marketplace: amir, amir-asana, prisma (PANW internal), litellm.",
-    "version": "0.2.0"
+    "description": "amir marketplace \u2014 all slash commands under /amir\u2026",
+    "version": "0.3.1"
   },
   "plugins": [
     {
       "name": "amir",
       "source": "./plugins/amir",
-      "description": "Portable multi-agent project-execution harness: context engineering, JSON state, evidence-based QA loops, goal-drift protection, cost/budget control, and full human visibility.",
+      "description": "Portable multi-agent project-execution harness.",
       "version": "0.1.0",
-      "author": { "name": "amir" },
-      "category": "productivity",
-      "tags": ["multi-agent", "orchestrator", "qa", "project-management"],
-      "keywords": ["amir", "agents", "qa-loop", "json-state"]
+      "author": {
+        "name": "Amir"
+      },
+      "category": "integrations",
+      "tags": [
+        "multi-agent",
+        "orchestrator"
+      ],
+      "keywords": [
+        "multi-agent",
+        "orchestrator"
+      ]
     },
     {
       "name": "amir-asana",
       "source": "./plugins/amir-asana",
-      "description": "Asana connector (MCP, 17 tools) + task skills: priorities, review, standup, triage, create/edit/complete, report sync.",
+      "description": "Asana MCP + task skills.",
       "version": "0.2.0",
-      "author": { "name": "Amir" },
-      "category": "productivity",
-      "tags": ["asana", "mcp", "task-management"],
-      "keywords": ["asana", "mcp", "tasks"]
+      "author": {
+        "name": "Amir"
+      },
+      "category": "integrations",
+      "tags": [
+        "asana",
+        "mcp"
+      ],
+      "keywords": [
+        "asana",
+        "mcp"
+      ]
     },
     {
-      "name": "prisma",
-      "source": "./plugins/prisma",
-      "description": "INTERNAL: Prisma SASE / SCM expertise over a local markdown corpus + live public docs. Do not publish baked references.",
+      "name": "amir-prisma",
+      "source": "./plugins/amir-prisma",
+      "description": "INTERNAL Prisma SASE/SCM corpus skills.",
       "version": "0.1.0",
-      "author": { "name": "Amir" },
-      "category": "productivity",
-      "tags": ["prisma", "sase", "internal"],
-      "keywords": ["prisma", "sase", "scm", "palo-alto"]
+      "author": {
+        "name": "Amir"
+      },
+      "category": "security",
+      "tags": [
+        "prisma",
+        "sase",
+        "internal"
+      ],
+      "keywords": [
+        "prisma",
+        "sase",
+        "internal"
+      ]
     },
     {
-      "name": "litellm",
-      "source": "./plugins/litellm",
-      "description": "Org LiteLLM proxy: Claude Code session launcher + MCP tools for the proxy API surface.",
+      "name": "amir-litellm",
+      "source": "./plugins/amir-litellm",
+      "description": "Org LiteLLM proxy session launcher + MCP.",
       "version": "0.1.0",
-      "author": { "name": "Amir" },
-      "category": "developer-tools",
-      "tags": ["litellm", "proxy", "mcp"],
-      "keywords": ["litellm", "proxy", "mcp", "anthropic"]
+      "author": {
+        "name": "Amir"
+      },
+      "category": "integrations",
+      "tags": [
+        "litellm",
+        "proxy"
+      ],
+      "keywords": [
+        "litellm",
+        "proxy"
+      ]
+    },
+    {
+      "name": "amir-paloalto",
+      "source": "./plugins/amir-paloalto",
+      "description": "PAN-OS/Panorama/GlobalProtect companion to amir-prisma.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "security",
+      "tags": [
+        "pan-os",
+        "panorama"
+      ],
+      "keywords": [
+        "pan-os",
+        "panorama"
+      ]
+    },
+    {
+      "name": "amir-aws",
+      "source": "./plugins/amir-aws",
+      "description": "AWS official MCP + aws CLI fallback.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "infra",
+      "tags": [
+        "aws",
+        "mcp"
+      ],
+      "keywords": [
+        "aws",
+        "mcp"
+      ]
+    },
+    {
+      "name": "amir-azure",
+      "source": "./plugins/amir-azure",
+      "description": "Azure MCP + az CLI.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "infra",
+      "tags": [
+        "azure",
+        "mcp"
+      ],
+      "keywords": [
+        "azure",
+        "mcp"
+      ]
+    },
+    {
+      "name": "amir-terraform",
+      "source": "./plugins/amir-terraform",
+      "description": "Terraform plan/apply/destroy with confirm + hooks.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "infra",
+      "tags": [
+        "terraform",
+        "iac"
+      ],
+      "keywords": [
+        "terraform",
+        "iac"
+      ]
+    },
+    {
+      "name": "amir-docker",
+      "source": "./plugins/amir-docker",
+      "description": "Docker/Compose CLI wrappers with guards.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "infra",
+      "tags": [
+        "docker"
+      ],
+      "keywords": [
+        "docker"
+      ]
+    },
+    {
+      "name": "amir-splunk",
+      "source": "./plugins/amir-splunk",
+      "description": "Splunk REST/SPL helper.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "security",
+      "tags": [
+        "splunk",
+        "spl"
+      ],
+      "keywords": [
+        "splunk",
+        "spl"
+      ]
+    },
+    {
+      "name": "amir-elastic",
+      "source": "./plugins/amir-elastic",
+      "description": "Elasticsearch/Kibana API + ES|QL skills.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "security",
+      "tags": [
+        "elastic"
+      ],
+      "keywords": [
+        "elastic"
+      ]
+    },
+    {
+      "name": "amir-sentinel",
+      "source": "./plugins/amir-sentinel",
+      "description": "Microsoft Sentinel KQL hunting + analytics.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "security",
+      "tags": [
+        "sentinel",
+        "kql"
+      ],
+      "keywords": [
+        "sentinel",
+        "kql"
+      ]
+    },
+    {
+      "name": "amir-qradar",
+      "source": "./plugins/amir-qradar",
+      "description": "QRadar AQL/offenses REST helper.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "security",
+      "tags": [
+        "qradar"
+      ],
+      "keywords": [
+        "qradar"
+      ]
+    },
+    {
+      "name": "amir-cortex-xdr",
+      "source": "./plugins/amir-cortex-xdr",
+      "description": "Cortex XDR API + IR; typed response confirms.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "security",
+      "tags": [
+        "cortex",
+        "xdr"
+      ],
+      "keywords": [
+        "cortex",
+        "xdr"
+      ]
+    },
+    {
+      "name": "amir-ssh",
+      "source": "./plugins/amir-ssh",
+      "description": "OpenSSH wrappers with host/command confirmation.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "network",
+      "tags": [
+        "ssh"
+      ],
+      "keywords": [
+        "ssh"
+      ]
+    },
+    {
+      "name": "amir-nmap",
+      "source": "./plugins/amir-nmap",
+      "description": "Authorized nmap scanning + parse.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "network",
+      "tags": [
+        "nmap"
+      ],
+      "keywords": [
+        "nmap"
+      ]
+    },
+    {
+      "name": "amir-wireshark",
+      "source": "./plugins/amir-wireshark",
+      "description": "tshark pcap analysis; live capture opt-in.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "network",
+      "tags": [
+        "tshark",
+        "pcap"
+      ],
+      "keywords": [
+        "tshark",
+        "pcap"
+      ]
     }
   ]
 }

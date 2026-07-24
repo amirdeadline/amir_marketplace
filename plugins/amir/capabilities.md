@@ -23,8 +23,9 @@ Install copies or links the full amir package so `skills/`, `tools/`, and `core/
 
 | Capability | Claude Code | Cursor | Codex |
 |------------|-------------|--------|-------|
-| **Subagent support** | **Native** — `Task` tool launches isolated subagents with typed roles | **Degrade** — no guaranteed parallel subagent isolation; orchestrator **simulates** sequential role passes (`1-orchestrator` → `2-architect` → `dev-T00n` → `qa-T00n`) in one thread | **Degrade** — AGENTS.md + skill wrappers; sequential **simulated** roles unless host adds native delegation |
-| **Subagent degrade path** | Use `Task` with agent id from `core/naming-rules.md` | Explicitly label non-native steps as **simulated**; one agent plays each role in order; log logical agent id in activity | Same simulated sequential pattern; document in session which logical agent is active |
+| **Subagent support** | **Native** — `Task` tool launches isolated subagents with typed roles | **Native when `Task` available** — Cursor Agent `Task` tool (parallel subagents); **Degrade** to Mode C isolated contexts if Task unavailable | **Degrade** — AGENTS.md + skill wrappers; sequential **simulated** / Mode C unless host adds native delegation |
+| **Subagent degrade path** | Use `Task` with agent id from `core/naming-rules.md` | Prefer `Task` (Mode A) for `/amir:use_subagent`; if unavailable, label **isolated task execution context** (Mode C) — do not claim native spawn | Same Mode C pattern; document which logical agent is active |
+| **`/amir:use_subagent`** | Skill wrapper → `skills/use_subagent.md` | Command + skill; aliases `/use_subagent`, trailing trigger | Skill wrapper; Mode C default |
 | **Hooks** | **Yes** — `hooks/hooks.json` (`PreToolUse`, `SessionStart`, etc.) | **Limited** — `.cursor/hooks.json` where supported; rules compensate | **Limited** — rely on skill discipline + `AGENTS.md`; sample `.codex/config.toml` notes only |
 | **Command registration** | Plugin `skills/<name>/SKILL.md` → `/amir:<name>` (namespaced) | `commands/<name>.md` → slash command | `.agents/skills/<name>/SKILL.md` (custom slash commands **deprecated** → use skills) |
 | **Rules / always-on context** | Skills + optional `settings.json` agent | `rules/amir-core.mdc` (`alwaysApply: true`) | `AGENTS.md` at adapter root |
@@ -57,7 +58,7 @@ Install copies or links the full amir package so `skills/`, `tools/`, and `core/
 | Packaging | `.cursor-plugin/plugin.json`, `commands/`, `rules/`, optional `skills/`, `hooks/` |
 | Commands | One `commands/<skill>.md` per amir skill + `commands/btw.md` |
 | Rules | `rules/amir-core.mdc` — `alwaysApply: true`, points to `core/` paths, message contract, JSON truth |
-| Subagents | **Simulated degrade:** when Task-style isolation unavailable, run roles **sequentially in one agent** and label each block with logical agent id — be explicit that this is **simulated**, not parallel |
+| Subagents | Prefer native **Task** when present (Mode A for `/amir:use_subagent`). If Task unavailable: Mode C sequential isolated contexts — label explicitly; do not claim parallel native subagents |
 | `/btw` | `commands/btw.md` — temporary read-only, single turn, banner **BTW MODE — Temporary • Read-only • Not saved**, close with **Temporary session closed.** |
 | Residual `/btw` limits | Cursor may retain the turn in chat history; tool write blocking depends on mode — agent must refuse writes even if tools appear available |
 
@@ -81,11 +82,12 @@ Install copies or links the full amir package so `skills/`, `tools/`, and `core/
 
 ```
 Native subagents available?
-├── Claude Code: YES → Task with agent id
-└── Cursor / Codex: NO → sequential SIMULATED roles
-         ├── Announce: [AGENT <id>] at each phase
-         ├── Same JSON writes (--by 1-orchestrator only)
-         └── Log logical agent in activity.jsonl
+├── Claude Code: YES → Task with agent id (Mode A)
+├── Cursor: Task available? YES → Mode A; NO → Mode C isolated contexts
+└── Codex: usually Mode C (simulated / isolated) unless host adds delegation
+         ├── Announce mode once; label [AGENT <id>] / isolated context
+         ├── /use_subagent: one fresh context per atomic task
+         └── amir project JSON optional — use_subagent is independent of ai/state
 
 /btw requested?
 ├── Claude Code: refuse / not registered — use fresh chat for side questions

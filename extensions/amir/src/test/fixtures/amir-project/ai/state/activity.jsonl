@@ -1,0 +1,3 @@
+{"timestamp":"2026-07-14T11:50:00.000Z","agent_id":"1-orchestrator","action":"start","result":"orchestrator online"}
+{"timestamp":"2026-07-14T11:55:00.000Z","agent_id":"dev-T001","action":"heartbeat","result":"ok","task_id":"T001"}
+{"timestamp":"2026-07-14T11:56:00.000Z","agent_id":"dev-T001","action":"message","result":"editing panel","task_id":"T001"}

@@ -1,4 +1,9 @@
-# /docs_sync
+---
+name: "amir:docs_sync"
+description: "Detect drift between documentation and actual behavior; produce a fix list and apply doc updates only with human approval."
+---
+
+# /amir:docs_sync
 
 Detect drift between documentation and actual behavior; produce a fix list and apply doc updates only with human approval.
 

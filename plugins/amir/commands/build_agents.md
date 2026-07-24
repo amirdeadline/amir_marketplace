@@ -1,4 +1,9 @@
-# /build_agents
+---
+name: "amir:build_agents"
+description: "Materialize agent workspace folders and seed `prompt.md` / `notes.md` for every registered agent in `agents.json`."
+---
+
+# /amir:build_agents
 
 Materialize agent workspace folders and seed `prompt.md` / `notes.md` for every registered agent in `agents.json`.
 

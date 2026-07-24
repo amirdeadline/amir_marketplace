@@ -1,4 +1,9 @@
-# /project_tasks
+---
+name: "amir:project_tasks"
+description: "Render and present the task board view. Read-only visibility into active and finished tasks."
+---
+
+# /amir:project_tasks
 
 Render and present the task board view. Read-only visibility into active and finished tasks.
 

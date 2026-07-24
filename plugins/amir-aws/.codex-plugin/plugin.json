@@ -1,0 +1,6 @@
+{
+  "name": "amir-aws",
+  "version": "0.1.0",
+  "description": "AWS via official managed MCP (mcp-proxy-for-aws) plus aws CLI fallback. Preflight STS; mutations confirm-first.",
+  "skills": "./skills/"
+}

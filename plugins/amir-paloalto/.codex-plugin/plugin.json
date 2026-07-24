@@ -1,0 +1,6 @@
+{
+  "name": "amir-paloalto",
+  "version": "0.1.0",
+  "description": "PAN-OS / Panorama / GlobalProtect companion to prisma (SASE/SCM). Knowledge skills + API helper; mutations confirm-first.",
+  "skills": "./skills/"
+}

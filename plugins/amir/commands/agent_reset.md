@@ -1,4 +1,9 @@
-# /agent_reset
+---
+name: "amir:agent_reset"
+description: "Archive an agent workspace and respawn a fresh prompt/notes shell without deleting history. Mark agent reset in registry for audit."
+---
+
+# /amir:agent_reset
 
 Archive an agent workspace and respawn a fresh prompt/notes shell without deleting history. Mark agent reset in registry for audit.
 

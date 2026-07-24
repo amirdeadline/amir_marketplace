@@ -1,4 +1,9 @@
-# /git_commit
+---
+name: "amir:git_commit"
+description: "Create a git commit with message metadata derived from activity and implementation notes, after a mandatory secrets scan gate. Hard-fail ..."
+---
+
+# /amir:git_commit
 
 Create a git commit with message metadata derived from activity and implementation notes, after a mandatory secrets scan gate. Hard-fail on any findings with file locations before staging or committing.
 

@@ -1,0 +1,6 @@
+{
+  "name": "amir-nmap",
+  "version": "0.1.0",
+  "description": "Authorized nmap scanning: interview\u2192command print\u2192auth gate\u2192confirm. Parse XML/gnmap to tables. Aggressive modes opt-in.",
+  "skills": "./skills/"
+}

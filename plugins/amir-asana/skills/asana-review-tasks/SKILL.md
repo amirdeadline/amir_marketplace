@@ -1,5 +1,5 @@
 ---
-name: asana-review-tasks
+name: amir-asana-review-tasks
 description: >
   Review all of Amir's Asana tasks. Use when the user says "review my tasks",
   "show all my tasks", "what's on my plate", "task overview", "what do I have",

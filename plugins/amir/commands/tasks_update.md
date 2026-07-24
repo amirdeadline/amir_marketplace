@@ -1,4 +1,9 @@
-# /tasks_update
+---
+name: "amir:tasks_update"
+description: "Reconcile reported task or scope changes through state tools and regenerate task views."
+---
+
+# /amir:tasks_update
 
 Reconcile reported task or scope changes through state tools and regenerate task views.
 

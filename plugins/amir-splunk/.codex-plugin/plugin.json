@@ -1,0 +1,6 @@
+{
+  "name": "amir-splunk",
+  "version": "0.1.0",
+  "description": "Splunk REST/search helper + SPL authoring skill. Saved-search/alert mutations confirm-first. PARTIALLY DOABLE: enterprise MCP is host-installed (Splunkbase app), not a local npm.",
+  "skills": "./skills/"
+}

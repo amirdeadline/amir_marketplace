@@ -1,4 +1,9 @@
-# /git_tree
+---
+name: "amir:git_tree"
+description: "Render the branch and commit graph for the project as human-readable text or Mermaid, including amir checkpoint tags (`amir/T*-complete`)."
+---
+
+# /amir:git_tree
 
 Render the branch and commit graph for the project as human-readable text or Mermaid, including amir checkpoint tags (`amir/T*-complete`).
 

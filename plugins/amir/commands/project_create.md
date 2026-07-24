@@ -1,4 +1,9 @@
-# /project_create
+---
+name: "amir:project_create"
+description: "Bootstrap a new amir project from a human goal: create the project folder and workspace skeleton, run structured discovery, produce appro..."
+---
+
+# /amir:project_create
 
 Bootstrap a new amir project from a human goal: create the project folder and workspace skeleton, run structured discovery, produce approved goal documents, and initialize JSON state.
 

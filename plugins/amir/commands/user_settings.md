@@ -1,4 +1,9 @@
-# /user_settings
+---
+name: "amir:user_settings"
+description: "Produce a clean, human-readable artifact of **user-level** settings for the specified AI application (project + user home overrides), ord..."
+---
+
+# /amir:user_settings
 
 Produce a clean, human-readable artifact of **user-level** settings for the specified AI application (project + user home overrides), ordered by importance — read-only audit.
 

@@ -1,0 +1,17 @@
+{
+  "name": "amir-litellm",
+  "version": "0.1.0",
+  "description": "Org LiteLLM proxy: session launcher + MCP tools for Cursor.",
+  "author": {
+    "name": "Amir",
+    "email": "amir.rashidi2016@gmail.com"
+  },
+  "keywords": [
+    "litellm",
+    "proxy",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "commands": "./commands/",
+  "mcpServers": "./mcp.json"
+}

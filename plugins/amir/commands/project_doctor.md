@@ -1,4 +1,9 @@
-# /project_doctor
+---
+name: "amir:project_doctor"
+description: "Run structural and operational health checks; present findings as a severity table with suggested fixes."
+---
+
+# /amir:project_doctor
 
 Run structural and operational health checks; present findings as a severity table with suggested fixes.
 

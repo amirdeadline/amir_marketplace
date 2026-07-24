@@ -1,4 +1,9 @@
-# /project_watch
+---
+name: "amir:project_watch"
+description: "Live operational snapshot: last N activity events, agents table with heartbeat/stale flags, and in-progress task linkage."
+---
+
+# /amir:project_watch
 
 Live operational snapshot: last N activity events, agents table with heartbeat/stale flags, and in-progress task linkage.
 

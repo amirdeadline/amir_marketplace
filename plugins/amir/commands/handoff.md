@@ -1,4 +1,9 @@
-# /handoff
+---
+name: "amir:handoff"
+description: "Generate a structured pause handoff from template so a fresh orchestrator instance can resume without relying on chat history."
+---
+
+# /amir:handoff
 
 Generate a structured pause handoff from template so a fresh orchestrator instance can resume without relying on chat history.
 

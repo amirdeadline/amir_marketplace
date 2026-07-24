@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "risks": [
+    {
+      "id": "R001",
+      "severity": "HIGH",
+      "summary": "Host CLI may be missing on PATH"
+    },
+    {
+      "id": "R002",
+      "severity": "LOW",
+      "summary": "Fixture only"
+    }
+  ]
+}

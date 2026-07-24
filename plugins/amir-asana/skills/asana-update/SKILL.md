@@ -1,5 +1,5 @@
 ---
-name: asana-update
+name: amir-asana-update
 description: >
   Sync Asana from an asana_tasks.md backlog file. Use when the user says
   "/asana_update", "asana update", "sync asana_tasks.md", or provides a path to

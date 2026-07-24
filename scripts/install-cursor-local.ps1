@@ -1,30 +1,20 @@
-# Install amir-marketplace plugins into Cursor's local plugin directory.
-# Usage (from marketplace root or anywhere):
-#   powershell -ExecutionPolicy Bypass -File scripts/install-cursor-local.ps1
-
+# Junction all packed plugins into Cursor local plugins dir.
 $ErrorActionPreference = "Stop"
 
 $MarketplaceRoot = Split-Path -Parent $PSScriptRoot
 $LocalRoot = Join-Path $env:USERPROFILE ".cursor\plugins\local"
 New-Item -ItemType Directory -Force -Path $LocalRoot | Out-Null
 
-$plugins = @(
-  @{ Name = "amir"; Path = Join-Path $MarketplaceRoot "plugins\amir" },
-  @{ Name = "amir-asana"; Path = Join-Path $MarketplaceRoot "plugins\amir-asana" },
-  @{ Name = "prisma"; Path = Join-Path $MarketplaceRoot "plugins\prisma" },
-  @{ Name = "litellm"; Path = Join-Path $MarketplaceRoot "plugins\litellm" }
-)
-
-foreach ($p in $plugins) {
-  if (-not (Test-Path $p.Path)) {
-    Write-Error "Missing $($p.Path). Run the matching pack script first."
-  }
-  $manifest = Join-Path $p.Path ".cursor-plugin\plugin.json"
+$pluginRoot = Join-Path $MarketplaceRoot "plugins"
+Get-ChildItem $pluginRoot -Directory | ForEach-Object {
+  $name = $_.Name
+  $path = $_.FullName
+  $manifest = Join-Path $path ".cursor-plugin\plugin.json"
   if (-not (Test-Path $manifest)) {
-    Write-Error "Missing Cursor manifest: $manifest"
+    Write-Warning "Skip $name - no Cursor manifest"
+    return
   }
-
-  $link = Join-Path $LocalRoot $p.Name
+  $link = Join-Path $LocalRoot $name
   if (Test-Path $link) {
     $item = Get-Item $link -Force
     if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
@@ -33,14 +23,11 @@ foreach ($p in $plugins) {
       Remove-Item -Recurse -Force $link
     }
   }
-
-  cmd /c "mklink /J `"$link`" `"$($p.Path)`""
-  if ($LASTEXITCODE -ne 0) {
-    Write-Error "Failed to create junction for $($p.Name)"
-  }
-  Write-Host "OK  $link -> $($p.Path)"
+  cmd /c "mklink /J `"$link`" `"$path`""
+  if ($LASTEXITCODE -ne 0) { Write-Error "Failed junction for $name" }
+  Write-Host "OK  $link"
 }
 
 Write-Host ""
-Write-Host "Done. In Cursor: Developer: Reload Window"
-Write-Host "Then open Customize -> Plugins and confirm amir, amir-asana, prisma, litellm."
+Write-Host "Done. Developer: Reload Window"
+Write-Host "Type /amir in chat to see marketplace slash commands."

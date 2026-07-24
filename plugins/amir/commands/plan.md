@@ -1,4 +1,9 @@
-# /plan
+---
+name: "amir:plan"
+description: "Produce a phased implementation plan, run context-engineering quality review, obtain human approval, and populate `ai/state/tasks.json`."
+---
+
+# /amir:plan
 
 Produce a phased implementation plan, run context-engineering quality review, obtain human approval, and populate `ai/state/tasks.json`.
 

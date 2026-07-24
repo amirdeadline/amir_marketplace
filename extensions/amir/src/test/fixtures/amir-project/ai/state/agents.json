@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "agents": [
+    {
+      "id": "1-orchestrator",
+      "role": "orchestrator",
+      "state": "active",
+      "workspace": "E:\\fixtures\\amir-project\\ai\\agents\\1-orchestrator",
+      "model": "premium",
+      "last_heartbeat_ts": "2026-07-14T12:00:00.000Z",
+      "task_id": null
+    },
+    {
+      "id": "3-qa",
+      "role": "qa",
+      "state": "idle",
+      "workspace": "ai/agents/3-qa",
+      "model": "cheap",
+      "last_heartbeat_ts": null,
+      "task_id": null
+    },
+    {
+      "id": "dev-T001",
+      "role": "worker",
+      "parent": null,
+      "state": "active",
+      "workspace": "ai/agents/dev-T001",
+      "model": "premium",
+      "task_id": "T001",
+      "last_heartbeat_ts": "2026-07-14T11:55:00.000Z"
+    },
+    {
+      "id": "qa-T001",
+      "role": "verifier",
+      "parent": "3-qa",
+      "state": "idle",
+      "workspace": "ai/agents/qa-T001",
+      "model": "cheap",
+      "task_id": "T001",
+      "last_heartbeat_ts": null
+    }
+  ]
+}

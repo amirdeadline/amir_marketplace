@@ -1,4 +1,9 @@
-# /user_skills
+---
+name: "amir:user_skills"
+description: "Enumerate and present a table of skills installed at the **user level** for the specified AI application — project-scoped or user-home ov..."
+---
+
+# /amir:user_skills
 
 Enumerate and present a table of skills installed at the **user level** for the specified AI application — project-scoped or user-home overrides, read-only inventory.
 

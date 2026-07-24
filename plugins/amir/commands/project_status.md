@@ -1,4 +1,9 @@
-# /project_status
+---
+name: "amir:project_status"
+description: "Render and present the project status dashboard. Read-only visibility into phase, progress, pending approvals, and current task."
+---
+
+# /amir:project_status
 
 Render and present the project status dashboard. Read-only visibility into phase, progress, pending approvals, and current task.
 

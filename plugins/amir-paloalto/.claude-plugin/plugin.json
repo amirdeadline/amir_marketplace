@@ -1,0 +1,12 @@
+{
+  "name": "amir-paloalto",
+  "version": "0.1.0",
+  "description": "PAN-OS / Panorama / GlobalProtect companion to prisma (SASE/SCM). Knowledge skills + API helper; mutations confirm-first.",
+  "author": {
+    "name": "Amir",
+    "email": "amir.rashidi2016@gmail.com"
+  },
+  "keywords": [
+    "paloalto"
+  ]
+}

@@ -1,0 +1,434 @@
+{
+  "name": "amir",
+  "displayName": "amir",
+  "description": "Visual cockpit for amir multi-agent project execution — Project, Agents, and Tasks side panel.",
+  "version": "0.1.0",
+  "publisher": "amir",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:amir.project",
+    "onView:amir.agents",
+    "onView:amir.tasks",
+    "workspaceContains:ai/state/tasks.json"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "amir",
+          "title": "amir",
+          "icon": "media/amir-activity.svg"
+        }
+      ]
+    },
+    "views": {
+      "amir": [
+        {
+          "type": "webview",
+          "id": "amir.project",
+          "name": "Project"
+        },
+        {
+          "id": "amir.agents",
+          "name": "Agents"
+        },
+        {
+          "id": "amir.tasks",
+          "name": "Tasks"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "amir.focusProject",
+        "title": "amir: Focus Project"
+      },
+      {
+        "command": "amir.focusAgents",
+        "title": "amir: Focus Agents"
+      },
+      {
+        "command": "amir.focusTasks",
+        "title": "amir: Focus Tasks"
+      },
+      {
+        "command": "amir.refresh",
+        "title": "amir: Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "amir.startAll",
+        "title": "amir: Start All Agents",
+        "icon": "$(play)"
+      },
+      {
+        "command": "amir.stopAll",
+        "title": "amir: Stop All Agents",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "amir.addAgent",
+        "title": "amir: Add Agent",
+        "icon": "$(add)"
+      },
+      {
+        "command": "amir.deleteAgent",
+        "title": "amir: Delete Agent",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "amir.startAgent",
+        "title": "amir: Start Agent",
+        "icon": "$(play)"
+      },
+      {
+        "command": "amir.stopAgent",
+        "title": "amir: Stop Agent",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "amir.resetAgent",
+        "title": "amir: Reset Agent",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "amir.openAgentWorkspace",
+        "title": "amir: Open Agent Workspace"
+      },
+      {
+        "command": "amir.openAgentNotes",
+        "title": "amir: Open Agent Notes"
+      },
+      {
+        "command": "amir.viewLastActivity",
+        "title": "amir: View Last Activity"
+      },
+      {
+        "command": "amir.openTaskDetail",
+        "title": "amir: Open Task Detail"
+      },
+      {
+        "command": "amir.filterTasks",
+        "title": "amir: Filter Tasks",
+        "icon": "$(filter)"
+      },
+      {
+        "command": "amir.runProjectDoctor",
+        "title": "amir: Run project_doctor"
+      },
+      {
+        "command": "amir.createProject",
+        "title": "amir: Create Project Here"
+      },
+      {
+        "command": "amir.openDocs",
+        "title": "amir: Open Documentation"
+      },
+      {
+        "command": "amir.project_create",
+        "title": "amir: /project_create"
+      },
+      {
+        "command": "amir.project_import",
+        "title": "amir: /project_import"
+      },
+      {
+        "command": "amir.project_cleanup",
+        "title": "amir: /project_cleanup"
+      },
+      {
+        "command": "amir.project_status",
+        "title": "amir: /project_status"
+      },
+      {
+        "command": "amir.project_tasks",
+        "title": "amir: /project_tasks"
+      },
+      {
+        "command": "amir.project_cost",
+        "title": "amir: /project_cost"
+      },
+      {
+        "command": "amir.project_watch",
+        "title": "amir: /project_watch"
+      },
+      {
+        "command": "amir.project_doctor",
+        "title": "amir: /project_doctor"
+      },
+      {
+        "command": "amir.design",
+        "title": "amir: /design"
+      },
+      {
+        "command": "amir.design_qa",
+        "title": "amir: /design_qa"
+      },
+      {
+        "command": "amir.design_agents",
+        "title": "amir: /design_agents"
+      },
+      {
+        "command": "amir.build_agents",
+        "title": "amir: /build_agents"
+      },
+      {
+        "command": "amir.plan",
+        "title": "amir: /plan"
+      },
+      {
+        "command": "amir.build_goal",
+        "title": "amir: /build_goal"
+      },
+      {
+        "command": "amir.resume_build",
+        "title": "amir: /resume_build"
+      },
+      {
+        "command": "amir.handoff",
+        "title": "amir: /handoff"
+      },
+      {
+        "command": "amir.tasks_update",
+        "title": "amir: /tasks_update"
+      },
+      {
+        "command": "amir.agent_reset",
+        "title": "amir: /agent_reset"
+      },
+      {
+        "command": "amir.compact",
+        "title": "amir: /compact"
+      },
+      {
+        "command": "amir.rollback",
+        "title": "amir: /rollback"
+      },
+      {
+        "command": "amir.milestone_retro",
+        "title": "amir: /milestone_retro"
+      },
+      {
+        "command": "amir.docs_sync",
+        "title": "amir: /docs_sync"
+      },
+      {
+        "command": "amir.document_max",
+        "title": "amir: /document_max"
+      },
+      {
+        "command": "amir.security_scan",
+        "title": "amir: /security_scan"
+      },
+      {
+        "command": "amir.git_setup",
+        "title": "amir: /git_setup"
+      },
+      {
+        "command": "amir.git_commit",
+        "title": "amir: /git_commit"
+      },
+      {
+        "command": "amir.git_push",
+        "title": "amir: /git_push"
+      },
+      {
+        "command": "amir.git_tree",
+        "title": "amir: /git_tree"
+      },
+      {
+        "command": "amir.system_skills",
+        "title": "amir: /system_skills"
+      },
+      {
+        "command": "amir.system_settings",
+        "title": "amir: /system_settings"
+      },
+      {
+        "command": "amir.system_cleanup",
+        "title": "amir: /system_cleanup"
+      },
+      {
+        "command": "amir.user_skills",
+        "title": "amir: /user_skills"
+      },
+      {
+        "command": "amir.user_settings",
+        "title": "amir: /user_settings"
+      },
+      {
+        "command": "amir.user_cleanup",
+        "title": "amir: /user_cleanup"
+      },
+      {
+        "command": "amir.btw",
+        "title": "amir: /btw (Cursor only)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "amir.startAll",
+          "when": "view == amir.agents",
+          "group": "navigation@1"
+        },
+        {
+          "command": "amir.stopAll",
+          "when": "view == amir.agents",
+          "group": "navigation@2"
+        },
+        {
+          "command": "amir.addAgent",
+          "when": "view == amir.agents",
+          "group": "navigation@3"
+        },
+        {
+          "command": "amir.refresh",
+          "when": "view == amir.agents || view == amir.tasks",
+          "group": "navigation@9"
+        },
+        {
+          "command": "amir.filterTasks",
+          "when": "view == amir.tasks",
+          "group": "navigation@1"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "amir.startAgent",
+          "when": "view == amir.agents && viewItem =~ /agent/",
+          "group": "inline@1"
+        },
+        {
+          "command": "amir.stopAgent",
+          "when": "view == amir.agents && viewItem =~ /agent/",
+          "group": "inline@2"
+        },
+        {
+          "command": "amir.resetAgent",
+          "when": "view == amir.agents && viewItem =~ /agent/",
+          "group": "1_actions@1"
+        },
+        {
+          "command": "amir.openAgentWorkspace",
+          "when": "view == amir.agents && viewItem =~ /agent/",
+          "group": "1_actions@2"
+        },
+        {
+          "command": "amir.openAgentNotes",
+          "when": "view == amir.agents && viewItem =~ /agent/",
+          "group": "1_actions@3"
+        },
+        {
+          "command": "amir.viewLastActivity",
+          "when": "view == amir.agents && viewItem =~ /agent/",
+          "group": "1_actions@4"
+        },
+        {
+          "command": "amir.deleteAgent",
+          "when": "view == amir.agents && viewItem =~ /agent/",
+          "group": "9_danger@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "amir",
+      "properties": {
+        "amir.pluginRoot": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute path to the amir plugin root (containing tools/ and schemas/). Empty = auto-detect."
+        },
+        "amir.defaultHost": {
+          "type": "string",
+          "enum": [
+            "claude",
+            "cursor",
+            "codex"
+          ],
+          "default": "claude",
+          "description": "Default host CLI for Start Agent."
+        },
+        "amir.hostCli.claude.binary": {
+          "type": "string",
+          "default": "claude",
+          "description": "Path to the Claude Code CLI binary."
+        },
+        "amir.hostCli.claude.argsTemplate": {
+          "type": "string",
+          "default": "",
+          "description": "Args template for Claude CLI. Use {promptPath} placeholder."
+        },
+        "amir.hostCli.cursor.binary": {
+          "type": "string",
+          "default": "cursor-agent",
+          "description": "Path to the Cursor agent CLI binary."
+        },
+        "amir.hostCli.cursor.argsTemplate": {
+          "type": "string",
+          "default": "",
+          "description": "Args template for Cursor agent CLI. Use {promptPath} placeholder."
+        },
+        "amir.hostCli.codex.binary": {
+          "type": "string",
+          "default": "codex",
+          "description": "Path to the Codex CLI binary."
+        },
+        "amir.hostCli.codex.argsTemplate": {
+          "type": "string",
+          "default": "",
+          "description": "Args template for Codex CLI. Use {promptPath} placeholder."
+        },
+        "amir.watchDebounceMs": {
+          "type": "number",
+          "default": 250,
+          "description": "Debounce for ai/state file watcher (ms)."
+        },
+        "amir.staleAfterMinutes": {
+          "type": "number",
+          "default": 5,
+          "description": "Minutes without heartbeat before an active agent is considered stale."
+        },
+        "amir.pricingFile": {
+          "type": "string",
+          "default": "",
+          "description": "Optional path to pricing JSON for cost estimates."
+        },
+        "amir.startAll.staggerMs": {
+          "type": "number",
+          "default": 2000,
+          "description": "Delay between Start All agent spawns (ms)."
+        },
+        "amir.confirmDestructive": {
+          "type": "boolean",
+          "default": true,
+          "description": "Confirm destructive actions. Delete-agent and stop-all always confirm."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "test": "node --import tsx --test src/test/taskSort.test.ts src/test/activityTail.test.ts src/test/paths.test.ts src/test/noDirectStateWrites.test.ts src/test/fixtureProject.test.ts",
+    "package": "npm run compile && vsce package --no-dependencies --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.74.0",
+    "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
+  }
+}

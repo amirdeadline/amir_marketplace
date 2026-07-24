@@ -1,5 +1,5 @@
 ---
-name: asana-standup
+name: amir-asana-standup
 description: >
   Generate a daily standup report from Asana. Use when the user says "standup",
   "daily standup", "standup report", "what did I do yesterday", "what's my plan

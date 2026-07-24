@@ -1,4 +1,9 @@
-# /milestone_retro
+---
+name: "amir:milestone_retro"
+description: "Aggregate reflections at a milestone into durable decisions, risks, and prompt-template improvements for subsequent phases."
+---
+
+# /amir:milestone_retro
 
 Aggregate reflections at a milestone into durable decisions, risks, and prompt-template improvements for subsequent phases.
 

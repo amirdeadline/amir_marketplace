@@ -1,4 +1,9 @@
-# /compact
+---
+name: "amir:compact"
+description: "Manually compact working context per context-engineering thresholds without losing authoritative criteria or security constraints."
+---
+
+# /amir:compact
 
 Manually compact working context per context-engineering thresholds without losing authoritative criteria or security constraints.
 

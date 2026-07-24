@@ -1,0 +1,12 @@
+{
+  "name": "amir-wireshark",
+  "version": "0.1.0",
+  "description": "tshark analysis of existing pcaps (default). Live capture opt-in with interface, filter, limits, confirm.",
+  "author": {
+    "name": "Amir",
+    "email": "amir.rashidi2016@gmail.com"
+  },
+  "keywords": [
+    "wireshark"
+  ]
+}

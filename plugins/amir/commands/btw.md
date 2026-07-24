@@ -1,4 +1,9 @@
-# /btw
+---
+name: "amir:btw"
+description: "Temporary read-only side question. Not saved to project state or long-term memory."
+---
+
+# /amir:btw
 
 Temporary read-only side question. Not saved to project state or long-term memory.
 

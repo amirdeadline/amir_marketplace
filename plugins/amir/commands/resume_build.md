@@ -1,4 +1,9 @@
-# /resume_build
+---
+name: "amir:resume_build"
+description: "Safely resume an interrupted build: diagnose health, repair or flag issues, consume handoff context, regenerate orchestrator prompt, and ..."
+---
+
+# /amir:resume_build
 
 Safely resume an interrupted build: diagnose health, repair or flag issues, consume handoff context, regenerate orchestrator prompt, and continue the next orchestrator action.
 

@@ -1,4 +1,9 @@
-# /user_cleanup
+---
+name: "amir:user_cleanup"
+description: "**DESTRUCTIVE.** Remove user-level and project-local amir installations for the specified AI application — only after timestamped backup,..."
+---
+
+# /amir:user_cleanup
 
 **DESTRUCTIVE.** Remove user-level and project-local amir installations for the specified AI application — only after timestamped backup, explicit deletion list, typed confirmation, and audit log. Refuse if any safeguard is missing.
 

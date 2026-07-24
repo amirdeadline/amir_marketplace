@@ -1,4 +1,9 @@
-# /project_cost
+---
+name: "amir:project_cost"
+description: "Aggregate and present cost telemetry from activity events. All USD figures are estimates unless explicitly logged."
+---
+
+# /amir:project_cost
 
 Aggregate and present cost telemetry from activity events. All USD figures are estimates unless explicitly logged.
 

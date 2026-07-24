@@ -1,4 +1,9 @@
-# /system_cleanup
+---
+name: "amir:system_cleanup"
+description: "**DESTRUCTIVE.** Remove system-level amir and host skill installations for the specified AI application — only after timestamped backup, ..."
+---
+
+# /amir:system_cleanup
 
 **DESTRUCTIVE.** Remove system-level amir and host skill installations for the specified AI application — only after timestamped backup, explicit deletion list, typed confirmation, and audit log. Refuse if any safeguard is missing.
 

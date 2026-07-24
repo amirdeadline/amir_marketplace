@@ -1,5 +1,5 @@
 ---
-name: asana-update-task
+name: amir-asana-update-task
 description: >
   Update a single Asana task. Use when the user says "update task", "change task",
   "rename task", "set due date", "reschedule", "change notes", "add notes to task",

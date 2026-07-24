@@ -1,0 +1,15 @@
+{
+  "name": "amir-azure",
+  "version": "0.1.0",
+  "description": "Azure via official Azure MCP Server (@azure/mcp) and az CLI. Preflight account show; mutations confirm-first.",
+  "author": {
+    "name": "Amir",
+    "email": "amir.rashidi2016@gmail.com"
+  },
+  "keywords": [
+    "azure"
+  ],
+  "skills": "./skills/",
+  "commands": "./commands/",
+  "mcpServers": "./mcp.json"
+}

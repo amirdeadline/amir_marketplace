@@ -1,0 +1,23 @@
+{
+  "name": "amir-aws",
+  "version": "0.1.0",
+  "description": "AWS via official managed MCP (mcp-proxy-for-aws) plus aws CLI fallback. Preflight STS; mutations confirm-first.",
+  "author": {
+    "name": "Amir",
+    "email": "amir.rashidi2016@gmail.com"
+  },
+  "keywords": [
+    "aws"
+  ],
+  "mcpServers": {
+    "aws-mcp": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy-for-aws@1.6.3",
+        "https://aws-mcp.us-east-1.api.aws/mcp",
+        "--metadata",
+        "AWS_REGION=${env:AWS_REGION}"
+      ]
+    }
+  }
+}

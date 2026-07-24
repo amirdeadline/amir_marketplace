@@ -1,4 +1,9 @@
-# /build_goal
+---
+name: "amir:build_goal"
+description: "Execute the full goal delivery loop: from parsed goal through architecture, QA design, task execution, per-task worker/QA cycles, drift c..."
+---
+
+# /amir:build_goal
 
 Execute the full goal delivery loop: from parsed goal through architecture, QA design, task execution, per-task worker/QA cycles, drift checks, and milestone QA — using state tools for all transitions.
 

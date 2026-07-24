@@ -1,0 +1,6 @@
+{
+  "name": "amir-cortex-xdr",
+  "version": "0.1.0",
+  "description": "Cortex XDR API: read incidents/alerts/endpoints; response actions require typed confirmation.",
+  "skills": "./skills/"
+}

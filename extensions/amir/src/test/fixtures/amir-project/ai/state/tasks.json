@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "project_id": "fixture-win",
+  "updated_at": "2026-07-14T12:00:00.000Z",
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Scaffold cockpit",
+      "goal": "Ship side panel",
+      "scope": "extension src",
+      "status": "in_progress",
+      "priority": "P0",
+      "order": 1,
+      "dependencies": [],
+      "approval_required": false,
+      "risk_level": "medium",
+      "cycles": { "used": 2, "budget": 10, "extensions_granted": 0 },
+      "acceptance_criteria": ["Panel renders", "JSON is truth"],
+      "dev_agent_folder": "ai/agents/dev-T001"
+    },
+    {
+      "id": "T002",
+      "title": "Windows paths",
+      "goal": "Handle E: drive roots",
+      "scope": "path.join only",
+      "status": "pending",
+      "priority": "P1",
+      "order": 2,
+      "dependencies": ["T001"],
+      "approval_required": true,
+      "risk_level": "low",
+      "cycles": { "used": 0, "budget": 10, "extensions_granted": 0 }
+    },
+    {
+      "id": "T003",
+      "title": "Finished sample",
+      "goal": "Done",
+      "scope": "n/a",
+      "status": "complete",
+      "priority": "P2",
+      "dependencies": [],
+      "approval_required": false,
+      "cycles": { "used": 1, "budget": 10, "extensions_granted": 0 }
+    }
+  ]
+}

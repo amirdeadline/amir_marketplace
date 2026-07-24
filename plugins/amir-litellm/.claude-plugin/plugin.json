@@ -1,0 +1,23 @@
+{
+  "name": "amir-litellm",
+  "version": "0.1.0",
+  "description": "Org LiteLLM proxy: session launcher for Claude Code + MCP tools for the proxy API surface.",
+  "author": {
+    "name": "Amir",
+    "email": "amir.rashidi2016@gmail.com"
+  },
+  "keywords": [
+    "litellm",
+    "proxy",
+    "mcp",
+    "anthropic"
+  ],
+  "mcpServers": {
+    "litellm": {
+      "command": "python",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/bin/litellm_mcp.py"
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 ---
-name: asana-priorities-today
+name: amir-asana-priorities-today
 description: >
   Show today's most important Asana tasks, fully sorted by priority. Use when the
   user says "most important tasks today", "what should I focus on", "highest priority

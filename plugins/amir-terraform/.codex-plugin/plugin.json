@@ -1,0 +1,6 @@
+{
+  "name": "amir-terraform",
+  "version": "0.1.0",
+  "description": "Terraform plan/validate/fmt/init safe; apply/destroy confirm-first with typed destroy confirm. Blocks bare -auto-approve via hook.",
+  "skills": "./skills/"
+}

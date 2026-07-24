@@ -1,4 +1,9 @@
-# /git_push
+---
+name: "amir:git_push"
+description: "Confirm remote and branch, show what will push, execute push, and report result with evidence."
+---
+
+# /amir:git_push
 
 Confirm remote and branch, show what will push, execute push, and report result with evidence.
 

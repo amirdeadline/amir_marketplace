@@ -6,34 +6,240 @@
   "plugins": [
     {
       "name": "amir",
-      "source": { "source": "local", "path": "./plugins/amir" },
-      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
-      "category": "Productivity",
-      "description": "Portable multi-agent project-execution harness: context engineering, JSON state, evidence-based QA loops, goal-drift protection, and cost control.",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "integrations",
+      "description": "Portable multi-agent project-execution harness.",
       "version": "0.1.0"
     },
     {
       "name": "amir-asana",
-      "source": { "source": "local", "path": "./plugins/amir-asana" },
-      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
-      "category": "Productivity",
-      "description": "Asana connector (MCP, 17 tools) + task skills.",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-asana"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "integrations",
+      "description": "Asana MCP + task skills.",
       "version": "0.2.0"
     },
     {
-      "name": "prisma",
-      "source": { "source": "local", "path": "./plugins/prisma" },
-      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
-      "category": "Productivity",
-      "description": "INTERNAL Prisma SASE / SCM corpus skills and agents. Do not publish baked references.",
+      "name": "amir-prisma",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-prisma"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "security",
+      "description": "INTERNAL Prisma SASE/SCM corpus skills.",
       "version": "0.1.0"
     },
     {
-      "name": "litellm",
-      "source": { "source": "local", "path": "./plugins/litellm" },
-      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
-      "category": "Developer Tools",
-      "description": "Org LiteLLM proxy session launcher + MCP tools.",
+      "name": "amir-litellm",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-litellm"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "integrations",
+      "description": "Org LiteLLM proxy session launcher + MCP.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-paloalto",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-paloalto"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "security",
+      "description": "PAN-OS/Panorama/GlobalProtect companion to amir-prisma.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-aws",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-aws"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "infra",
+      "description": "AWS official MCP + aws CLI fallback.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-azure",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-azure"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "infra",
+      "description": "Azure MCP + az CLI.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-terraform",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-terraform"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "infra",
+      "description": "Terraform plan/apply/destroy with confirm + hooks.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-docker",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-docker"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "infra",
+      "description": "Docker/Compose CLI wrappers with guards.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-splunk",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-splunk"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "security",
+      "description": "Splunk REST/SPL helper.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-elastic",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-elastic"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "security",
+      "description": "Elasticsearch/Kibana API + ES|QL skills.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-sentinel",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-sentinel"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "security",
+      "description": "Microsoft Sentinel KQL hunting + analytics.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-qradar",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-qradar"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "security",
+      "description": "QRadar AQL/offenses REST helper.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-cortex-xdr",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-cortex-xdr"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "security",
+      "description": "Cortex XDR API + IR; typed response confirms.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-ssh",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-ssh"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "network",
+      "description": "OpenSSH wrappers with host/command confirmation.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-nmap",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-nmap"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "network",
+      "description": "Authorized nmap scanning + parse.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "amir-wireshark",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amir-wireshark"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "network",
+      "description": "tshark pcap analysis; live capture opt-in.",
       "version": "0.1.0"
     }
   ]

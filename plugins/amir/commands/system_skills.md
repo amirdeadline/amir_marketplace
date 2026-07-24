@@ -1,4 +1,9 @@
-# /system_skills
+---
+name: "amir:system_skills"
+description: "Enumerate and present a table of skills installed at the **system level** for the specified AI application host — read-only inventory for..."
+---
+
+# /amir:system_skills
 
 Enumerate and present a table of skills installed at the **system level** for the specified AI application host — read-only inventory for audit and troubleshooting.
 

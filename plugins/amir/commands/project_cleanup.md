@@ -1,4 +1,9 @@
-# /project_cleanup
+---
+name: "amir:project_cleanup"
+description: "Safe workspace hygiene: verify version control, snapshot before changes, present a human-approved cleanup plan, execute only approved ite..."
+---
+
+# /amir:project_cleanup
 
 Safe workspace hygiene: verify version control, snapshot before changes, present a human-approved cleanup plan, execute only approved items, and log all actions. Never destroy authoritative amir state or checkpoint evidence.
 

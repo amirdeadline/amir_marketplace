@@ -1,4 +1,9 @@
-# /project_import
+---
+name: "amir:project_import"
+description: "Wrap an **existing** repository or codebase as an amir project. Review what already exists before discovery; create amir structure adjace..."
+---
+
+# /amir:project_import
 
 Wrap an **existing** repository or codebase as an amir project. Review what already exists before discovery; create amir structure adjacent to or inside the repo per human choice. Distinct from greenfield `/project_create`.
 

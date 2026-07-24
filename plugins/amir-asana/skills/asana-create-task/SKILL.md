@@ -1,5 +1,5 @@
 ---
-name: asana-create-task
+name: amir-asana-create-task
 description: >
   Create one or more new Asana tasks. Use when the user says "create a task",
   "add a task", "new task", "add to Asana", "create tasks for ...", or provides

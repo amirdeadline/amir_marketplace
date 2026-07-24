@@ -1,4 +1,9 @@
-# /git_setup
+---
+name: "amir:git_setup"
+description: "Guide the human through initializing version control for an amir project: repository creation, `.gitignore` with secrets and workspace te..."
+---
+
+# /amir:git_setup
 
 Guide the human through initializing version control for an amir project: repository creation, `.gitignore` with secrets and workspace temp policies, initial commit, and optional GitHub remote — every decision via structured questions.
 

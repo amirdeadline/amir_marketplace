@@ -41,6 +41,10 @@ No hyphen/underscore twin variants. Deprecation aliases are temporary and print 
 | `/amir:help` | command | retained |
 | `/amir:asana_status` | command | new (MCP health-check, spec §6.1) |
 | `/amir:asana_auth_check` | command | new (auth check, spec §6.1) |
+| `/amir:plugins_list` | command | new (user request 2026-07-24: available plugins table — name, source, summary) |
+| `/amir:project_list_plugins` | command | new (project's enabled plugins table) |
+| `/amir:project_add_plugin` | command | new (resolve → render → lock pipeline for one addition) |
+| `/amir:project_disable_plugin` | command | new (manifest disable + stale cleanup; data preserved by default) |
 | `create-project-doc` | skill (`/amir:create-project-doc`) | user-provided verbatim 2026-07-24 |
 | 9 × `asana_*` skills | skills | migrated from amir-asana plugin: `asana_complete_task, asana_create_task, asana_daily_triage, asana_priorities_today, asana_review_tasks, asana_standup, asana_sync_from_report, asana_update, asana_update_task` |
 

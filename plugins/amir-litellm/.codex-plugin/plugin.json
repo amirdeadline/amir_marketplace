@@ -1,6 +1,0 @@
-{
-  "name": "amir-litellm",
-  "version": "0.1.0",
-  "description": "Org LiteLLM proxy skills and launcher notes.",
-  "skills": "./skills/"
-}

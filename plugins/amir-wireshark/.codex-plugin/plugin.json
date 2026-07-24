@@ -1,6 +1,0 @@
-{
-  "name": "amir-wireshark",
-  "version": "0.1.0",
-  "description": "tshark analysis of existing pcaps (default). Live capture opt-in with interface, filter, limits, confirm.",
-  "skills": "./skills/"
-}

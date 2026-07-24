@@ -1,6 +1,0 @@
-{
-  "name": "amir-azure",
-  "version": "0.1.0",
-  "description": "Azure via official Azure MCP Server (@azure/mcp) and az CLI. Preflight account show; mutations confirm-first.",
-  "skills": "./skills/"
-}

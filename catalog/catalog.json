@@ -337,8 +337,7 @@
         "project_import": "onboard_project",
         "use_subagent": "use_subagents",
         "compact": "cleanup_context",
-        "project_doctor": "validate_project",
-        "project_status": "project_status (moved to amir_system)"
+        "project_doctor": "validate_project"
       }
     },
     {
@@ -469,7 +468,7 @@
         "external_service:cortex-xdr (incident updates, response actions)"
       ],
       "destructive_capabilities": [
-        "endpoint response actions (isolate/quarantine) \u2014 typed confirmation required"
+        "endpoint response actions (isolate/quarantine) — typed confirmation required"
       ],
       "resource_requirements": {},
       "health_check": "python -c \"import os,sys; missing=[v for v in ('XDR_API_KEY','XDR_API_KEY_ID','XDR_FQDN') if not os.environ.get(v)]; print(('missing: '+', '.join(missing)) if missing else 'ok'); sys.exit(1 if missing else 0)\"",

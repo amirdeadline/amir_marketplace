@@ -1,4 +1,0 @@
-{"timestamp":"2026-07-14T10:00:00.000Z","agent_id":"dev-T001","action":"fix","result":"applied patch","task_id":"T001","tokens_in":1200,"tokens_out":400,"model":"claude-sonnet","usd":0.01}
-{"timestamp":"2026-07-14T10:05:00.000Z","agent_id":"qa-T001","action":"qa_run","result":"PASS 7/7","task_id":"T001","tokens_in":800,"tokens_out":200,"model":"claude-sonnet","usd":0.005}
-{"timestamp":"2026-07-14T10:10:00.000Z","agent_id":"dev-T001","action":"fix","result":"second fix cycle","task_id":"T001","tokens_in":1600,"tokens_out":500,"model":"gpt-4o","usd":0.02}
-{"timestamp":"2026-07-14T10:15:00.000Z","agent_id":"1-orchestrator","action":"status","result":"ok","task_id":null,"tokens_in":null,"tokens_out":null,"model":null,"usd":null}

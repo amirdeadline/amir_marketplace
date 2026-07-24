@@ -1,6 +1,0 @@
-{
-  "name": "amir-sentinel",
-  "version": "0.1.0",
-  "description": "Microsoft Sentinel: KQL hunting skill + analytics/incidents helpers. Queries read-free; rule/incident mutations confirm-first. Reuses az auth.",
-  "skills": "./skills/"
-}

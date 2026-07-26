@@ -72,7 +72,7 @@ def good_manifest(root: str, components=("fakegrp",)) -> dict:
         "plugins": {"amir_project": {"enabled": True, "components": list(components)}},
         "system_capabilities": {"asana": {"allowed": False}, "playwright": {"allowed": False}},
         "project_tools": {
-            "graphify": {"enabled": False, "output_directory": "graphify-out",
+            "graphify": {"enabled": False, "output_directory": ".amir/graphify-out",
                          "update_policy": "manual", "include": [], "exclude": [],
                          "commit_generated_graph": False},
             "serena": {"enabled": False},
@@ -556,7 +556,7 @@ def make_portfolio_project(base: Path, pid: str, folder: str | None = None,
     for fname in ("project.md", "status.md", "risks.md"):
         write_text(project / ".ai" / fname, f"# {fname}\ncontent for {pid}\n")
     if graph_nodes is not None:
-        write_text(project / "graphify-out" / "graph.json",
+        write_text(project / ".amir" / "graphify-out" / "graph.json",
                    dump_json(mk_local_graph(graph_nodes, graph_edges)))
     return project
 
@@ -745,14 +745,14 @@ def test_portfolio_remove_preserves_files_and_other_namespaces():
         report = portfolio.remove("p2", home)
         assert report["graph_removed"] and report["registry_removed"]
         assert (p2 / ".amir" / "project.yaml").is_file(), "project sources must be untouched"
-        assert (p2 / "graphify-out" / "graph.json").is_file(), "local graph preserved by default"
+        assert (p2 / ".amir" / "graphify-out" / "graph.json").is_file(), "local graph preserved by default"
         assert _global_node_ids(home) == ["p1::a"], "other namespaces must survive"
         assert [p["id"] for p in registry_mod.load_registry(home)["projects"]] == ["p1"]
         archived = list(registry_mod.history_dir(home).glob("removed-p2-*.yaml"))
         assert archived, "removed entry must be archived to project-history"
         report2 = portfolio.remove("p1", home, remove_local_graph=True)
         assert report2["local_graph_removed"]
-        assert not (p1 / "graphify-out" / "graph.json").exists()
+        assert not (p1 / ".amir" / "graphify-out" / "graph.json").exists()
         assert (p1 / ".amir" / "project.yaml").is_file()
 
 
@@ -775,7 +775,7 @@ def test_portfolio_update_distinguishes_metadata_vs_graph():
         for path in project.rglob("*"):
             if path.is_file():
                 _set_mtime(path, now - 100)
-        _set_mtime(project / "graphify-out" / "graph.json", now - 50)
+        _set_mtime(project / ".amir" / "graphify-out" / "graph.json", now - 50)
         portfolio.add(project, home)
         fresh_report = portfolio.update("p1", home, graphify_runner=_forbidden_runner)
         assert fresh_report["status"] == "no-change" and not fresh_report["graph_refreshed"]
@@ -789,7 +789,7 @@ def test_portfolio_update_distinguishes_metadata_vs_graph():
         # source newer than graph -> stale -> runner regenerates -> graph refresh reported
         write_text(project / "newfile.py", "print('hi')\n")
         def fake_runner(root):
-            write_text(Path(root) / "graphify-out" / "graph.json",
+            write_text(Path(root) / ".amir" / "graphify-out" / "graph.json",
                        dump_json(mk_local_graph(["a", "b", "c"])))
             return True, "regenerated"
         graph_report = portfolio.update("p1", home, graphify_runner=fake_runner)
@@ -840,17 +840,19 @@ def test_portfolio_stale_detection_mtime():
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp)
         project = make_portfolio_project(base, "p1", graph_nodes=["a"])
-        graph = project / "graphify-out" / "graph.json"
+        source = project / "src" / "app.py"
+        write_text(source, "print('hello')\n")
+        graph = project / ".amir" / "graphify-out" / "graph.json"
         now = time.time()
         for path in project.rglob("*"):
             if path.is_file():
                 _set_mtime(path, now - 100)
         _set_mtime(graph, now - 50)
         assert portfolio.graph_staleness(project, graph, None) == (False, None)
-        _set_mtime(project / "code.py" if (project / "code.py").is_file()
-                   else project / ".ai" / "status.md", now - 10)
+        # Source under src/ (not .ai/.amir) must mark the graph stale.
+        _set_mtime(source, now - 10)
         assert portfolio.graph_staleness(project, graph, None) == (True, "source-newer")
-        assert portfolio.graph_staleness(project, project / "graphify-out" / "missing.json",
+        assert portfolio.graph_staleness(project, project / ".amir" / "graphify-out" / "missing.json",
                                          None) == (True, "missing")
 
 
@@ -860,7 +862,7 @@ def test_portfolio_secret_scan_flags_planted_token():
         home = base / "home"
         fake_token = "ghp_" + "a" * 36  # planted, synthetic
         project = make_portfolio_project(base, "p1", graph_nodes=["safe"])
-        write_text(project / "graphify-out" / "graph.json",
+        write_text(project / ".amir" / "graphify-out" / "graph.json",
                    dump_json(mk_local_graph(["safe", f"leaky {fake_token}"])))
         portfolio.add(project, home)
         issues = portfolio.validate(home, REAL_CATALOG_ROOT)

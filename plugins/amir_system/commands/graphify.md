@@ -23,9 +23,11 @@ verified v0.8.33 on this machine; installed under the Python 3.12 Scripts direct
 
 1. Check the CLI: run `graphify --version`. If it fails, report the CLI is not installed
    (`pip install graphifyy`) — do not install anything without explicit approval.
-2. Check graph health: does `graphify-out/graph.json` exist in the project? Compare its mtime
-   against recent source changes to judge freshness (`graphify update` exists for incremental
+2. Check graph health: does `.amir/graphify-out/graph.json` exist (or the path in
+   `project_tools.graphify.output_directory`)? Compare its mtime against recent source changes
+   to judge freshness (`GRAPHIFY_OUT=.amir/graphify-out graphify update .` for incremental
    refresh). Report: built/missing, stale/fresh, last build time.
+   AI docs live under `.ai/` — do not look for them under the graphify output folder.
 3. If `$ARGUMENTS` looks like a question about the codebase → treat as `/amir:graphify_query`.
    If it names an operation (setup/build/update/status/impact/architecture/clean/disable/explain)
    → route to that `/amir:graphify_{name}` command's procedure.

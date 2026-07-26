@@ -14,8 +14,8 @@ description: Disable Graphify for this project (uninstall per platform, update m
 ## Procedure (destructive-action rule: show plan, confirm, then act)
 
 1. Present the disable plan: which platform integrations will be uninstalled, that the manifest
-   and lock will be updated, and that `graphify-out/` will be PRESERVED (offer optional archive
-   to `.amir/backups/<timestamp>/graphify-out/` or later `/amir:graphify_clean`). Confirm.
+   and lock will be updated, and that `.amir/graphify-out/` will be PRESERVED (offer optional archive
+   to `.amir/backups/<timestamp>/.amir/graphify-out/` or later `/amir:graphify_clean`). Confirm.
 2. From the project root, per platform enabled in the manifest (CLI v0.8.33):
    ```powershell
    graphify uninstall --platform claude

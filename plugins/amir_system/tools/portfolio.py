@@ -1,7 +1,7 @@
 """Cross-project portfolio graph engine: %USERPROFILE%\\.amir\\portfolio\\.
 
-Merges per-project graphify graphs (<project>/graphify-out/graph.json) into ONE global
-graph with per-project node namespacing '<project.id>::<node.id>'.
+Merges per-project graphify graphs (<project>/.amir/graphify-out/graph.json by default)
+into ONE global graph with per-project node namespacing '<project.id>::<node.id>'.
 
 Merge is a pure-JSON merge (stdlib): graphify 0.8.33's own 'merge-graphs' derives its
 namespace tag from the graph file's directory (no per-input --as), which collapses
@@ -17,8 +17,8 @@ Storage under %USERPROFILE%\\.amir\\portfolio\\:
 
 Guarantees: atomic writes everywhere; a failed update retains the previous valid global
 graph; re-adding a project replaces its namespace (idempotent, no duplicates); project
-source trees are never modified (only <project>/graphify-out/graph.json, and only when
---remove-local-graph is explicitly requested).
+source trees are never modified (only the project's graphify output under .amir/, and only
+when --remove-local-graph is explicitly requested).
 """
 from __future__ import annotations
 
@@ -30,8 +30,9 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-from util import (AmirError, acquire_lock_file, atomic_write_text, dump_json, read_json,
-                  release_lock_file, utc_now_iso, utc_stamp)
+from util import (AmirError, DEFAULT_GRAPHIFY_OUT, GRAPHIFY_OUT_ENV, acquire_lock_file,
+                  atomic_write_text, dump_json, read_json, release_lock_file, utc_now_iso,
+                  utc_stamp)
 
 NAMESPACE_SEP = "::"
 BACKUP_KEEP = 5
@@ -43,7 +44,9 @@ AI_FILES = ("project.md", "status.md", "tasks.md", "decisions.md", "risks.md",
             "architecture.md", "references.md", "changelog.md", "context_handoff.md")
 
 SOURCE_EXCLUDE_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv",
-                       ".pytest_cache", ".mypy_cache", "dist", "build"}
+                       ".pytest_cache", ".mypy_cache", "dist", "build",
+                       # Amir AI/tooling dirs — not source; graphify output lives under .amir/
+                       ".amir", ".ai"}
 
 # Report-only secret sweep of the global graph (names/counts reported, values never echoed).
 SECRET_PATTERNS = (
@@ -225,7 +228,7 @@ def newest_source_mtime(project_root: Path, extra_exclude: set[str] | None = Non
 
 
 def graph_staleness(project_root: Path, graph_path: Path, recorded_commit: str | None,
-                    output_dir_name: str = "graphify-out") -> tuple[bool, str | None]:
+                    output_dir_name: str = DEFAULT_GRAPHIFY_OUT) -> tuple[bool, str | None]:
     """(stale, reason): 'missing', 'commit-changed', 'source-newer', or (False, None)."""
     import registry as registry_mod  # noqa: PLC0415
 
@@ -235,7 +238,9 @@ def graph_staleness(project_root: Path, graph_path: Path, recorded_commit: str |
     current = registry_mod.commit_marker(registry_mod.git_info(project_root))
     if recorded_commit and current and recorded_commit != current:
         return True, "commit-changed"
-    if newest_source_mtime(project_root, {output_dir_name}) > graph_path.stat().st_mtime:
+    # Exclude leaf dir name(s) from nested paths like ".amir/graphify-out".
+    exclude = {Path(output_dir_name).name, *Path(output_dir_name).parts}
+    if newest_source_mtime(project_root, exclude) > graph_path.stat().st_mtime:
         return True, "source-newer"
     return False, None
 
@@ -265,14 +270,16 @@ def _namespace_out_of_date(metadata: dict, project_id: str, local_path: Path) ->
         return False
 
 
-def default_graphify_runner(project_root: Path) -> tuple[bool, str]:
-    """Run 'graphify update <root>' when the CLI is on PATH."""
+def default_graphify_runner(project_root: Path,
+                            output_directory: str = DEFAULT_GRAPHIFY_OUT) -> tuple[bool, str]:
+    """Run 'graphify update <root>' with GRAPHIFY_OUT pointing at the Amir output dir."""
     executable = shutil.which("graphify")
     if not executable:
         return False, "graphify CLI not on PATH"
+    env = {**os.environ, GRAPHIFY_OUT_ENV: output_directory}
     try:
         proc = subprocess.run([executable, "update", str(project_root)], capture_output=True,
-                              text=True, timeout=GRAPHIFY_TIMEOUT_SECONDS)
+                              text=True, timeout=GRAPHIFY_TIMEOUT_SECONDS, env=env)
     except (OSError, subprocess.TimeoutExpired) as exc:
         return False, str(exc)
     tail = (proc.stdout + proc.stderr).strip().splitlines()
@@ -361,7 +368,7 @@ def remove(target: str, home: Path | None = None, keep_registry: bool = False,
         report["registry_archived"] = report["registry_removed"] = True
     if remove_local_graph:
         local = Path(entry["graph_path"]) if entry and entry.get("graph_path") else (
-            (root / "graphify-out" / "graph.json") if root else None)
+            (root / DEFAULT_GRAPHIFY_OUT / "graph.json") if root else None)
         if local and local.is_file():
             local.unlink()
             report["local_graph_removed"] = True
@@ -417,14 +424,17 @@ def _refresh_graph_if_stale(home, root: Path, project_id: str, manifest_data: di
     if not fresh["graph_enabled"]:
         return fresh, report
     local = registry_mod.local_graph_path(root, manifest_data)
-    output_dir = registry_mod.graphify_config(manifest_data).get("output_directory") or "graphify-out"
+    output_dir = registry_mod.graphify_output_directory(manifest_data)
     metadata = load_metadata(home)
     recorded = (metadata["projects"].get(project_id) or {}).get("source_commit")
     stale, reason = graph_staleness(root, local, recorded, output_dir)
     report["graph_stale_reason"] = reason
     if stale:
         runner = default_graphify_runner if graphify_runner is None else graphify_runner
-        ok, message = runner(root)
+        if graphify_runner is None:
+            ok, message = runner(root, output_dir)
+        else:
+            ok, message = runner(root)
         if not ok:
             report["error"] = (f"graphify update failed ({message}); previous global graph "
                                "left unchanged")
@@ -496,7 +506,7 @@ def _graph_state(entry: dict, metadata: dict, reachable: bool) -> str:
     if not reachable:
         return "unknown (root missing)"
     root = Path(entry["root"])
-    local = Path(entry.get("graph_path") or (root / "graphify-out" / "graph.json"))
+    local = Path(entry.get("graph_path") or (root / DEFAULT_GRAPHIFY_OUT / "graph.json"))
     recorded = (metadata["projects"].get(entry["id"]) or {}).get("source_commit")
     stale, reason = graph_staleness(root, local, recorded)
     if stale:
@@ -519,7 +529,7 @@ def rebuild(home: Path | None = None) -> dict:
     for entry in sorted(registry_data["projects"], key=lambda p: p.get("id") or ""):
         project_id = entry["id"]
         root = Path(entry.get("root") or "")
-        local = Path(entry.get("graph_path") or (root / "graphify-out" / "graph.json"))
+        local = Path(entry.get("graph_path") or (root / DEFAULT_GRAPHIFY_OUT / "graph.json"))
         if not entry.get("graph_enabled"):
             results.append({"id": project_id, "merged": False, "reason": "graphify disabled"})
             continue

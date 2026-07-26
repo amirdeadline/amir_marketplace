@@ -35,7 +35,7 @@ Inspect and record (with the file paths that prove each finding):
   - Cursor: `.cursor/` (rules, commands, mcp.json)
   - Claude: `.claude/` (settings, skills, agents, hooks), CLAUDE.md
 - existing rules/skills/agents/MCP servers/connectors from any other system
-- existing Graphify (`graphify-out/`, hooks), Serena, Context7, Semgrep configs
+- existing Graphify (`.amir/graphify-out/`, hooks), Serena, Context7, Semgrep configs
 - observability (Langfuse or similar), benchmarks (SWE-bench/Terminal-Bench artifacts)
 - AI docs (`.ai/`, docs/ with agent-oriented content)
 - **legacy `ai/` workspace** (the pre-rename convention, no leading dot): record its file

@@ -165,7 +165,9 @@ def _check_graphify(project_root: Path, data: dict, checks: list, which) -> None
     problems = []
     if which("graphify") is None:
         problems.append("graphify CLI not found on PATH")
-    output_dir = tool.get("output_directory", "graphify-out")
+    from util import DEFAULT_GRAPHIFY_OUT  # noqa: PLC0415
+
+    output_dir = tool.get("output_directory") or DEFAULT_GRAPHIFY_OUT
     graph = project_root / output_dir / "graph.json"
     if not graph.is_file():
         problems.append(f"{output_dir}/graph.json missing -- run /amir:graphify_build")

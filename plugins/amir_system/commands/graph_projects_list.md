@@ -44,7 +44,7 @@ guess from fuzzy text.
 | Confirmed progress | ONLY milestone/acceptance-criteria evidence; blank = unknown |
 | Estimated progress | labeled estimate; blank allowed |
 | Last project update | newest of `.ai\status.md` mtime / portfolio.yaml timestamps |
-| Last graph update | project `graphify-out\graph.json` + global namespace timestamp |
+| Last graph update | project `.amir\graphify-out\graph.json` + global namespace timestamp |
 | Graph freshness | current / stale / missing (see detections) |
 | Git branch | `git -C <dir> rev-parse --abbrev-ref HEAD` (skip silently-failing repos: mark `n/a`) |
 | Git dirty | `git -C <dir> status --porcelain` non-empty → yes |

@@ -17,14 +17,14 @@ description: Report Graphify status for the current Amir project (never rebuilds
 1. Manifest: `project_tools.graphify.enabled` value; `update_policy` if present.
 2. CLI: `graphify --version` output (or "CLI not installed").
 3. Hooks: `graphify hook status` output.
-4. Graph output: does `graphify-out/graph.json` exist; file size; last-modified time.
+4. Graph output: does `.amir/graphify-out/graph.json` exist; file size; last-modified time.
 5. Last build/update metadata: timestamp and source commit if recorded (project `.ai/status.md`
    or graphify-out metadata); otherwise "not recorded".
 6. Staleness: compare graph mtime against latest source change (`git log -1 --format=%ci` or
    newest source file mtime). State the comparison honestly — "stale" / "fresh" / "cannot
    determine".
 7. Configured ignored/excluded dirs (from graphify config + manifest excludes).
-8. Output size on disk (`graphify-out/` total).
+8. Output size on disk (`.amir/graphify-out/` total).
 
 Explicit prohibition: NEVER silently rebuild or update because the graph looks stale. Only
 recommend `/amir:graphify_update` or `/amir:graphify_build` and let the user decide.

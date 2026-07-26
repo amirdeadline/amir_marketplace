@@ -29,7 +29,7 @@ Directory missing or manifest unreadable → STOP and report; this command never
 
 Compare, and record which is newer:
 
-- last local graph build (graphify-out\graph.json time + the source commit it was built from)
+- last local graph build (.amir\graphify-out\graph.json time + the source commit it was built from)
   vs. project HEAD / latest file changes → local graph **current** or **stale**;
 - global namespace timestamp vs. local graph → namespace **current** or **stale**;
 - `.ai\status.md` age vs. the staleness threshold → project status **current** or **stale**.

@@ -67,7 +67,7 @@
         },
         "graph_path": {
           "type": ["string", "null"],
-          "description": "Absolute path of the local graphify-out/graph.json when it exists."
+          "description": "Absolute path of the local .amir/graphify-out/graph.json when it exists."
         },
         "graph_enabled": { "type": ["boolean", "null"] },
         "cursor_enabled": { "type": ["boolean", "null"] },

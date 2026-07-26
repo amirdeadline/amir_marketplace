@@ -7,7 +7,7 @@ argument-hint: project_directory | project_id
 
 Mutating (registry + global graph). **This command NEVER deletes project source code, and
 never deletes anything outside `%USERPROFILE%\.amir\portfolio\`, the registry entry, and —
-only with the extra flag and extra confirmation — the project's local `graphify-out\`.**
+only with the extra flag and extra confirmation — the project's local `.amir\graphify-out\`.**
 
 Argument: a directory or a registered project id. If `$ARGUMENTS` is empty, show the
 registered projects (`portfolio-list`) and ASK which one — one question, explicit answer;
@@ -31,13 +31,13 @@ backup first. Subcommand rejected → run `--help` once, use the closest documen
    - **Removed (default)**: the project's namespace from
      `%USERPROFILE%\.amir\portfolio\graph\global-graph.json`; its active registry entry.
    - **Kept (default)**: the project directory and ALL source code; its local graphify config
-     and local `graphify-out\` graph; its `.amir\` and `.ai\` files; registry HISTORY —
+     and local `.amir\graphify-out\` graph; its `.amir\` and `.ai\` files; registry HISTORY —
      the entry is archived (default `--archive-registry`), not erased.
    - **Optional flags**:
      - `--keep-registry` — remove only the graph namespace; leave the registry entry active.
      - `--archive-registry` — the default; entry moves to the archive section with a
        removal timestamp.
-     - `--remove-local-graph` — ALSO delete the project's local `graphify-out\`. This is the
+     - `--remove-local-graph` — ALSO delete the project's local `.amir\graphify-out\`. This is the
        only variant that touches the project directory; it requires its OWN second
        confirmation naming the exact path to be deleted (destructive-action rule).
 3. Require explicit confirmation of the shown plan. Cancel = zero side effects.

@@ -12,10 +12,10 @@ description: Generate or update .ai/architecture.md from the Graphify graph (rev
 
 ## Procedure
 
-1. Gather graph evidence from the project root: `graphify tree` (module containment),
-   `graphify cluster-only` (community structure), `graphify query`/`graphify explain` for entry
-   points, data flows, and external-system touchpoints. If the graph is missing/stale, say so;
-   offer `/amir:graphify_update` first (user decides).
+1. Gather graph evidence from the project root with `GRAPHIFY_OUT=.amir/graphify-out` (or the
+   manifest `output_directory`): `graphify tree`, `graphify cluster-only`, `graphify query` /
+   `graphify explain` for entry points, data flows, and external-system touchpoints. If the
+   graph is missing/stale, say so; offer `/amir:graphify_update` first (user decides).
 2. Draft/refresh `.ai/architecture.md` with these sections:
    - **Module map** — top-level modules/packages and responsibilities
    - **Dependency map** — who depends on whom (major edges only, cited)

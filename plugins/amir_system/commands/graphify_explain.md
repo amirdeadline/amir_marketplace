@@ -15,8 +15,9 @@ argument-hint: <file | module | symbol>
 ## Procedure
 
 1. `$ARGUMENTS` names the target (file path, module, or symbol). If empty, ask.
-2. From the project root run (CLI v0.8.33):
+2. From the project root run (CLI v0.8.33) with Amir output path:
    ```powershell
+   $env:GRAPHIFY_OUT = ".amir/graphify-out"   # or manifest output_directory
    graphify explain "<target>"
    ```
    Enrich with `graphify path`/`graphify tree` when the explanation needs

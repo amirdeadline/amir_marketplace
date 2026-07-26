@@ -17,7 +17,7 @@ If no argument was given, show the /amir:project_list_plugins table and ask whic
      `project_tools.<tool>.enabled: false`, or `system_capabilities.<name>.allowed: false`)
    - the rendered files that will be deleted (stale-cleanup list from
      `python "$env:USERPROFILE\.amir\bin\amirctl.py" generate --dry-run` after the edit)
-   - what is PRESERVED by default: project data/state (`graphify-out/`, `.serena/`,
+   - what is PRESERVED by default: project data/state (`.amir/graphify-out/`, `.serena/`,
      `.amir/state/<tool>/`, worktrees, findings, traces). Deleting data is a separate, explicit
      opt-in per the destructive-action rule.
 3. On confirmation, apply: edit manifest → `generate` (stale cleanup removes only amir-generated

@@ -55,7 +55,7 @@ Show the user exactly what will be indexed BEFORE anything runs:
   components — never credential names' values or secret store paths).
 - **Excluded, always**: secrets and secret stores (`.env*`, `*credential*`, key material,
   `%USERPROFILE%\.amir\secrets\`), `.git\`, dependency dirs (node_modules, venvs, vendor),
-  build outputs, caches, `graphify-out\`, `.amir\backups\`, binaries/media.
+  build outputs, caches, `.amir\graphify-out\`, `.amir\backups\`, binaries/media.
 - The registry entry to be written, and the namespace name (= `project.id`).
 - The report file that will be created: `<project>\.amir\reports\global-graph-registration.md`.
 

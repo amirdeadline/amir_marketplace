@@ -74,13 +74,13 @@ claim context was cleared unless a new session actually started.
 ### /amir:graphify (spec §4.6) + graphify_{name} wrappers
 Hub: detect current project → check manifest `project_tools.graphify.enabled` → check `graphify` CLI installed
 (pip package graphifyy; CLI at Python312 Scripts on this machine) → check graph health/freshness
-(`graphify-out/graph.json` mtime vs source; `graphify update` supported) → present operations → invoke scoped
+(`.amir/graphify-out/graph.json` mtime vs source; `graphify update` supported) → present operations → invoke scoped
 wrapper. Never scan outside project root without approval; never register project in a global graph
 (`graphify global add`) without explicit approval.
 Wrappers call the system CLI (verified subcommands, v0.8.33): `install --project --platform claude|cursor`,
 `update [--force]`, `query`, `path`, `explain`, `affected`, `cluster-only`, `tree`, `uninstall`, `hook
 install|uninstall|status`. graphify_setup: verify install, run project-scoped platform installs, write
-include/exclude config honoring manifest excludes, ensure graphify-out/ gitignored unless project commits it,
+include/exclude config honoring manifest excludes, ensure .amir/graphify-out/ gitignored unless project commits it,
 manage the auto-registered PreToolUse hooks per manifest update_policy (manual → remove hooks). graphify_build:
 full build via /graphify skill flow (project-local `.claude/skills/graphify`), respect .gitignore + manifest.
 graphify_update: incremental; record timestamp + source commit; never claim current on failure. graphify_query/
@@ -89,7 +89,7 @@ graphify_impact: `graphify affected` + graph traversal; distinguish graph eviden
 graphify_architecture: generate/update .ai/architecture.md (module map, dependency map, entry points, data flows,
 external systems); never replace manual decisions without review. graphify_status: enabled?, CLI version, last
 build, source commit, staleness, ignored dirs, output size; never silently rebuild. graphify_clean: remove only
-this project's graphify-out/ after showing exactly what's removed; preserve config unless asked. graphify_disable:
+this project's .amir/graphify-out/ after showing exactly what's removed; preserve config unless asked. graphify_disable:
 run `graphify uninstall` per platform in project, update manifest+lock, preserve/archive output, never touch CLI
 or other projects.
 

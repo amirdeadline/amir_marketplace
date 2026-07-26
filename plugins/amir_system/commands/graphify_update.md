@@ -13,11 +13,13 @@ argument-hint: [--force]
 
 ## Procedure
 
-1. Precondition: `graphify-out/graph.json` must exist. If it doesn't, say the graph was never
-   built and point to `/amir:graphify_build` — `update` cannot create a graph from nothing.
-2. From the project root run:
+1. Precondition: `.amir/graphify-out/graph.json` must exist (or the manifest's
+   `output_directory`). If it doesn't, say the graph was never built and point to
+   `/amir:graphify_build` — `update` cannot create a graph from nothing.
+2. From the project root run (always set `GRAPHIFY_OUT` first):
    ```powershell
-   graphify update
+   $env:GRAPHIFY_OUT = ".amir/graphify-out"   # or manifest output_directory
+   graphify update .
    ```
    Pass `--force` only if the user supplied it in `$ARGUMENTS` (forces refresh even when
    graphify considers the graph current).

@@ -22,8 +22,8 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-from util import (AmirError, acquire_lock_file, atomic_write_text, read_json,
-                  release_lock_file, require_yaml, utc_stamp)
+from util import (AmirError, DEFAULT_GRAPHIFY_OUT, acquire_lock_file, atomic_write_text,
+                  read_json, release_lock_file, require_yaml, utc_stamp)
 
 REGISTRY_SCHEMA_VERSION = 2
 LOCK_STALE_SECONDS = 10 * 60
@@ -196,8 +196,15 @@ def graphify_config(manifest_data: dict) -> dict:
     return (manifest_data.get("project_tools") or {}).get("graphify") or {}
 
 
+def graphify_output_directory(manifest_data: dict | None = None) -> str:
+    """Resolved Graphify output dir relative to project root (default: .amir/graphify-out)."""
+    if not manifest_data:
+        return DEFAULT_GRAPHIFY_OUT
+    return graphify_config(manifest_data).get("output_directory") or DEFAULT_GRAPHIFY_OUT
+
+
 def local_graph_path(project_root: Path, manifest_data: dict) -> Path:
-    out_dir = graphify_config(manifest_data).get("output_directory") or "graphify-out"
+    out_dir = graphify_output_directory(manifest_data)
     return Path(project_root) / out_dir / "graph.json"
 
 

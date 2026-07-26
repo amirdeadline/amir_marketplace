@@ -109,10 +109,10 @@
       "secret_access": "none",
       "filesystem_access": "project",
       "write_capabilities": [
-        "project_files (graphify-out/, host hook registration inside project)"
+        "project_files (.amir/graphify-out/, host hook registration inside project)"
       ],
       "destructive_capabilities": [
-        "graphify_clean deletes this project's graphify-out/ (shown first)"
+        "graphify_clean deletes this project's .amir/graphify-out/ (shown first)"
       ],
       "resource_requirements": {
         "disk": "Graph output can reach hundreds of MB on large repos",

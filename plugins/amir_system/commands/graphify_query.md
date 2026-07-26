@@ -15,12 +15,14 @@ argument-hint: <question>
 ## Procedure
 
 1. Require a question: `$ARGUMENTS` is the query text. If empty, ask for it.
-2. From the project root run the CLI (v0.8.33 verified subcommands):
+2. From the project root run the CLI (v0.8.33 verified subcommands) with Amir output path:
    ```powershell
+   $env:GRAPHIFY_OUT = ".amir/graphify-out"   # or manifest output_directory
    graphify query "<question>"
+   # equivalent: graphify query "<question>" --graph .amir/graphify-out/graph.json
    ```
    For relationship/path questions, `graphify path` and `graphify tree` are also available;
-   use whichever fits the question shape.
+   use whichever fits the question shape (same `GRAPHIFY_OUT` / `--graph`).
 3. Answer FROM THE GRAPH results. Every claim sourced from the graph must cite its
    `source_location` (file path and, when available, line span) so the user can verify.
 4. Fallback: if the graph is missing, stale, or the query returns nothing useful, say so

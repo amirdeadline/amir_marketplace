@@ -586,7 +586,7 @@ def build_parser() -> argparse.ArgumentParser:
     group.add_argument("--archive-registry", action="store_true",
                        help="archive + remove the registry entry (default behavior)")
     p.add_argument("--remove-local-graph", action="store_true",
-                   help="also delete the project's local graphify-out/graph.json")
+                   help="also delete the project's local .amir/graphify-out/graph.json")
     p.set_defaults(func=cmd_portfolio_remove)
     p = sub.add_parser("portfolio-update", help="refresh one project (graph only when stale)")
     p.add_argument("target", help="project directory or registered id")

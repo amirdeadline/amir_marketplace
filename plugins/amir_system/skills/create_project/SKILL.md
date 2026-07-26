@@ -173,7 +173,12 @@ actions each get called out in the plan. "Cancel" here still means zero side eff
    `tasks.md`, `decisions.md`, `risks.md`, `architecture.md`, `references.md`,
    `changelog.md`, `context_handoff.md` — plus `.ai\agents\orchestrator\` and
    `.ai\agents\qa\` (and only the additional role dirs actually needed) when subagent
-   orchestration is enabled.
+   orchestration is enabled. **All AI-needed docs live under `.ai\`** — never create parallel
+   AI doc trees at the repo root.
+8b. If Graphify is enabled: set `project_tools.graphify.output_directory: .amir/graphify-out`
+    in the manifest, and ensure `.gitignore` contains `.amir/graphify-out/` (and a defensive
+    `graphify-out/` entry) unless the user chose to commit the graph. Never leave Graphify
+    writing to a root-level `graphify-out/`.
 9. Worktrees config if selected.
 10. Run validation (`amirctl validate` / validator) and capture its real output.
 11. Continue with the post-creation portfolio steps below (they include registration).

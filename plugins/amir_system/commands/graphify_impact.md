@@ -17,12 +17,13 @@ argument-hint: <changed files or symbols>
 
 1. Determine the change set: `$ARGUMENTS` (files/symbols), or if empty, propose using the
    current git diff (`git status --short` / `git diff --name-only`) and confirm.
-2. From the project root run (CLI v0.8.33):
+2. From the project root run (CLI v0.8.33) with Amir output path:
    ```powershell
+   $env:GRAPHIFY_OUT = ".amir/graphify-out"   # or manifest output_directory
    graphify affected <targets>
    ```
 3. Deepen with graph traversal where useful: `graphify path` between changed nodes and critical
-   entry points, `graphify tree` for containment context.
+   entry points, `graphify tree` for containment context (same `GRAPHIFY_OUT`).
 4. Present the impact report in tiers:
    - **Directly affected** (graph edges from changed nodes) — with `source_location` citations.
    - **Transitively affected** (traversal depth ≥ 2) — cited.

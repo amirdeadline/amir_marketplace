@@ -30,6 +30,9 @@ file from this plugin's `commands/` directory and summarize: what it does, argum
 - `/amir:cleanup_context` â€” durable context handoff into `.ai/` docs
 
 **Graphify** (all gated by `.amir/project.yaml` â†’ `project_tools.graphify.enabled`)
+- `/amir:amir-project-cleanup` — full project audit: reconstruct truth from code, rebuild
+  `PROJECT.md` + `.ai/`, safely clean stale AI/project memory (also user-scope as
+  `/amir-project-cleanup`); not the same as `cleanup_context`
 - `/amir:graphify` â€” interactive hub; plus `graphify_setup`, `graphify_build`, `graphify_update`,
   `graphify_query`, `graphify_explain`, `graphify_status`, `graphify_impact`,
   `graphify_architecture`, `graphify_clean`, `graphify_disable`

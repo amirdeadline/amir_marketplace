@@ -16,7 +16,8 @@ from util import GENERATED_MARKER_KEY, AmirError, read_json
 
 SNAKE_RE = re.compile(r"^[a-z0-9][a-z0-9_]*$")
 ENV_NAME_RE = re.compile(r"^[A-Z][A-Z0-9_]*$")
-SKILL_NAME_EXCEPTIONS = {"create-project-doc"}  # user-specified exact name
+SKILL_NAME_EXCEPTIONS = {"create-project-doc", "amir-project-cleanup"}  # user-specified exact names
+COMMAND_NAME_EXCEPTIONS = {"amir-project-cleanup"}  # slash name mirrors skill; hyphen form
 
 
 @dataclass
@@ -84,14 +85,17 @@ def _check_lock(project_root: Path, catalog_root: Path, cat: dict, data: dict, c
 def _check_naming(cat: dict, checks: list) -> None:
     bad = []
     for component in cat.get("components", []):
-        bad.extend(f"command '{c}'" for c in component.get("commands", []) if not SNAKE_RE.match(c))
+        bad.extend(f"command '{c}'" for c in component.get("commands", [])
+                   if not SNAKE_RE.match(c) and c not in COMMAND_NAME_EXCEPTIONS)
         bad.extend(f"skill '{s}'" for s in component.get("skills", [])
                    if not SNAKE_RE.match(s) and s not in SKILL_NAME_EXCEPTIONS)
     if bad:
         checks.append(Check("naming", "error",
-                            "non-snake_case names (only create-project-doc is exempt): " + ", ".join(sorted(bad))))
+                            "non-snake_case names (create-project-doc, amir-project-cleanup exempt): "
+                            + ", ".join(sorted(bad))))
     else:
-        checks.append(Check("naming", "ok", "all command/skill names comply with /amir: snake_case"))
+        checks.append(Check("naming", "ok", "all command/skill names comply with /amir: snake_case "
+                            "(create-project-doc, amir-project-cleanup exempt)"))
 
 
 def _check_duplicates(project_root: Path, cat: dict, checks: list) -> None:

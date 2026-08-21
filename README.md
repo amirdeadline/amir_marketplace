@@ -15,7 +15,7 @@ command surfaces under the single **`/amir:`** namespace; their command sets are
 
 | Marketplace entry | Scope | Contents |
 |---|---|---|
-| `amir_system` | **user** — installed once, available before any project exists | Project lifecycle (`create_project`, `onboard_project`, `use_subagents`, `list_projects`, `cleanup_context`, configure/validate/repair/status/help), Graphify wrappers, Asana MCP + task skills, Playwright MCP, the 7 system rules, and the deterministic tooling in `plugins/amir_system/tools/` |
+| `amir_system` | **user** — installed once, available before any project exists | Project lifecycle (`create_project`, `onboard_project`, `use_subagents`, `list_projects`, `cleanup_context`, `amir-project-cleanup`, configure/validate/repair/status/help), Graphify wrappers, Asana MCP + task skills, Playwright MCP, the 7 system rules, and the deterministic tooling in `plugins/amir_system/tools/` |
 | `amir_project` | **project** — never auto-enabled | 24 component groups: harness, aws, azure, xdr, docker, elastic, litellm, nmap, paloalto, prisma, qradar, sentinel, splunk, ssh, terraform, wireshark, serena, context7, semgrep, langfuse, openhands, worktrees, swebench, terminalbench |
 
 A project opts in through its manifest `.amir/project.yaml` (schema v2,
@@ -27,7 +27,7 @@ configured ≠ healthy — the validator reports each state separately.
 
 ## `/amir:` namespace
 
-All commands are `/amir:{snake_case}` (sole exception: skill `create-project-doc`, user-specified).
+All commands are `/amir:{snake_case}` (hyphenated exceptions: `create-project-doc`, `amir-project-cleanup`).
 Examples: `/amir:create_project`, `/amir:graphify_status`, `/amir:plan`, `/amir:terraform_plan`,
 `/amir:serena_find_symbol`, `/amir:semgrep_security_gate`. Full inventory:
 [`design/component-map.md`](design/component-map.md) and [`catalog/catalog.json`](catalog/catalog.json).

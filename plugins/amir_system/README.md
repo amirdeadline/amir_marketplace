@@ -29,7 +29,7 @@ Project lifecycle: `/amir:create_project`, `/amir:onboard_project`, `/amir:list_
 
 Catalog: `/amir:list_components`, `/amir:update_catalog`
 
-Orchestration & context: `/amir:use_subagents`, `/amir:cleanup_context`
+Orchestration & context: `/amir:use_subagents`, `/amir:cleanup_context`, `/amir:amir-project-cleanup`
 
 Graphify (manifest-gated): `/amir:graphify`, `/amir:graphify_setup`, `/amir:graphify_build`,
 `/amir:graphify_update`, `/amir:graphify_query`, `/amir:graphify_explain`,
@@ -43,7 +43,9 @@ Help: `/amir:help`
 ## Skills
 
 `create_project`, `onboard_project`, `use_subagents`, `cleanup_context`, `system_rules`,
-plus the user-provided `create-project-doc` (exact name preserved).
+plus user-provided exact names `create-project-doc` and `amir-project-cleanup`.
+`amir-project-cleanup` is also installed at user scope under
+`%USERPROFILE%\.cursor\skills\` and `%USERPROFILE%\.claude\skills\` (`/amir-project-cleanup`).
 
 ## MCP servers
 

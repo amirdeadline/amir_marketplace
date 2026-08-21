@@ -5,7 +5,9 @@ Marketplace entry ID: `amir_system`. Keep small, stable, security-conscious. No 
 Contains ONLY capabilities needed before a project exists: create/onboard/orchestrate/inspect/manage + machine-level integrations (Asana, Playwright, Graphify wrappers).
 
 Command files: `commands/<name>.md` with frontmatter `description` (+ `argument-hint` where useful).
-Skill dirs: `skills/<name>/SKILL.md` for the complex flows (create_project, onboard_project, use_subagents, cleanup_context, system_rules; create-project-doc already exists — DO NOT modify it).
+Skill dirs: `skills/<name>/SKILL.md` for the complex flows (create_project, onboard_project, use_subagents,
+cleanup_context, system_rules; exact-name exceptions `create-project-doc`, `amir-project-cleanup` — DO NOT rename them).
+`/amir:amir-project-cleanup` rebuilds project memory from implementation (not session handoff; that is `cleanup_context`).
 Rules: `rules/*.mdc` (Cursor consumes these via plugin; Claude gets the same content via the `system_rules` skill).
 
 ## Core skill requirements

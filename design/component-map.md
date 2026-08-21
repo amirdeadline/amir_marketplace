@@ -8,8 +8,9 @@ Marketplace entry IDs are `amir_system` and `amir_project`; no plugin's *identit
 - `amir_system` — installed at USER scope (Claude Code `--scope user`; Cursor via `~/.cursor/plugins/local/amir_system` junction). Available before any project exists.
 - `amir_project` — NEVER auto-enabled. Installed per-project (`--scope project`) or rendered as a component subset by the renderer during `/amir:create_project` / `/amir:onboard_project`.
 
-Naming rules: all commands `/amir:{snake_case}`. Exception (user-specified exact name): skill `create-project-doc`.
-No hyphen/underscore twin variants. Deprecation aliases are temporary and print a warning.
+Naming rules: all commands `/amir:{snake_case}`. Exceptions (user-specified exact names): skills
+`create-project-doc`, `amir-project-cleanup` (and command `/amir:amir-project-cleanup`).
+No hyphen/underscore twin variants beyond those exceptions. Deprecation aliases are temporary and print a warning.
 
 ## amir_system command inventory
 
@@ -20,6 +21,7 @@ No hyphen/underscore twin variants. Deprecation aliases are temporary and print 
 | `/amir:use_subagents` | skill+command | new (spec §4.3; supersedes harness `use_subagent`) |
 | `/amir:list_projects` | command | new (spec §4.4; registry at `~/.amir/registry/projects.json`) |
 | `/amir:cleanup_context` | skill+command | new (spec §4.5; supersedes harness `compact`) |
+| `/amir:amir-project-cleanup` | skill (+ command file) | full project audit / `.ai`+`PROJECT.md` rebuild 2026-08-21; also user-scope `/amir-project-cleanup`; catalog lists skill only |
 | `/amir:graphify` | command | new (spec §4.6 interactive hub) |
 | `/amir:graphify_setup` | command | graphify wrapper |
 | `/amir:graphify_build` | command | graphify wrapper |
@@ -57,6 +59,7 @@ No hyphen/underscore twin variants. Deprecation aliases are temporary and print 
 | `/amir:project_add_plugin` | command | new (resolve → render → lock pipeline for one addition) |
 | `/amir:project_disable_plugin` | command | new (manifest disable + stale cleanup; data preserved by default) |
 | `create-project-doc` | skill (`/amir:create-project-doc`) | user-provided verbatim 2026-07-24 |
+| `amir-project-cleanup` | skill+command (`/amir:amir-project-cleanup`) | project audit / memory rebuild 2026-08-21; user-scope `/amir-project-cleanup` |
 | 9 × `asana_*` skills | skills | migrated from amir-asana plugin: `asana_complete_task, asana_create_task, asana_daily_triage, asana_priorities_today, asana_review_tasks, asana_standup, asana_sync_from_report, asana_update, asana_update_task` |
 
 Plus: rules/ (7 system rules: project-isolation, tool-scope, security-secrets, honest-execution,

@@ -1,0 +1,8 @@
+{
+  "name": "Amir_PAB_SCM",
+  "description": "Expert navigation of Strata Cloud Manager (SCM) running inside the Prisma Access Browser.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Amir Rashidi"
+  }
+}

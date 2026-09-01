@@ -1,0 +1,8 @@
+{
+  "name": "Amir_PAB",
+  "description": "General skills for accessing and driving the Prisma Access Browser (PAB) desktop app with the cua computer-use driver, including the mandatory read-only security gate.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Amir Rashidi"
+  }
+}

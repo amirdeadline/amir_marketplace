@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "amir marketplace — two plugins, every command under /amir:",
-    "version": "1.1.8"
+    "version": "1.2.0"
   },
   "plugins": [
     {
@@ -54,6 +54,94 @@
         "infra",
         "security",
         "evaluation"
+      ]
+    },
+    {
+      "name": "Amir_PAB",
+      "source": "./plugins/Amir_PAB",
+      "description": "General skills for accessing and driving the Prisma Access Browser (PAB) desktop app with the cua computer-use driver, including the mandatory read-only security gate.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "integrations",
+      "tags": [
+        "pab",
+        "cua",
+        "computer-use",
+        "security-gate"
+      ],
+      "keywords": [
+        "pab",
+        "cua",
+        "computer-use",
+        "security-gate"
+      ]
+    },
+    {
+      "name": "Amir_PAB_SCM",
+      "source": "./plugins/Amir_PAB_SCM",
+      "description": "Expert navigation of Strata Cloud Manager (SCM) running inside the Prisma Access Browser.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "integrations",
+      "tags": [
+        "pab",
+        "scm",
+        "strata-cloud-manager",
+        "prisma-sdwan"
+      ],
+      "keywords": [
+        "pab",
+        "scm",
+        "strata-cloud-manager",
+        "prisma-sdwan"
+      ]
+    },
+    {
+      "name": "Amir_PAB_CIE",
+      "source": "./plugins/Amir_PAB_CIE",
+      "description": "Expert navigation of the Cloud Identity Engine (CIE) web UI running inside the Prisma Access Browser.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "integrations",
+      "tags": [
+        "pab",
+        "cie",
+        "cloud-identity-engine",
+        "identity"
+      ],
+      "keywords": [
+        "pab",
+        "cie",
+        "cloud-identity-engine",
+        "identity"
+      ]
+    },
+    {
+      "name": "Amir_PAB_CSP",
+      "source": "./plugins/Amir_PAB_CSP",
+      "description": "Expert navigation of the Palo Alto Networks Customer Support Portal (CSP) web UI running inside the Prisma Access Browser.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "integrations",
+      "tags": [
+        "pab",
+        "csp",
+        "support-portal",
+        "tac"
+      ],
+      "keywords": [
+        "pab",
+        "csp",
+        "support-portal",
+        "tac"
       ]
     }
   ]

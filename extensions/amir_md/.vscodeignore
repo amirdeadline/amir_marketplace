@@ -1,0 +1,8 @@
+src/**
+test/**
+docs/**
+node_modules/**
+**/*.map
+tsconfig.json
+esbuild.js
+.gitignore

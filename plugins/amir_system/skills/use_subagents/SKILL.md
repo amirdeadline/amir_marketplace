@@ -20,14 +20,28 @@ Break the goal into ordered, **independently verifiable** tasks. Good tasks: sin
 responsibility, clear done-condition, verifiable without trusting the agent's word. Identify
 which tasks are parallelizable (no shared files, no ordering dependency) vs. sequential.
 
-## Step 2b — Agent workspaces (under `.ai\agents\`)
+## Step 2b — Agent workspaces (host-local)
 
-Each subagent role gets a workspace directory `.ai\agents\<role>\` inside the project.
+Each subagent role gets a workspace under the **active host**, never under `.ai/agents/` for
+new work:
+
+| Host | Workspace root |
+|------|----------------|
+| Cursor | `.cursor/agents/<role>/` |
+| Claude Code | `.claude/agents/<role>/` |
+| Codex | `.codex/agents/<role>/` |
+
 Recognized roles: `orchestrator`, `architect`, `developer`, `qa`, `security`, `research`.
-Create ONLY the role directories the current work actually needs — with `orchestrator\` and
-`qa\` as the mandatory minimum whenever subagent orchestration is enabled for the project.
-A role's workspace holds its task briefs, returned evidence, and notes; agents write inside
-their own workspace (plus their allowed code paths), never in another role's.
+Create ONLY the role directories the current work actually needs — with `orchestrator` and `qa`
+as the mandatory minimum whenever subagent orchestration is enabled.
+
+Each agent folder includes at least `report.md` (from `templates/host/agents/report.md`).
+Agents write inside their own host workspace (plus allowed code paths), never in another
+role's folder and never into another host's tree.
+
+Shared project facts (status, tasks, design, assumptions, TODO, report index) stay in `.ai/`
+per `templates/project-layout.md`. After an agent updates `report.md`, refresh the matching
+row in `.ai/reports.md`.
 
 ## Step 3 — Context packages (one per subagent)
 
@@ -61,9 +75,11 @@ Each subagent receives ONE bounded package — **never the whole repository**:
 
 ## Step 6 — Record and report
 
-- Record decisions, task outcomes, and evidence in `.ai/` docs (`.ai/tasks.md`, `.ai/decisions.md`;
-  risks discovered → `.ai/risks.md`; per-agent evidence stays in that agent's
-  `.ai/agents/<role>/` workspace).
+- Record decisions, task outcomes, and evidence in `.ai/` docs (`.ai/tasks.md`,
+  `.ai/decisions.md`, `.ai/TODO.md`, `.ai/assumptions.md`; risks → `.ai/risks.md`).
+  Per-agent evidence and `report.md` stay under `.<host>/agents/<role>/`; update
+  `.ai/reports.md` with agent, host, score (1–100 human attention), datetime, summary, and
+  link to that report.
 - Final report separates: **completed (with evidence) / failed (with errors) / skipped /
   blocked (with blocker)**. Never blend these. Recommend `/amir:cleanup_context` if the
   orchestration consumed substantial context.

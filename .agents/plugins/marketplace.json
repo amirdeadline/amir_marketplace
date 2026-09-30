@@ -31,6 +31,20 @@
       "category": "integrations",
       "description": "Project-scope component groups (harness, cloud, security, network, dev tooling, evaluation). Never auto-enabled; installed per project or rendered as a manifest-selected subset.",
       "version": "1.1.8"
+    },
+    {
+      "name": "Amir_LiteLLM",
+      "source": {
+        "source": "local",
+        "path": "./plugins/Amir_LiteLLM"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "integrations",
+      "description": "Palo Alto LiteLLM MCP gateway toolkit for Claude Code and Cursor: litellm_install_<server> installers (Confluence, Jira, Asana, GitLab, Cortex, BigQuery, ...), gateway status, setup, and tool usage docs.",
+      "version": "0.1.0"
     }
   ]
 }

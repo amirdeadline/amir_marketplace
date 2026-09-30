@@ -1,0 +1,7 @@
+{
+  "amir.host": "cursor",
+  "amir.agentsRoot": ".cursor/agents",
+  "amir.sharedAiRoot": ".ai",
+  "amir.reportIndex": ".ai/reports.md",
+  "notes": "Cursor project settings. Skills, rules, commands, and agent workspaces for Cursor live under .cursor/ only."
+}

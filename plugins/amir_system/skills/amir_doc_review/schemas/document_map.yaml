@@ -1,0 +1,61 @@
+# Schema: document map (Phase 3)
+
+document_map:
+  type: object
+  required: [document_path, section_inventory, review_units]
+  properties:
+    document_path: { type: string }
+    hierarchy:
+      type: array
+      items:
+        type: object
+        properties:
+          id: { type: string }
+          title: { type: string }
+          location: { type: string }
+          kind: { type: string }  # part | chapter | section | appendix
+          children: { type: array }
+    section_inventory:
+      type: array
+      items:
+        type: object
+        required: [section_id, title, location, purpose, review_domain]
+        properties:
+          section_id: { type: string }
+          title: { type: string }
+          location: { type: string }
+          purpose: { type: string }
+          technologies: { type: array, items: { type: string } }
+          dependencies: { type: array, items: { type: string } }
+          review_domain: { type: string }
+    diagrams:
+      type: array
+      items:
+        type: object
+        properties:
+          id: { type: string }
+          title: { type: string }
+          location: { type: string }
+          kind: { type: string }
+    tables:
+      type: array
+      items:
+        type: object
+        properties:
+          id: { type: string }
+          title: { type: string }
+          location: { type: string }
+    review_units:
+      type: array
+      items:
+        type: object
+        required: [id, title, section_ids]
+        properties:
+          id: { type: string }
+          title: { type: string }
+          section_ids: { type: array, items: { type: string } }
+          domains: { type: array, items: { type: string } }
+          adjacent_context_ids: { type: array, items: { type: string } }
+          priority: { type: string }  # high | medium | low
+    unmapped_or_skipped: { type: array, items: { type: string } }
+    mapping_limitations: { type: array, items: { type: string } }

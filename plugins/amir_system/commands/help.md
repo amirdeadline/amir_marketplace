@@ -27,12 +27,29 @@ file from this plugin's `commands/` directory and summarize: what it does, argum
 
 **Orchestration & context**
 - `/amir:use_subagents` â€” bounded, verifiable subagent task decomposition
+- `/amir:user_subagents2` â€” full project planning + fresh sub-agent execution loop (also
+  available user-scope as `/user_subagents2`)
+- `/amir:amir_critical` â€” critical thinking partner (evidence-driven challenge; also
+  user-scope as `/amir_critical`)
+- `/amir:amir_doc_review` â€” evidence-based multi-phase review of technical design docs
+  (HLD/LLD/as-built/Prisma SASE); no forced findings; also user-scope as `/amir_doc_review`
+- `/amir:amir_humanized` — minimum-change humanization of technical docs (docx/md/txt;
+  PDF extract-only); writes `<stem>_humanized` next to the source and a report under
+  `<PROJECT_ROOT>/.ai/reports/`; also user-scope as `/amir_humanized`
+- `/amir:no-slop` â€” rewrite/generate natural direct prose without AI cliches
+- `/amir:btw` â€” aside question: redirects to Cursor native `/btw` or `/side` (does not
+  answer in this thread)
 - `/amir:cleanup_context` â€” durable context handoff into `.ai/` docs
-
-**Graphify** (all gated by `.amir/project.yaml` â†’ `project_tools.graphify.enabled`)
-- `/amir:amir-project-cleanup` — full project audit: reconstruct truth from code, rebuild
+- `/amir:amir_handoff` â€” one self-contained handoff file so a fresh session resumes cold;
+  works in any repo, Amir project or not (also user-scope as `/amir_handoff`)
+- `/amir:amir-project-cleanup` â€” full project audit: reconstruct truth from code, rebuild
   `PROJECT.md` + `.ai/`, safely clean stale AI/project memory (also user-scope as
   `/amir-project-cleanup`); not the same as `cleanup_context`
+- `/amir:amir_agent_notification` — neural-TTS spoken label saved as
+  `.ai/agents/notifications/<nospaces>.wav` and applied as this Cursor agent's
+  Completion Sound (also user-scope as `/amir_agent_notification`)
+
+**Graphify** (all gated by `.amir/project.yaml` â†’ `project_tools.graphify.enabled`)
 - `/amir:graphify` â€” interactive hub; plus `graphify_setup`, `graphify_build`, `graphify_update`,
   `graphify_query`, `graphify_explain`, `graphify_status`, `graphify_impact`,
   `graphify_architecture`, `graphify_clean`, `graphify_disable`

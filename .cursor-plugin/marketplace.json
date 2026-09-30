@@ -56,6 +56,30 @@
         "security",
         "evaluation"
       ]
+    },
+    {
+      "name": "Amir_LiteLLM",
+      "description": "Palo Alto LiteLLM MCP gateway toolkit for Claude Code and Cursor: litellm_install_<server> installers (Confluence, Jira, Asana, GitLab, Cortex, BigQuery, ...), gateway status, setup, and tool usage docs.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "integrations",
+      "tags": [
+        "litellm",
+        "mcp",
+        "gateway",
+        "confluence",
+        "cursor"
+      ],
+      "keywords": [
+        "litellm",
+        "mcp",
+        "gateway",
+        "confluence",
+        "cursor"
+      ],
+      "source": "Amir_LiteLLM"
     }
   ]
 }

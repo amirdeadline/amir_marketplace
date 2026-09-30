@@ -1,0 +1,96 @@
+# Schema: section / unit review sub-agent output
+
+section_review:
+  type: object
+  required: [review_unit, summary]
+  properties:
+    review_unit:
+      type: object
+      required: [id, title]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        document_locations: { type: array, items: { type: string } }
+        review_domains: { type: array, items: { type: string } }
+        product_scope: { type: array, items: { type: string } }
+        source_scope: { type: array, items: { type: string } }
+    summary:
+      type: object
+      properties:
+        purpose: { type: string }
+        reviewed_content: { type: string }
+        overall_result:
+          type: string
+          enum: [no_issue, findings, insufficient_evidence]
+    confirmed_findings:
+      type: array
+      description: Candidates only until Phase 7 validation
+      items: { $ref: finding.yaml#/finding }
+    ambiguities:
+      type: array
+      items:
+        type: object
+        properties:
+          candidate_id: { type: string }
+          document_location: { type: string }
+          ambiguity: { type: string }
+          possible_interpretations: { type: array, items: { type: string } }
+          material_impact: { type: string }
+          evidence_needed: { type: string }
+    unverified_risks:
+      type: array
+      items:
+        type: object
+        properties:
+          candidate_id: { type: string }
+          risk: { type: string }
+          basis: { type: string }
+          evidence_needed: { type: string }
+    optional_improvements:
+      type: array
+      items:
+        type: object
+        properties:
+          candidate_id: { type: string }
+          document_location: { type: string }
+          recommendation: { type: string }
+          benefit: { type: string }
+          why_optional: { type: string }
+    strengths:
+      type: array
+      items:
+        type: object
+        properties:
+          document_location: { type: string }
+          strength: { type: string }
+          supporting_evidence: { type: string }
+    no_issue_areas:
+      type: array
+      items:
+        type: object
+        properties:
+          area: { type: string }
+          reason: { type: string }
+    cross_section_dependencies:
+      type: array
+      items:
+        type: object
+        properties:
+          related_section: { type: string }
+          dependency: { type: string }
+          consistency_check_required: { type: boolean }
+    sources_used:
+      type: array
+      items:
+        type: object
+        properties:
+          title: { type: string }
+          authority: { type: string }
+          version_or_date: { type: string }
+          relevant_section: { type: string }
+    review_limitations:
+      type: array
+      items:
+        type: object
+        properties:
+          limitation: { type: string }

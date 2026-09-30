@@ -156,7 +156,7 @@
           "type": "array",
           "uniqueItems": true,
           "items": { "type": "string" },
-          "description": "Skill directory names this group contributes. Hyphenated exceptions: create-project-doc, amir-project-cleanup."
+          "description": "Skill directory names this group contributes. Hyphenated exceptions: create-project-doc, no-slop, amir-project-cleanup."
         },
         "mcp_servers": {
           "type": "array",

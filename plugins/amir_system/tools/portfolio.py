@@ -40,8 +40,11 @@ PORTFOLIO_LOCK_STALE_SECONDS = 30 * 60
 STALE_STATUS_DAYS = 14
 GRAPHIFY_TIMEOUT_SECONDS = 600
 
-AI_FILES = ("project.md", "status.md", "tasks.md", "decisions.md", "risks.md",
-            "architecture.md", "references.md", "changelog.md", "context_handoff.md")
+AI_FILES = (
+    "TODO.md", "project.md", "status.md", "assumptions.md", "design.md", "tasks.md",
+    "reports.md", "decisions.md", "risks.md", "architecture.md", "references.md",
+    "changelog.md", "context_handoff.md",
+)
 
 SOURCE_EXCLUDE_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv",
                        ".pytest_cache", ".mypy_cache", "dist", "build",

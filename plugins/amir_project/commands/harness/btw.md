@@ -4,6 +4,11 @@ description: "Temporary read-only side question. Not saved to project state or l
 
 # /amir:btw
 
+> **Cursor:** Prefer native Side Chat — run `/btw <question>` or `/side <question>` (or Plus →
+> Side Chat). User-scope amir_system `/amir:btw` only redirects there and does not answer
+> in-session. This harness file is a **legacy in-session approximation** (pollutes the parent
+> transcript); do not use it when native Side Chat is available.
+
 Temporary read-only side question. Not saved to project state or long-term memory.
 
 ## BTW MODE — Temporary • Read-only • Not saved
@@ -31,4 +36,4 @@ Temporary session closed.
 
 ## Residual limitations (honest)
 
-Cursor Ask / read-only modes may still retain this turn in host chat history depending on IDE settings. amir cannot guarantee zero host-side persistence or perfect tool isolation — the agent must still refuse writes even if tools appear available. For zero-pollution ephemeral sessions, start a fresh chat instead.
+Cursor Ask / read-only modes may still retain this turn in host chat history depending on IDE settings. amir cannot guarantee zero host-side persistence or perfect tool isolation — the agent must still refuse writes even if tools appear available. For zero-pollution ephemeral sessions on Cursor, use native `/btw` or `/side` instead of this harness command.

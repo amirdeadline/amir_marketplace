@@ -25,7 +25,10 @@ Orchestration skill: understand → clarify → finalize plan → atomic tasks �
 
 Does **not** require amir project JSON (`.ai/state/*`). Works in any workspace.
 
-Optional: if an amir project exists, you may read it for context but must **not** write orchestration scratch into `.ai/` unless the user explicitly requests that as a deliverable.
+Optional: if an amir project exists, you may read it for context. Prefer writing durable
+shared facts to `.ai/` and host agent `report.md` files under `.<host>/agents/<id>/` per
+`core/workspace-rules.md`. Do **not** dump orchestration scratch into the project source
+tree unless the user explicitly requests project-local artifacts.
 
 ## Temporary artifacts
 

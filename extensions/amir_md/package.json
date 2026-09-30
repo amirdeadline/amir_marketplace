@@ -1,0 +1,253 @@
+{
+  "name": "amir-md",
+  "displayName": "amir_md",
+  "description": "Word-style editor for Markdown: formatted editing, heading navigation pane, section folding, and export to PDF and Word. The file stays plain Markdown.",
+  "version": "0.1.0",
+  "publisher": "amir",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "markdown",
+    "wysiwyg",
+    "word",
+    "editor",
+    "outline"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onCustomEditor:amir_md.editor"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "In untrusted workspaces amir_md does not load remote images and does not run Pandoc."
+    }
+  },
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "amir_md.editor",
+        "displayName": "amir_md",
+        "selector": [
+          { "filenamePattern": "*.md" },
+          { "filenamePattern": "*.markdown" }
+        ],
+        "priority": "option"
+      }
+    ],
+    "commands": [
+      { "command": "amir_md.openWith", "title": "Open with amir_md", "category": "amir_md", "icon": "$(book)" },
+      { "command": "amir_md.openAsText", "title": "Open as Markdown Text", "category": "amir_md", "icon": "$(code)" },
+      { "command": "amir_md.exportPdf", "title": "Export to PDF", "category": "amir_md" },
+      { "command": "amir_md.exportDocx", "title": "Export to Word", "category": "amir_md" },
+      { "command": "amir_md.exportHtml", "title": "Export to HTML", "category": "amir_md" },
+      { "command": "amir_md.saveAsMarkdown", "title": "Save As Markdown", "category": "amir_md" },
+      { "command": "amir_md.toggleNavPane", "title": "Toggle Navigation Pane", "category": "amir_md" },
+      { "command": "amir_md.expandAllHeadings", "title": "Expand All Headings", "category": "amir_md" },
+      { "command": "amir_md.collapseAllHeadings", "title": "Collapse All Headings", "category": "amir_md" },
+      { "command": "amir_md.noop", "title": "amir_md: reserved shortcut", "category": "amir_md" }
+    ],
+    "menus": {
+      "commandPalette": [
+        { "command": "amir_md.noop", "when": "false" },
+        { "command": "amir_md.openAsText", "when": "activeCustomEditorId == 'amir_md.editor'" },
+        { "command": "amir_md.exportPdf", "when": "activeCustomEditorId == 'amir_md.editor'" },
+        { "command": "amir_md.exportDocx", "when": "activeCustomEditorId == 'amir_md.editor'" },
+        { "command": "amir_md.exportHtml", "when": "activeCustomEditorId == 'amir_md.editor'" },
+        { "command": "amir_md.saveAsMarkdown", "when": "activeCustomEditorId == 'amir_md.editor'" },
+        { "command": "amir_md.toggleNavPane", "when": "activeCustomEditorId == 'amir_md.editor'" },
+        { "command": "amir_md.expandAllHeadings", "when": "activeCustomEditorId == 'amir_md.editor'" },
+        { "command": "amir_md.collapseAllHeadings", "when": "activeCustomEditorId == 'amir_md.editor'" }
+      ],
+      "explorer/context": [
+        { "command": "amir_md.openWith", "when": "resourceExtname == .md || resourceExtname == .markdown", "group": "navigation@90" }
+      ],
+      "editor/title": [
+        { "command": "amir_md.openWith", "when": "resourceLangId == markdown && activeCustomEditorId != 'amir_md.editor'", "group": "navigation@90" },
+        { "command": "amir_md.openAsText", "when": "activeCustomEditorId == 'amir_md.editor'", "group": "navigation@90" },
+        { "command": "amir_md.exportPdf", "when": "activeCustomEditorId == 'amir_md.editor'", "group": "1_amir_md@1" },
+        { "command": "amir_md.exportDocx", "when": "activeCustomEditorId == 'amir_md.editor'", "group": "1_amir_md@2" },
+        { "command": "amir_md.exportHtml", "when": "activeCustomEditorId == 'amir_md.editor'", "group": "1_amir_md@3" },
+        { "command": "amir_md.saveAsMarkdown", "when": "activeCustomEditorId == 'amir_md.editor'", "group": "1_amir_md@4" }
+      ],
+      "webview/context": [
+        { "command": "amir_md.expandAllHeadings", "when": "activeCustomEditorId == 'amir_md.editor'", "group": "1_fold@1" },
+        { "command": "amir_md.collapseAllHeadings", "when": "activeCustomEditorId == 'amir_md.editor'", "group": "1_fold@2" }
+      ]
+    },
+    "keybindings": [
+      { "key": "ctrl+b", "mac": "cmd+b", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+i", "mac": "cmd+i", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+u", "mac": "cmd+u", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+k", "mac": "cmd+k", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+z", "mac": "cmd+z", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+y", "mac": "cmd+shift+z", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+shift+z", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+space", "mac": "cmd+space", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+alt+0", "mac": "cmd+alt+0", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+alt+1", "mac": "cmd+alt+1", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+alt+2", "mac": "cmd+alt+2", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+alt+3", "mac": "cmd+alt+3", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+alt+4", "mac": "cmd+alt+4", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+alt+5", "mac": "cmd+alt+5", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+alt+6", "mac": "cmd+alt+6", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+shift+7", "mac": "cmd+shift+7", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "ctrl+shift+8", "mac": "cmd+shift+8", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "alt+shift+5", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "alt+shift+-", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" },
+      { "key": "alt+shift+=", "command": "amir_md.noop", "when": "activeCustomEditorId == 'amir_md.editor'" }
+    ],
+    "configuration": {
+      "title": "amir_md",
+      "properties": {
+        "amir_md.defaultEditor": {
+          "type": "boolean",
+          "default": false,
+          "description": "Open Markdown files in amir_md by default. Turning this on adds an entry to workbench.editorAssociations after you confirm."
+        },
+        "amir_md.maxFileSizeMB": {
+          "type": "number",
+          "default": 5,
+          "description": "Files larger than this open with a warning."
+        },
+        "amir_md.images.folder": {
+          "type": "string",
+          "default": "images",
+          "description": "Folder, relative to the document, where pasted and copied images are saved."
+        },
+        "amir_md.images.allowRemote": {
+          "type": "boolean",
+          "default": true,
+          "description": "Load https images referenced by the document."
+        },
+        "amir_md.editor.fontFamilies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["Aptos", "Calibri", "Arial", "Segoe UI", "Verdana", "Tahoma", "Times New Roman", "Georgia", "Cambria", "Consolas", "Courier New"],
+          "description": "Fonts offered in the font list."
+        },
+        "amir_md.editor.defaultFontFamily": {
+          "type": "string",
+          "default": "",
+          "description": "Font for Normal text in the editor view. Empty uses the theme font."
+        },
+        "amir_md.editor.defaultFontSize": {
+          "type": "number",
+          "default": 11,
+          "description": "Size in points for Normal text in the editor view."
+        },
+        "amir_md.colors.palette": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["#000000", "#595959", "#A6A6A6", "#C00000", "#E53935", "#FB8C00", "#FFC000", "#FDD835", "#43A047", "#2E7D32", "#00897B", "#03A9F4", "#1E88E5", "#1565C0", "#0D47A1", "#8E24AA"],
+          "description": "Default font color swatches."
+        },
+        "amir_md.fold.remember": {
+          "type": "boolean",
+          "default": true,
+          "description": "Remember folded sections for each document."
+        },
+        "amir_md.nav.defaultExpandLevel": {
+          "type": "number",
+          "default": 2,
+          "minimum": 1,
+          "maximum": 6,
+          "description": "Heading levels open in the navigation pane when a document opens for the first time."
+        },
+        "amir_md.nav.width": {
+          "type": "number",
+          "default": 300,
+          "description": "Initial width of the navigation pane in pixels."
+        },
+        "amir_md.markdown.bulletMarker": {
+          "type": "string",
+          "enum": ["-", "*", "+"],
+          "default": "-",
+          "description": "Bullet marker for lists amir_md writes. Existing lists you do not edit keep their marker."
+        },
+        "amir_md.markdown.emphasisMarker": {
+          "type": "string",
+          "enum": ["*", "_"],
+          "default": "*",
+          "description": "Marker for italic text amir_md writes."
+        },
+        "amir_md.markdown.strongMarker": {
+          "type": "string",
+          "enum": ["**", "__"],
+          "default": "**",
+          "description": "Marker for bold text amir_md writes."
+        },
+        "amir_md.export.engine": {
+          "type": "string",
+          "enum": ["builtin", "pandoc"],
+          "default": "builtin",
+          "description": "Export engine. Pandoc must be installed to use it."
+        },
+        "amir_md.export.browserPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Microsoft Edge or Google Chrome for PDF export. Empty finds it automatically."
+        },
+        "amir_md.export.pandocPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Pandoc. Empty uses the PATH."
+        },
+        "amir_md.export.pdf.pageSize": {
+          "type": "string",
+          "enum": ["Letter", "A4"],
+          "default": "Letter",
+          "description": "PDF page size."
+        },
+        "amir_md.export.pdf.marginMm": {
+          "type": "number",
+          "default": 20,
+          "description": "PDF margin on all sides, in millimetres."
+        },
+        "amir_md.export.pdf.pageNumbers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Print page numbers in the PDF footer."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.ts",
+    "package": "npm run compile && vsce package --no-dependencies --allow-missing-repository --skip-license"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "~1.74.0",
+    "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.25.0",
+    "jszip": "^3.10.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "docx": "^9.8.1",
+    "markdown-it": "^14.1.0",
+    "prosemirror-commands": "^1.7.2",
+    "prosemirror-dropcursor": "^1.8.4",
+    "prosemirror-gapcursor": "^1.4.1",
+    "prosemirror-history": "^1.5.1",
+    "prosemirror-keymap": "^1.2.3",
+    "prosemirror-markdown": "^1.13.8",
+    "prosemirror-model": "^1.25.12",
+    "prosemirror-schema-list": "^1.5.1",
+    "prosemirror-state": "^1.4.4",
+    "prosemirror-tables": "^1.8.5",
+    "prosemirror-transform": "^1.12.2",
+    "prosemirror-view": "^1.42.6"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "comment": "MCP Gateway user config for Palo Alto LiteLLM gateway. Place this at ~/.mcp-gateway/user-config.json. Environment variables listed are those the gateway reads; the gateway supplies them to each downstream server.",
+  "disabled_servers": [],
+  "servers": {
+    "mcp_confluence": {
+      "env": {
+        "CONFLUENCE_URL": "https://your-confluence-instance.atlassian.net/wiki",
+        "CONFLUENCE_USERNAME": "your-email@company.com",
+        "CONFLUENCE_API_TOKEN": "your-atlassian-api-token",
+        "CONFLUENCE_SPACES_FILTER": "DEV,TEAM"
+      },
+      "disabled_tools": []
+    },
+    "mcp_jira": {
+      "env": {
+        "JIRA_BASE_URL": "https://your-instance.atlassian.net",
+        "JIRA_USERNAME": "your-email@company.com",
+        "JIRA_API_TOKEN": "your-atlassian-api-token",
+        "JIRA_PROJECTS_FILTER": "PROJ1,PROJ2"
+      },
+      "disabled_tools": []
+    },
+    "mcp_asana": {
+      "env": {
+        "ASANA_PAT": "your-asana-personal-access-token"
+      },
+      "disabled_tools": []
+    },
+    "mcp_gitlab": {
+      "env": {
+        "GITLAB_HOST": "gitlab.company.com",
+        "GITLAB_TOKEN": "your-gitlab-personal-access-token",
+        "GITLAB_PROJECT_ID": "prisma-sdwan-lab"
+      },
+      "disabled_tools": []
+    },
+    "mcp_google_workspace": {
+      "env": {
+        "GOOGLE_CLIENT_ID": "your-oauth-client-id.apps.googleusercontent.com",
+        "GOOGLE_CLIENT_SECRET": "your-oauth-client-secret",
+        "GOOGLE_REDIRECT_URI": "http://localhost:8080/auth/google/callback"
+      },
+      "disabled_tools": []
+    },
+    "mcp_cortex_bot": {
+      "env": {
+        "CORTEX_API_KEY": "your-cortex-xsiam-xsoar-api-key",
+        "CORTEX_API_KEY_ID": "your-cortex-api-key-id",
+        "CORTEX_TENANT_FQDN": "api-tenant-name.xsiam.paloaltonetworks.com"
+      },
+      "disabled_tools": [
+        "isolate_endpoint",
+        "unisolate_endpoint",
+        "terminate_process",
+        "terminate_causality",
+        "quarantine_files",
+        "blocklist_files",
+        "run_script",
+        "run_snippet_code_script",
+        "run_playbook",
+        "insert_correlation_rule",
+        "delete_correlation_rule",
+        "insert_bioc",
+        "insert_indicators_csv",
+        "insert_indicators_json",
+        "sdk_upload",
+        "sdk_run",
+        "sdk_run_playbook"
+      ]
+    },
+    "mcp_cortex_mcp": {
+      "env": {
+        "CORTEX_API_KEY": "your-cortex-xdr-api-key",
+        "CORTEX_API_KEY_ID": "your-cortex-api-key-id",
+        "CORTEX_TENANT_FQDN": "api-tenant-name.xdr.paloaltonetworks.com"
+      },
+      "disabled_tools": []
+    },
+    "mcp_gcp_bq": {
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/service-account-key.json",
+        "GCLOUD_PROJECT_ID": "your-gcp-project-id"
+      },
+      "disabled_tools": []
+    },
+    "mcp_figma_desktop": {
+      "env": {},
+      "disabled_tools": [],
+      "comment": "Requires the Figma desktop app to be running locally with Dev Mode MCP server enabled. No credentials needed."
+    },
+    "mcp_playwright": {
+      "env": {
+        "PLAYWRIGHT_HOST": "127.0.0.1",
+        "PLAYWRIGHT_PORT": "3000"
+      },
+      "args": {
+        "viewport-size": "1280x800"
+      },
+      "disabled_tools": []
+    },
+    "mcp_chrome_devtools": {
+      "env": {
+        "CHROME_BIN": "/usr/bin/chromium-browser",
+        "CHROME_LOG_FILE": "/tmp/chrome-mcp.log"
+      },
+      "disabled_tools": [],
+      "comment": "Requires Chrome or Chromium to be running. Set CHROME_BIN to your browser path."
+    },
+    "mcp_secure_fetch": {
+      "env": {},
+      "disabled_tools": [],
+      "comment": "No credentials needed. Fetches public or VPN-reachable URLs and returns sanitized Markdown."
+    }
+  }
+}

@@ -69,14 +69,27 @@
         "repair_project",
         "update_catalog",
         "use_subagents",
+        "user_subagents2",
+        "amir_critical",
+        "amir_handoff",
+        "amir_doc_review",
+        "amir_humanized",
+        "btw",
         "validate_project"
       ],
       "skills": [
         "create_project",
         "onboard_project",
         "use_subagents",
+        "user_subagents2",
+        "amir_critical",
+        "amir_handoff",
+        "amir_doc_review",
+        "amir_humanized",
+        "btw",
         "cleanup_context",
         "create-project-doc",
+        "no-slop",
         "amir-project-cleanup"
       ],
       "mcp_servers": []
@@ -321,7 +334,6 @@
       "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
       "commands": [
         "agent_reset",
-        "btw",
         "build_agents",
         "build_goal",
         "design",

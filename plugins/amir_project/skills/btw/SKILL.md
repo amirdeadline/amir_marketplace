@@ -5,12 +5,19 @@ description: "Temporary read-only side question; not saved to amir state."
 
 # btw
 
+## Cursor (preferred)
+
+On Cursor 3.11+, use native Side Chat: `/btw <question>` or `/side <question>`.
+User-scope **amir_system** `/amir:btw` only redirects there and must not answer in the
+parent thread. This harness skill is a legacy in-session approximation.
+
 ## CLAUDE CODE GATE
 
 If the host is **Claude Code**, refuse this skill. amir intentionally does **not**
-register `/btw` there (no true zero-pollution ephemeral session). Tell the user
-to ask in a normal chat or switch to Cursor/Codex for `/btw`.
+register a working `/btw` aside there (no true zero-pollution ephemeral session). Tell the
+user to ask in a normal chat or switch to Cursor for native `/btw` / `/side`.
 
+## Legacy in-session mode (Codex / fallback only)
 
 Temporary read-only side question outside the amir project loop.
 
@@ -22,4 +29,4 @@ Temporary read-only side question outside the amir project loop.
 
 ## Residual limitations (honest)
 
-Codex has no native zero-pollution ephemeral session. This skill approximates /btw via strict self-imposed read-only behavior. Host transcript retention may still apply. For true isolation, use a separate Codex session.
+Codex has no native zero-pollution ephemeral session. This skill approximates /btw via strict self-imposed read-only behavior. Host transcript retention may still apply. For true isolation, use a separate Codex session. On Cursor, prefer native Side Chat.

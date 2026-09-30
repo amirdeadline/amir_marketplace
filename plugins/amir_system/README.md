@@ -29,7 +29,9 @@ Project lifecycle: `/amir:create_project`, `/amir:onboard_project`, `/amir:list_
 
 Catalog: `/amir:list_components`, `/amir:update_catalog`
 
-Orchestration & context: `/amir:use_subagents`, `/amir:cleanup_context`, `/amir:amir-project-cleanup`
+Orchestration & context: `/amir:use_subagents`, `/amir:user_subagents2`, `/amir:amir_critical`,
+`/amir:amir_doc_review`, `/amir:amir_humanized`, `/amir:no-slop`, `/amir:btw`, `/amir:cleanup_context`,
+`/amir:amir_handoff`, `/amir:amir-project-cleanup`, `/amir:amir_agent_notification`
 
 Graphify (manifest-gated): `/amir:graphify`, `/amir:graphify_setup`, `/amir:graphify_build`,
 `/amir:graphify_update`, `/amir:graphify_query`, `/amir:graphify_explain`,
@@ -42,10 +44,17 @@ Help: `/amir:help`
 
 ## Skills
 
-`create_project`, `onboard_project`, `use_subagents`, `cleanup_context`, `system_rules`,
-plus user-provided exact names `create-project-doc` and `amir-project-cleanup`.
-`amir-project-cleanup` is also installed at user scope under
-`%USERPROFILE%\.cursor\skills\` and `%USERPROFILE%\.claude\skills\` (`/amir-project-cleanup`).
+`create_project`, `onboard_project`, `use_subagents`, `user_subagents2`, `amir_critical`,
+`amir_doc_review`, `amir_humanized`, `amir_handoff`, `btw`, `cleanup_context`, `system_rules`, plus
+user-provided exact names `create-project-doc`, `no-slop`, `amir-project-cleanup`,
+and `amir_agent_notification`.
+`/amir:btw` redirects to Cursor native `/btw` or `/side` (does not answer in-session).
+`user_subagents2`, `amir_critical`, `amir_handoff`, `amir_doc_review`,
+`amir_humanized`, `amir-project-cleanup`, and `amir_agent_notification` are also
+installed at user scope under
+`%USERPROFILE%\.cursor\skills\` and `%USERPROFILE%\.claude\skills\` (`/user_subagents2`,
+`/amir_critical`, `/amir_handoff`, `/amir_doc_review`, `/amir_humanized`,
+`/amir-project-cleanup`, `/amir_agent_notification`).
 
 ## MCP servers
 

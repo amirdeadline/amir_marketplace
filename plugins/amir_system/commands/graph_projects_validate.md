@@ -38,8 +38,9 @@ documented subcommand, say which.
    timestamps are not in the future; stale namespaces listed (stale is a WARN, not a FAIL —
    but an UNLABELED stale state is a FAIL of honest bookkeeping).
 7. **Missing `.ai\` files** — per reachable project: which of the 9 workspace files
-   (project.md, status.md, tasks.md, decisions.md, risks.md, architecture.md,
-   references.md, changelog.md, context_handoff.md) are absent; missing `.ai\status.md`
+   (TODO.md, project.md, status.md, assumptions.md, design.md, tasks.md, reports.md,
+   decisions.md, risks.md, architecture.md, references.md, changelog.md,
+   context_handoff.md) are absent; missing `.ai\status.md`
    is flagged prominently (it feeds every status view).
 8. **Portfolio.yaml presence/validity** — `.amir\portfolio.yaml` exists per project, parses,
    and contains no fabricated-looking progress (progress with no evidence source = WARN).

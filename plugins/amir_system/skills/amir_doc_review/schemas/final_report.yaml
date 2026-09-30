@@ -1,0 +1,43 @@
+# Schema: final report meta + counts
+
+final_report:
+  type: object
+  required:
+    - executive_assessment
+    - technical_disposition
+    - coverage_complete
+  properties:
+    executive_assessment:
+      type: object
+      properties:
+        document_name: { type: string }
+        document_type: { type: string }
+        review_scope: { type: string }
+        product_scope: { type: string }
+        evidence_sources_used: { type: array, items: { type: string } }
+        overall_assessment: { type: string }
+        technical_disposition:
+          type: string
+          enum:
+            - approved_as_written
+            - approved_with_optional_improvements
+            - approved_after_minor_corrections
+            - conditionally_approved
+            - revision_required
+            - not_suitable_for_implementation
+            - insufficient_evidence_to_assess
+        editorial_disposition: { type: string }
+        counts:
+          type: object
+          properties:
+            confirmed_defects: { type: integer }
+            material_omissions: { type: integer }
+            ambiguities: { type: integer }
+            unverified_risks: { type: integer }
+            optional_improvements: { type: integer }
+            editorial_corrections: { type: integer }
+        evidence_limitations: { type: array, items: { type: string } }
+    coverage_complete: { type: boolean }
+    incomplete_reasons: { type: array, items: { type: string } }
+    output_path: { type: string }
+    rejected_candidate_ids: { type: array, items: { type: string } }

@@ -1,0 +1,47 @@
+# Schema: finding candidate / validated finding
+
+finding:
+  type: object
+  required:
+    - id
+    - classification
+    - confidence
+    - domain
+    - document_location
+    - claim
+    - document_evidence
+    - impact
+  properties:
+    id: { type: string }
+    candidate_id: { type: string }
+    classification:
+      type: string
+      enum:
+        - confirmed_defect
+        - material_omission
+        - ambiguity_requiring_clarification
+        - unverified_risk
+        - optional_improvement
+        - editorial_correction
+        - no_issue
+    severity:
+      type: string
+      enum: [critical, high, medium, low, none]
+      description: Required for confirmed technical findings only
+    confidence:
+      type: string
+      enum: [high, medium, low]
+    domain: { type: string }
+    document_location: { type: string }
+    claim: { type: string }
+    document_evidence: { type: string }
+    external_evidence: { type: string }
+    impact: { type: string }
+    required_correction: { type: string }
+    validation_status:
+      type: string
+      enum: [candidate, accepted, reclassified, rejected]
+    possible_false_positive_conditions: { type: array, items: { type: string } }
+    affected_locations: { type: array, items: { type: string } }
+    product_version_context: { type: string }
+    management_platform_context: { type: string }

@@ -1,0 +1,53 @@
+# Default knowledge source configuration for amir_doc_review.
+# CLI flags (--knowledge-base, --references, --internet-research) override these values.
+# Do not embed full knowledge bases into prompts — retrieve relevant slices only.
+
+knowledge_sources:
+  local:
+    # High-priority local Prisma SASE / design knowledge (set path when available)
+    - path: ""
+      label: prisma_sase_knowledge_base
+      priority: high
+      authority: advisory
+      notes: "Populate with local KB root for Prisma Access / SD-WAN / SASE design notes"
+
+    # Approved design examples (never automatic truth)
+    - path: ""
+      label: approved_design_examples
+      priority: medium
+      authority: advisory
+      notes: "Example HLD/LLD/as-built library; treat as reference only"
+
+    # Project requirements and standards often supplied via CLI
+    - path: ""
+      label: project_requirements
+      priority: critical
+      authority: authoritative_when_approved
+      notes: "Overridden by --requirements when provided"
+
+  internet:
+    enabled: true
+    preferred_domains:
+      - docs.paloaltonetworks.com
+      - knowledgebase.paloaltonetworks.com
+      - developer.paloaltonetworks.com
+    notes: >
+      Prefer current official PANW documentation. Record product version,
+      management platform (Panorama-managed PA vs SCM vs Prisma SD-WAN),
+      and publication/update date when available.
+
+  standards:
+    - RFC
+    - NIST
+    - ISO
+    - project-specific standards
+
+  conflict_resolution:
+    order:
+      - project_approved_requirements
+      - customer_standards
+      - current_official_vendor_docs
+      - approved_internal_standards
+      - verified_product_limits
+      - advisory_examples
+    on_conflict: explain_do_not_silently_choose

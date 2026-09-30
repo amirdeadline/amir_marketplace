@@ -553,8 +553,10 @@ def make_portfolio_project(base: Path, pid: str, folder: str | None = None,
     data["project_tools"]["graphify"]["enabled"] = graphify
     write_text(project / ".amir" / "project.yaml", yaml.safe_dump(data, sort_keys=True,
                                                                  allow_unicode=True))
-    for fname in ("project.md", "status.md", "risks.md"):
+    import portfolio as portfolio_mod  # local import keeps helper decoupled at module load
+    for fname in portfolio_mod.AI_FILES:
         write_text(project / ".ai" / fname, f"# {fname}\ncontent for {pid}\n")
+    write_text(project / ".ai" / "settings.json", '{"amir.layoutVersion": 1}\n')
     if graph_nodes is not None:
         write_text(project / ".amir" / "graphify-out" / "graph.json",
                    dump_json(mk_local_graph(graph_nodes, graph_edges)))

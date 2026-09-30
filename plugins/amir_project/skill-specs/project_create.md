@@ -19,7 +19,13 @@ Bootstrap a new amir project from a human goal: create the project folder and wo
 ## Behavior
 
 1. Resolve project root and project name from `{prompt}` and host context; create project folder if needed.
-2. Instantiate workspace skeleton from plugin `templates/` per `core/workspace-rules.md` (including `.ai/` tree, `verify.sh` from `templates/verify.sh.tmpl`, and agent workspace stubs).
+2. Instantiate workspace skeleton from plugin templates per `core/workspace-rules.md` and
+   amir_system `templates/project-layout.md`:
+   - `.ai/` shared docs (TODO, project, status, assumptions, design, tasks, reports, …)
+   - `.cursor/`, `.claude/`, `.codex/` each with `settings.json` + `agents/{orchestrator,qa}/report.md`
+   - `.vscode/settings.json` with a random theme palette
+   - harness `.ai/state/` + `verify.sh` when harness tools are used
+   Host agents live under `.<host>/agents/`; shared project data stays in `.ai/`.
 3. Build a **question inventory** from `{prompt}`: list unknowns, ambiguities, and missing acceptance criteria.
 4. Triage every inventory item per `core/question-format.md` (Blocking / Material / Minor).
 5. Ask the human in batches per `core/question-format.md` and `core/interaction-style.md`; apply Minor defaults to `.ai/state/decisions.json` without asking.

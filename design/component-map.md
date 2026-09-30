@@ -9,7 +9,8 @@ Marketplace entry IDs are `amir_system` and `amir_project`; no plugin's *identit
 - `amir_project` — NEVER auto-enabled. Installed per-project (`--scope project`) or rendered as a component subset by the renderer during `/amir:create_project` / `/amir:onboard_project`.
 
 Naming rules: all commands `/amir:{snake_case}`. Exceptions (user-specified exact names): skills
-`create-project-doc`, `amir-project-cleanup` (and command `/amir:amir-project-cleanup`).
+`create-project-doc`, `no-slop`, `amir-project-cleanup` (and commands `/amir:no-slop`,
+`/amir:amir-project-cleanup`).
 No hyphen/underscore twin variants beyond those exceptions. Deprecation aliases are temporary and print a warning.
 
 ## amir_system command inventory
@@ -19,9 +20,14 @@ No hyphen/underscore twin variants beyond those exceptions. Deprecation aliases 
 | `/amir:create_project` | skill+command | new (spec §4.1 interactive workflow) |
 | `/amir:onboard_project` | skill+command | new (spec §4.2) |
 | `/amir:use_subagents` | skill+command | new (spec §4.3; supersedes harness `use_subagent`) |
+| `/amir:user_subagents2` | skill+command | user-provided verbatim 2026-07-27; also user-scope `/user_subagents2` |
+| `/amir:amir_critical` | skill+command | user-provided verbatim 2026-07-27; also user-scope `/amir_critical` |
+| `/amir:amir_doc_review` | skill+command | evidence-based multi-phase design-doc review 2026-08-05; also user-scope `/amir_doc_review` |
+| `/amir:no-slop` | skill (+ command file) | user-provided verbatim 2026-07-27; hyphen name preserved; catalog lists skill only (commands pattern is snake_case) |
+| `/amir:amir-project-cleanup` | skill (+ command file) | full project audit / `.ai`+`PROJECT.md` rebuild 2026-08-21; hyphen name preserved; also user-scope `/amir-project-cleanup`; catalog lists skill only |
+| `/amir:btw` | skill+command | Cursor native Side Chat redirect only (2026-07-31); does not answer in-session |
 | `/amir:list_projects` | command | new (spec §4.4; registry at `~/.amir/registry/projects.json`) |
 | `/amir:cleanup_context` | skill+command | new (spec §4.5; supersedes harness `compact`) |
-| `/amir:amir-project-cleanup` | skill (+ command file) | full project audit / `.ai`+`PROJECT.md` rebuild 2026-08-21; also user-scope `/amir-project-cleanup`; catalog lists skill only |
 | `/amir:graphify` | command | new (spec §4.6 interactive hub) |
 | `/amir:graphify_setup` | command | graphify wrapper |
 | `/amir:graphify_build` | command | graphify wrapper |
@@ -59,6 +65,7 @@ No hyphen/underscore twin variants beyond those exceptions. Deprecation aliases 
 | `/amir:project_add_plugin` | command | new (resolve → render → lock pipeline for one addition) |
 | `/amir:project_disable_plugin` | command | new (manifest disable + stale cleanup; data preserved by default) |
 | `create-project-doc` | skill (`/amir:create-project-doc`) | user-provided verbatim 2026-07-24 |
+| `no-slop` | skill+command (`/amir:no-slop`) | user-provided verbatim 2026-07-27 |
 | `amir-project-cleanup` | skill+command (`/amir:amir-project-cleanup`) | project audit / memory rebuild 2026-08-21; user-scope `/amir-project-cleanup` |
 | 9 × `asana_*` skills | skills | migrated from amir-asana plugin: `asana_complete_task, asana_create_task, asana_daily_triage, asana_priorities_today, asana_review_tasks, asana_standup, asana_sync_from_report, asana_update, asana_update_task` |
 
@@ -71,7 +78,7 @@ tools/: registry.py, renderer.py, validator.py, catalog.py (Python 3.12).
 
 | Group | Commands (`/amir:` + name) | Origin |
 |---|---|---|
-| harness | `agent_reset, btw, build_agents, build_goal, design, design_agents, design_qa, docs_sync, document_max, git_commit, git_push, git_setup, git_tree, handoff, milestone_retro, plan, project_cleanup, project_cost, project_tasks, project_watch, resume_build, rollback, security_scan, tasks_update, troubleshoot` | renamed from plugin `amir` (kept snake_case) |
+| harness | `agent_reset, build_agents, build_goal, design, design_agents, design_qa, docs_sync, document_max, git_commit, git_push, git_setup, git_tree, handoff, milestone_retro, plan, project_cleanup, project_cost, project_tasks, project_watch, resume_build, rollback, security_scan, tasks_update, troubleshoot` | renamed from plugin `amir` (kept snake_case); `btw` moved to amir_system (Cursor Side Chat redirect) |
 | harness (deprecated aliases) | `project_create→create_project, project_import→onboard_project, use_subagent→use_subagents, compact→cleanup_context, project_doctor→validate_project, project_status→(moved to system)` | temporary alias stubs w/ deprecation notice; removal at amir_project 1.0 |
 | harness (retired) | `system_cleanup, system_settings, system_skills, user_cleanup, user_settings, user_skills` | violate project-scope principle; retired (documented) |
 | aws | `aws_cli, aws_whoami` | amir-aws |

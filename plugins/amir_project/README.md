@@ -30,7 +30,7 @@ Harness commands are gated by the plugin being enabled for the project at all.
 
 | Group (dir) | Commands | Origin plugin |
 |---|---|---|
-| `harness` | `/amir:agent_reset`, `/amir:btw`, `/amir:build_agents`, `/amir:build_goal`, `/amir:design`, `/amir:design_agents`, `/amir:design_qa`, `/amir:docs_sync`, `/amir:document_max`, `/amir:git_commit`, `/amir:git_push`, `/amir:git_setup`, `/amir:git_tree`, `/amir:handoff`, `/amir:milestone_retro`, `/amir:plan`, `/amir:project_cleanup`, `/amir:project_cost`, `/amir:project_tasks`, `/amir:project_watch`, `/amir:resume_build`, `/amir:rollback`, `/amir:security_scan`, `/amir:tasks_update`, `/amir:troubleshoot` | `amir` |
+| `harness` | `/amir:agent_reset`, `/amir:build_agents`, `/amir:build_goal`, `/amir:design`, `/amir:design_agents`, `/amir:design_qa`, `/amir:docs_sync`, `/amir:document_max`, `/amir:git_commit`, `/amir:git_push`, `/amir:git_setup`, `/amir:git_tree`, `/amir:handoff`, `/amir:milestone_retro`, `/amir:plan`, `/amir:project_cleanup`, `/amir:project_cost`, `/amir:project_tasks`, `/amir:project_watch`, `/amir:resume_build`, `/amir:rollback`, `/amir:security_scan`, `/amir:tasks_update`, `/amir:troubleshoot` | `amir` (`/amir:btw` is amir_system — Cursor Side Chat redirect) |
 | `aws` (manifest id `aws`) | `/amir:aws_cli`, `/amir:aws_whoami` | `amir-aws` |
 | `azure` (manifest id `azure`) | `/amir:azure_cli`, `/amir:azure_whoami` | `amir-azure` |
 | `xdr` (manifest id `cortex-xdr`) | `/amir:xdr_ask`, `/amir:xdr_incidents`, `/amir:xdr_preflight`, `/amir:xdr_respond` | `amir-cortex-xdr` |

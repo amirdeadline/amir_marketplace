@@ -1,0 +1,7 @@
+{
+  "amir.host": "codex",
+  "amir.agentsRoot": ".codex/agents",
+  "amir.sharedAiRoot": ".ai",
+  "amir.reportIndex": ".ai/reports.md",
+  "notes": "Codex project settings. Codex agent workspaces and Codex-only config live under .codex/ only."
+}

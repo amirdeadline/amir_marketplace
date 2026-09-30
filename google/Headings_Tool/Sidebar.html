@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <style>
+    :root {
+      --background: #ffffff;
+      --surface: #f8f9fa;
+      --surface-hover: #eef1f4;
+      --border: #dadce0;
+      --text: #202124;
+      --muted: #5f6368;
+      --primary: #1a73e8;
+      --primary-hover: #1558b0;
+      --danger: #b3261e;
+      --success: #137333;
+      --warning: #b06000;
+      --radius: 7px;
+      --indent-size: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      min-width: 0;
+      height: 100%;
+      padding: 10px;
+      padding-bottom: 18px;
+    }
+
+    body.mode-sidebar .app {
+      height: auto;
+      min-height: 100%;
+      overflow: visible;
+    }
+
+    body.mode-sidebar {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .header {
+      flex: 0 0 auto;
+      z-index: 20;
+      margin: -10px -10px 10px;
+      padding: 10px;
+      background: var(--background);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .title {
+      min-width: 0;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .document-name {
+      margin-top: 3px;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 11px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tabs {
+      display: none;
+      gap: 4px;
+      margin-top: 10px;
+    }
+
+    .tabs.visible {
+      display: flex;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 7px 4px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .tab-button.active {
+      border-color: var(--primary);
+      background: #e8f0fe;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .panel {
+      display: none;
+      min-height: 0;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    body.mode-dialog #navigatorPanel.active {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .toolbar {
+      display: grid;
+      flex: 0 0 auto;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+
+    .toolbar button,
+    .secondary-button {
+      min-height: 31px;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .toolbar button:hover,
+    .secondary-button:hover {
+      background: var(--surface-hover);
+    }
+
+    .search {
+      flex: 0 0 auto;
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: var(--primary);
+    }
+
+    .tree-container {
+      flex: 1 1 auto;
+      min-height: 150px;
+      overflow: scroll;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 2px;
+      background: white;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: #9aa0a6 #f1f3f4;
+    }
+
+    /* Keep classic scrollbars visible in Chromium/WebKit hosts. */
+    .tree-container::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+      background: #f1f3f4;
+    }
+
+    .tree-container::-webkit-scrollbar-track {
+      background: #f1f3f4;
+    }
+
+    .tree-container::-webkit-scrollbar-thumb {
+      border: 2px solid #f1f3f4;
+      border-radius: 8px;
+      background: #9aa0a6;
+    }
+
+    .tree-container::-webkit-scrollbar-thumb:hover {
+      background: #80868b;
+    }
+
+    .tree-container::-webkit-scrollbar-corner {
+      background: #f1f3f4;
+    }
+
+    .tree {
+      min-width: 100%;
+      width: max-content;
+      max-width: none;
+    }
+
+    .resize-handle {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      z-index: 40;
+      width: 18px;
+      height: 18px;
+      cursor: nwse-resize;
+      touch-action: none;
+      background:
+        linear-gradient(
+          135deg,
+          transparent 0 45%,
+          #9aa0a6 45% 55%,
+          transparent 55% 70%,
+          #9aa0a6 70% 80%,
+          transparent 80%
+        );
+    }
+
+    body.mode-sidebar .resize-handle {
+      display: none;
+    }
+
+    body.is-resizing,
+    body.is-resizing * {
+      cursor: nwse-resize !important;
+      user-select: none !important;
+    }
+
+    .node {
+      min-width: 0;
+    }
+
+    .node-row {
+      display: flex;
+      align-items: flex-start;
+      min-height: 28px;
+      border-radius: 5px;
+    }
+
+    .node-row:hover {
+      background: var(--surface-hover);
+    }
+
+    .toggle {
+      flex: 0 0 25px;
+      width: 25px;
+      height: 27px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-family: monospace;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 27px;
+      text-align: center;
+    }
+
+    .toggle.placeholder {
+      cursor: default;
+      visibility: hidden;
+    }
+
+    .node-label {
+      min-width: 0;
+      max-width: 520px;
+      flex: 1;
+      padding: 6px 6px 5px 1px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      line-height: 16px;
+      text-align: left;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .tab-label {
+      font-weight: 700;
+    }
+
+    .heading-label {
+      font-weight: 400;
+    }
+
+    .heading-level {
+      display: inline-block;
+      margin-right: 4px;
+      color: var(--muted);
+      font-size: 10px;
+      vertical-align: 1px;
+    }
+
+    .children {
+      margin-left: var(--indent-size);
+      border-left: 1px dotted var(--border);
+    }
+
+    .children.collapsed {
+      display: none;
+    }
+
+    .active-tab > .node-row {
+      background: #e8f0fe;
+    }
+
+    .empty {
+      padding: 18px 8px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .section {
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .section-title {
+      margin-bottom: 9px;
+      font-weight: 700;
+    }
+
+    .field {
+      margin-bottom: 9px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      min-height: 32px;
+      padding: 6px 7px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: white;
+      color: var(--text);
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      margin: 0 6px 0 0;
+    }
+
+    .inline-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+
+    .checkbox-row,
+    .radio-row {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 7px;
+      line-height: 17px;
+    }
+
+    .checkbox-row label,
+    .radio-row label {
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .hint {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 15px;
+    }
+
+    .preview {
+      padding: 8px;
+      border: 1px dashed var(--border);
+      border-radius: 5px;
+      background: white;
+      font-family: monospace;
+      line-height: 18px;
+      overflow-wrap: anywhere;
+    }
+
+    .primary-button,
+    .danger-button {
+      width: 100%;
+      min-height: 35px;
+      padding: 7px 10px;
+      border: 0;
+      border-radius: var(--radius);
+      color: white;
+      font-weight: 600;
+    }
+
+    .primary-button {
+      background: var(--primary);
+    }
+
+    .primary-button:hover {
+      background: var(--primary-hover);
+    }
+
+    .danger-button {
+      background: var(--danger);
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.55;
+    }
+
+    .status {
+      display: none;
+      flex: 0 0 auto;
+      margin-bottom: 9px;
+      padding: 8px;
+      border-radius: var(--radius);
+      line-height: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .status.visible {
+      display: block;
+    }
+
+    .status.info {
+      background: #e8f0fe;
+      color: #174ea6;
+    }
+
+    .status.success {
+      background: #e6f4ea;
+      color: var(--success);
+    }
+
+    .status.error {
+      background: #fce8e6;
+      color: var(--danger);
+    }
+
+    .status.warning {
+      background: #fef7e0;
+      color: var(--warning);
+    }
+
+    .loading {
+      padding: 20px 8px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="title-row">
+        <div id="toolTitle" class="title">Heading Navigator</div>
+      </div>
+
+      <div
+        id="documentName"
+        class="document-name"
+        title=""
+      >
+        Loading document…
+      </div>
+
+      <div id="panelTabs" class="tabs">
+        <button
+          id="navigatorTabButton"
+          class="tab-button active"
+          type="button"
+          onclick="switchPanel('navigator')"
+        >
+          Navigator
+        </button>
+
+        <button
+          id="numberingTabButton"
+          class="tab-button"
+          type="button"
+          onclick="switchPanel('numbering')"
+        >
+          Numbering
+        </button>
+      </div>
+    </header>
+
+    <div id="status" class="status"></div>
+
+    <section id="navigatorPanel" class="panel active">
+      <div class="toolbar">
+        <button type="button" onclick="collapseAll()">
+          Collapse all
+        </button>
+
+        <button type="button" onclick="expandAll()">
+          Expand all
+        </button>
+
+        <button type="button" onclick="refreshNavigation()">
+          Refresh
+        </button>
+
+        <button type="button" onclick="expandActiveTab()">
+          Active tab
+        </button>
+      </div>
+
+      <input
+        id="searchInput"
+        class="search"
+        type="text"
+        placeholder="Search tabs and headings…"
+        oninput="filterTree()"
+      >
+
+      <div id="treeContainer" class="tree-container">
+        <div class="loading">Loading tabs and headings…</div>
+      </div>
+    </section>
+
+    <section id="numberingPanel" class="panel">
+      <div class="section">
+        <div class="section-title">Numbering scope</div>
+
+        <div class="radio-row">
+          <input
+            id="scopeAll"
+            name="scope"
+            type="radio"
+            value="all"
+            checked
+            onchange="loadStartOptions()"
+          >
+          <label for="scopeAll">
+            All document tabs and nested tabs
+          </label>
+        </div>
+
+        <div class="radio-row">
+          <input
+            id="scopeActive"
+            name="scope"
+            type="radio"
+            value="active"
+            onchange="loadStartOptions()"
+          >
+          <label for="scopeActive">
+            Active tab only
+          </label>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Starting position</div>
+
+        <div class="radio-row">
+          <input
+            id="startBeginning"
+            name="startMode"
+            type="radio"
+            value="beginning"
+            checked
+            onchange="updateStartMode()"
+          >
+          <label for="startBeginning">
+            Start at the first eligible heading
+          </label>
+        </div>
+
+        <div class="radio-row">
+          <input
+            id="startSelected"
+            name="startMode"
+            type="radio"
+            value="selected"
+            onchange="updateStartMode()"
+          >
+          <label for="startSelected">
+            Start at a selected heading
+          </label>
+        </div>
+
+        <div id="startHeadingField" class="field hidden">
+          <label for="startHeading">
+            Starting heading
+          </label>
+
+          <select id="startHeading">
+            <option value="">Loading headings…</option>
+          </select>
+
+          <div class="hint">
+            The selected heading itself will be numbered.
+            Earlier headings remain unchanged.
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Levels</div>
+
+        <div class="inline-fields">
+          <div class="field">
+            <label for="minimumLevel">First level</label>
+            <select id="minimumLevel" onchange="updatePreview()">
+              <option value="1" selected>Heading 1</option>
+              <option value="2">Heading 2</option>
+              <option value="3">Heading 3</option>
+              <option value="4">Heading 4</option>
+              <option value="5">Heading 5</option>
+              <option value="6">Heading 6</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="maximumLevel">Last level</label>
+            <select id="maximumLevel" onchange="updatePreview()">
+              <option value="1">Heading 1</option>
+              <option value="2">Heading 2</option>
+              <option value="3">Heading 3</option>
+              <option value="4">Heading 4</option>
+              <option value="5">Heading 5</option>
+              <option value="6" selected>Heading 6</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="firstNumber">First number</label>
+          <input
+            id="firstNumber"
+            type="number"
+            min="1"
+            max="9999"
+            value="1"
+            oninput="updatePreview()"
+          >
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Number format</div>
+
+        <div class="field">
+          <label for="separator">Level separator</label>
+          <select id="separator" onchange="handleSeparatorChange()">
+            <option value=".">Period: 1.2.3</option>
+            <option value="-">Hyphen: 1-2-3</option>
+            <option value="_">Underscore: 1_2_3</option>
+            <option value="/">Slash: 1/2/3</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+
+        <div id="customSeparatorField" class="field hidden">
+          <label for="customSeparator">
+            Custom separator
+          </label>
+          <input
+            id="customSeparator"
+            type="text"
+            maxlength="5"
+            value="."
+            oninput="updatePreview()"
+          >
+        </div>
+
+        <div class="field">
+          <label for="suffix">Text after number</label>
+          <select id="suffix" onchange="handleSuffixChange()">
+            <option value=" ">Space: “1.2 Heading”</option>
+            <option value=". ">Period and space: “1.2. Heading”</option>
+            <option value=" - ">Hyphen: “1.2 - Heading”</option>
+            <option value=": ">Colon: “1.2: Heading”</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+
+        <div id="customSuffixField" class="field hidden">
+          <label for="customSuffix">Custom text</label>
+          <input
+            id="customSuffix"
+            type="text"
+            maxlength="5"
+            value=" "
+            oninput="updatePreview()"
+          >
+        </div>
+
+        <div class="field">
+          <label>Preview</label>
+          <div id="numberPreview" class="preview">
+            1 Section<br>
+            1.1 Subsection<br>
+            1.1.1 Topic
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Behavior</div>
+
+        <div class="checkbox-row">
+          <input
+            id="resetPerTab"
+            type="checkbox"
+            checked
+          >
+          <label for="resetPerTab">
+            Restart numbering in each document tab
+          </label>
+        </div>
+
+        <div class="checkbox-row">
+          <input
+            id="removeExistingNumbers"
+            type="checkbox"
+            checked
+          >
+          <label for="removeExistingNumbers">
+            Replace recognized existing numeric prefixes
+          </label>
+        </div>
+
+        <div class="checkbox-row">
+          <input
+            id="skipMissingParents"
+            type="checkbox"
+          >
+          <label for="skipMissingParents">
+            Do not invent missing parent numbers
+          </label>
+        </div>
+
+        <div class="hint">
+          Example: when Heading 3 appears before Heading 1 and Heading 2,
+          the default result is 1.1.1. With “do not invent” enabled,
+          the result is 1.
+        </div>
+      </div>
+
+      <button
+        id="applyButton"
+        class="primary-button"
+        type="button"
+        onclick="applyNumbering()"
+      >
+        Apply numbering
+      </button>
+
+      <div style="height: 8px;"></div>
+
+      <button
+        id="removeButton"
+        class="danger-button"
+        type="button"
+        onclick="removeNumbering()"
+      >
+        Remove recognized numbering
+      </button>
+    </section>
+  </div>
+
+  <div
+    id="resizeHandle"
+    class="resize-handle"
+    title="Drag to resize"
+    aria-label="Resize navigator"
+  ></div>
+
+  <script>
+    const INITIAL_PANEL = <?!= initialPanel ?>;
+    const DISPLAY_MODE = <?!= displayMode ?>;
+
+    const DIALOG_SIZE_LIMITS = {
+      minWidth: 280,
+      maxWidth: 900,
+      minHeight: 360,
+      maxHeight: 900,
+    };
+
+    let navigationData = null;
+    let activePanel = INITIAL_PANEL;
+    let dialogWidth = window.innerWidth || 420;
+    let dialogHeight = window.innerHeight || 640;
+    let resizeState = null;
+    let saveSizeTimer = null;
+
+
+    /**
+     * Initializes only the data required by the selected tool.
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add(
+        DISPLAY_MODE === 'dialog' ? 'mode-dialog' : 'mode-sidebar'
+      );
+
+      switchPanel(INITIAL_PANEL);
+      updatePreview();
+      setupDialogResizer();
+
+      if (INITIAL_PANEL === 'numbering') {
+        const documentName = document.getElementById('documentName');
+        documentName.textContent = 'Configure heading numbering';
+        documentName.title = '';
+        loadStartOptions();
+      } else {
+        refreshNavigation();
+      }
+    });
+
+
+    /**
+     * Changes the visible application panel.
+     */
+    function switchPanel(panelName) {
+      activePanel = panelName;
+
+      document
+        .getElementById('navigatorPanel')
+        .classList.toggle('active', panelName === 'navigator');
+
+      document
+        .getElementById('numberingPanel')
+        .classList.toggle('active', panelName === 'numbering');
+
+      document
+        .getElementById('navigatorTabButton')
+        .classList.toggle('active', panelName === 'navigator');
+
+      document
+        .getElementById('numberingTabButton')
+        .classList.toggle('active', panelName === 'numbering');
+
+      const title = document.getElementById('toolTitle');
+      if (title) {
+        title.textContent =
+          panelName === 'numbering'
+            ? 'Heading Numbering Tool'
+            : 'Heading Navigator';
+      }
+    }
+
+
+    /**
+     * Enables mouse drag resizing for the modeless navigator dialog.
+     *
+     * Docs sidebars are fixed at 300px. Dialogs support
+     * google.script.host.setWidth / setHeight, so the navigator opens
+     * as a modeless dialog with a corner drag handle.
+     */
+    function setupDialogResizer() {
+      if (DISPLAY_MODE !== 'dialog') {
+        return;
+      }
+
+      const handle = document.getElementById('resizeHandle');
+
+      if (!handle || !google.script || !google.script.host) {
+        return;
+      }
+
+      handle.addEventListener('pointerdown', event => {
+        event.preventDefault();
+
+        resizeState = {
+          pointerId: event.pointerId,
+          startX: event.screenX,
+          startY: event.screenY,
+          startWidth: dialogWidth,
+          startHeight: dialogHeight,
+        };
+
+        document.body.classList.add('is-resizing');
+
+        try {
+          handle.setPointerCapture(event.pointerId);
+        } catch (error) {
+          // Pointer capture is optional; mouse listeners still work.
+        }
+      });
+
+      handle.addEventListener('pointermove', event => {
+        if (!resizeState || event.pointerId !== resizeState.pointerId) {
+          return;
+        }
+
+        const nextWidth = clampNumber_(
+          resizeState.startWidth + (event.screenX - resizeState.startX),
+          DIALOG_SIZE_LIMITS.minWidth,
+          DIALOG_SIZE_LIMITS.maxWidth
+        );
+
+        const nextHeight = clampNumber_(
+          resizeState.startHeight + (event.screenY - resizeState.startY),
+          DIALOG_SIZE_LIMITS.minHeight,
+          DIALOG_SIZE_LIMITS.maxHeight
+        );
+
+        applyDialogSize_(nextWidth, nextHeight, false);
+      });
+
+      const endResize = event => {
+        if (!resizeState) {
+          return;
+        }
+
+        if (
+          event &&
+          typeof event.pointerId === 'number' &&
+          event.pointerId !== resizeState.pointerId
+        ) {
+          return;
+        }
+
+        resizeState = null;
+        document.body.classList.remove('is-resizing');
+        persistDialogSize_();
+      };
+
+      handle.addEventListener('pointerup', endResize);
+      handle.addEventListener('pointercancel', endResize);
+    }
+
+
+    /**
+     * Applies a new dialog size through the Apps Script host API.
+     *
+     * @param {number} width Target width.
+     * @param {number} height Target height.
+     * @param {boolean} persist Whether to save immediately.
+     */
+    function applyDialogSize_(width, height, persist) {
+      dialogWidth = Math.round(width);
+      dialogHeight = Math.round(height);
+
+      try {
+        google.script.host.setWidth(dialogWidth);
+        google.script.host.setHeight(dialogHeight);
+      } catch (error) {
+        // Host resize is unavailable outside Docs dialogs.
+      }
+
+      if (persist) {
+        persistDialogSize_();
+      } else {
+        schedulePersistDialogSize_();
+      }
+    }
+
+
+    /**
+     * Debounces size persistence while the user is dragging.
+     */
+    function schedulePersistDialogSize_() {
+      if (saveSizeTimer) {
+        clearTimeout(saveSizeTimer);
+      }
+
+      saveSizeTimer = setTimeout(() => {
+        persistDialogSize_();
+      }, 400);
+    }
+
+
+    /**
+     * Saves the current dialog size for the next open.
+     */
+    function persistDialogSize_() {
+      if (saveSizeTimer) {
+        clearTimeout(saveSizeTimer);
+        saveSizeTimer = null;
+      }
+
+      google.script.run
+        .withFailureHandler(() => {})
+        .saveNavigatorDialogSize({
+          width: dialogWidth,
+          height: dialogHeight,
+        });
+    }
+
+
+    /**
+     * Clamps a numeric value into an inclusive range.
+     *
+     * @param {number} value Input.
+     * @param {number} minimum Minimum.
+     * @param {number} maximum Maximum.
+     * @return {number} Clamped value.
+     */
+    function clampNumber_(value, minimum, maximum) {
+      return Math.min(maximum, Math.max(minimum, Number(value) || minimum));
+    }
+
+
+    /**
+     * Loads document tabs and headings.
+     */
+    function refreshNavigation() {
+      const container = document.getElementById('treeContainer');
+      container.innerHTML =
+        '<div class="loading">Loading tabs and headings…</div>';
+
+      clearStatus();
+
+      google.script.run
+        .withSuccessHandler(data => {
+          navigationData = data;
+
+          const documentName =
+            document.getElementById('documentName');
+
+          documentName.textContent = data.documentName;
+          documentName.title = data.documentName;
+
+          renderNavigationTree();
+        })
+        .withFailureHandler(handleFailure)
+        .getDocumentNavigation();
+    }
+
+
+    /**
+     * Renders all root tabs.
+     */
+    function renderNavigationTree() {
+      const container = document.getElementById('treeContainer');
+      container.innerHTML = '';
+
+      if (
+        !navigationData ||
+        !navigationData.tabs ||
+        navigationData.tabs.length === 0
+      ) {
+        container.innerHTML =
+          '<div class="empty">No document tabs were found.</div>';
+        return;
+      }
+
+      const tree = document.createElement('div');
+      tree.className = 'tree';
+
+      navigationData.tabs.forEach(tab => {
+        tree.appendChild(createTabNode(tab));
+      });
+
+      container.appendChild(tree);
+      filterTree();
+    }
+
+
+    /**
+     * Creates one tab node, including headings and child tabs.
+     */
+    function createTabNode(tab) {
+      const node = document.createElement('div');
+      node.className = 'node tab-node';
+      node.dataset.searchText = normalizeSearchText(tab.title);
+      node.dataset.tabId = tab.id;
+
+      if (
+        navigationData &&
+        tab.id === navigationData.activeTabId
+      ) {
+        node.classList.add('active-tab');
+      }
+
+      const childElements = [];
+
+      const headingTree = buildHeadingTree(tab.headings || []);
+
+      headingTree.forEach(heading => {
+        childElements.push(createHeadingNode(tab.id, heading));
+      });
+
+      (tab.childTabs || []).forEach(childTab => {
+        childElements.push(createTabNode(childTab));
+      });
+
+      const row = document.createElement('div');
+      row.className = 'node-row';
+
+      const toggle = createToggleButton(
+        childElements.length > 0,
+        true
+      );
+
+      const label = document.createElement('button');
+      label.type = 'button';
+      label.className = 'node-label tab-label';
+      label.textContent = `▣ ${tab.title}`;
+      label.title = tab.title;
+
+      label.addEventListener('click', () => {
+        if (childElements.length > 0) {
+          toggleNode(toggle);
+        }
+      });
+
+      row.appendChild(toggle);
+      row.appendChild(label);
+      node.appendChild(row);
+
+      if (childElements.length > 0) {
+        const children = document.createElement('div');
+        children.className = 'children collapsed';
+
+        childElements.forEach(element => {
+          children.appendChild(element);
+        });
+
+        node.appendChild(children);
+        toggle.dataset.targetAssigned = 'true';
+      }
+
+      toggle.addEventListener('click', event => {
+        event.stopPropagation();
+        toggleNode(toggle);
+      });
+
+      return node;
+    }
+
+
+    /**
+     * Builds a nested heading hierarchy from a flat heading list.
+     */
+    function buildHeadingTree(headings) {
+      const roots = [];
+      const stack = [];
+
+      headings.forEach(item => {
+        const node = {
+          ...item,
+          children: [],
+        };
+
+        while (
+          stack.length > 0 &&
+          stack[stack.length - 1].level >= node.level
+        ) {
+          stack.pop();
+        }
+
+        if (stack.length === 0) {
+          roots.push(node);
+        } else {
+          stack[stack.length - 1].children.push(node);
+        }
+
+        stack.push(node);
+      });
+
+      return roots;
+    }
+
+
+    /**
+     * Creates one heading node.
+     */
+    function createHeadingNode(tabId, heading) {
+      const node = document.createElement('div');
+      node.className = 'node heading-node';
+      node.dataset.searchText =
+        normalizeSearchText(heading.text);
+
+      const row = document.createElement('div');
+      row.className = 'node-row';
+
+      const hasChildren =
+        heading.children &&
+        heading.children.length > 0;
+
+      const toggle = createToggleButton(hasChildren, true);
+
+      const label = document.createElement('button');
+      label.type = 'button';
+      label.className = 'node-label heading-label';
+      label.title = heading.text;
+
+      const level = document.createElement('span');
+      level.className = 'heading-level';
+      level.textContent = `H${heading.level}`;
+
+      const text = document.createElement('span');
+      text.textContent = heading.text;
+
+      label.appendChild(level);
+      label.appendChild(text);
+
+      label.addEventListener('click', () => {
+        navigateToHeading(tabId, heading.paragraphIndex);
+      });
+
+      row.appendChild(toggle);
+      row.appendChild(label);
+      node.appendChild(row);
+
+      if (hasChildren) {
+        const children = document.createElement('div');
+        children.className = 'children collapsed';
+
+        heading.children.forEach(childHeading => {
+          children.appendChild(
+            createHeadingNode(tabId, childHeading)
+          );
+        });
+
+        node.appendChild(children);
+        toggle.dataset.targetAssigned = 'true';
+      }
+
+      toggle.addEventListener('click', event => {
+        event.stopPropagation();
+        toggleNode(toggle);
+      });
+
+      return node;
+    }
+
+
+    /**
+     * Creates a plus/minus tree button.
+     */
+    function createToggleButton(hasChildren, collapsed) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'toggle';
+
+      if (!hasChildren) {
+        button.classList.add('placeholder');
+        button.textContent = '+';
+        return button;
+      }
+
+      button.textContent = collapsed ? '+' : '−';
+      button.setAttribute(
+        'aria-label',
+        collapsed ? 'Expand' : 'Collapse'
+      );
+
+      return button;
+    }
+
+
+    /**
+     * Expands or collapses the children belonging to a toggle.
+     */
+    function toggleNode(toggleButton) {
+      const node = toggleButton.closest('.node');
+
+      if (!node) {
+        return;
+      }
+
+      const children = Array.from(node.children)
+        .find(child => child.classList.contains('children'));
+
+      if (!children) {
+        return;
+      }
+
+      const isCollapsed =
+        children.classList.toggle('collapsed');
+
+      toggleButton.textContent = isCollapsed ? '+' : '−';
+      toggleButton.setAttribute(
+        'aria-label',
+        isCollapsed ? 'Expand' : 'Collapse'
+      );
+    }
+
+
+    /**
+     * Collapses every tab and heading branch.
+     */
+    function collapseAll() {
+      document
+        .querySelectorAll('.children')
+        .forEach(children => {
+          children.classList.add('collapsed');
+        });
+
+      document
+        .querySelectorAll('.toggle:not(.placeholder)')
+        .forEach(toggle => {
+          toggle.textContent = '+';
+          toggle.setAttribute('aria-label', 'Expand');
+        });
+    }
+
+
+    /**
+     * Expands every tab and heading branch.
+     */
+    function expandAll() {
+      document
+        .querySelectorAll('.children')
+        .forEach(children => {
+          children.classList.remove('collapsed');
+        });
+
+      document
+        .querySelectorAll('.toggle:not(.placeholder)')
+        .forEach(toggle => {
+          toggle.textContent = '−';
+          toggle.setAttribute('aria-label', 'Collapse');
+        });
+    }
+
+
+    /**
+     * Collapses everything and expands only the active tab branch.
+     */
+    function expandActiveTab() {
+      collapseAll();
+
+      const activeNode =
+        document.querySelector('.tab-node.active-tab');
+
+      if (!activeNode) {
+        showStatus(
+          'The active tab could not be located. Refresh the navigator.',
+          'warning'
+        );
+        return;
+      }
+
+      let current = activeNode;
+
+      while (current) {
+        const directChildren = Array.from(current.children)
+          .find(child => child.classList.contains('children'));
+
+        const directRow = Array.from(current.children)
+          .find(child => child.classList.contains('node-row'));
+
+        if (directChildren) {
+          directChildren.classList.remove('collapsed');
+
+          const toggle =
+            directRow &&
+            directRow.querySelector('.toggle:not(.placeholder)');
+
+          if (toggle) {
+            toggle.textContent = '−';
+          }
+        }
+
+        current = current.parentElement
+          ? current.parentElement.closest('.node')
+          : null;
+      }
+
+      activeNode.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+
+
+    /**
+     * Filters navigation nodes.
+     */
+    function filterTree() {
+      const searchValue = normalizeSearchText(
+        document.getElementById('searchInput').value
+      );
+
+      const roots =
+        document.querySelectorAll(
+          '#treeContainer > .tree > .node'
+        );
+
+      roots.forEach(root => {
+        filterNodeRecursive(root, searchValue);
+      });
+    }
+
+
+    /**
+     * Returns true when the node or a descendant matches.
+     */
+    function filterNodeRecursive(node, searchValue) {
+      const ownText = node.dataset.searchText || '';
+      let childMatches = false;
+
+      const childrenContainer = Array.from(node.children)
+        .find(child => child.classList.contains('children'));
+
+      if (childrenContainer) {
+        Array.from(childrenContainer.children).forEach(childNode => {
+          if (
+            childNode.classList &&
+            childNode.classList.contains('node')
+          ) {
+            const matches =
+              filterNodeRecursive(childNode, searchValue);
+
+            childMatches = childMatches || matches;
+          }
+        });
+      }
+
+      const ownMatches =
+        !searchValue || ownText.includes(searchValue);
+
+      const visible = ownMatches || childMatches;
+      node.classList.toggle('hidden', !visible);
+
+      if (
+        searchValue &&
+        childMatches &&
+        childrenContainer
+      ) {
+        childrenContainer.classList.remove('collapsed');
+
+        const row = Array.from(node.children)
+          .find(child => child.classList.contains('node-row'));
+
+        const toggle =
+          row &&
+          row.querySelector('.toggle:not(.placeholder)');
+
+        if (toggle) {
+          toggle.textContent = '−';
+        }
+      }
+
+      return visible;
+    }
+
+
+    /**
+     * Moves the editor cursor to a heading.
+     */
+    function navigateToHeading(tabId, paragraphIndex) {
+      showStatus('Opening heading…', 'info');
+
+      google.script.run
+        .withSuccessHandler(result => {
+          showStatus(
+            `Opened: ${result.headingText}`,
+            'success'
+          );
+
+          google.script.host.editor.focus();
+        })
+        .withFailureHandler(handleFailure)
+        .navigateToHeading(tabId, paragraphIndex);
+    }
+
+
+    /**
+     * Loads the selectable starting headings.
+     */
+    function loadStartOptions() {
+      const select = document.getElementById('startHeading');
+
+      select.disabled = true;
+      select.innerHTML =
+        '<option value="">Loading headings…</option>';
+
+      google.script.run
+        .withSuccessHandler(options => {
+          select.innerHTML = '';
+
+          if (!options || options.length === 0) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No headings found';
+            select.appendChild(option);
+            select.disabled = true;
+            return;
+          }
+
+          const placeholder = document.createElement('option');
+          placeholder.value = '';
+          placeholder.textContent = 'Select a heading…';
+          select.appendChild(placeholder);
+
+          options.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.key;
+            option.textContent = item.label;
+            option.title = item.label;
+            select.appendChild(option);
+          });
+
+          select.disabled = false;
+        })
+        .withFailureHandler(handleFailure)
+        .getNumberingStartOptions(getSelectedScope());
+    }
+
+
+    /**
+     * Shows or hides the starting-heading selector.
+     */
+    function updateStartMode() {
+      const selected =
+        document.getElementById('startSelected').checked;
+
+      document
+        .getElementById('startHeadingField')
+        .classList.toggle('hidden', !selected);
+
+      if (selected) {
+        loadStartOptions();
+      }
+    }
+
+
+    /**
+     * Handles predefined or custom separators.
+     */
+    function handleSeparatorChange() {
+      const custom =
+        document.getElementById('separator').value === 'custom';
+
+      document
+        .getElementById('customSeparatorField')
+        .classList.toggle('hidden', !custom);
+
+      updatePreview();
+    }
+
+
+    /**
+     * Handles predefined or custom number suffixes.
+     */
+    function handleSuffixChange() {
+      const custom =
+        document.getElementById('suffix').value === 'custom';
+
+      document
+        .getElementById('customSuffixField')
+        .classList.toggle('hidden', !custom);
+
+      updatePreview();
+    }
+
+
+    /**
+     * Renders a numbering example.
+     */
+    function updatePreview() {
+      const separator = getSeparator();
+      const suffix = getSuffix();
+      const first = Math.max(
+        1,
+        Number(document.getElementById('firstNumber').value) || 1
+      );
+
+      const preview = [
+        `${first}${suffix}Section`,
+        `${first}${separator}${first}${suffix}Subsection`,
+        `${first}${separator}${first}${separator}${first}${suffix}Topic`,
+      ];
+
+      document.getElementById('numberPreview').innerHTML =
+        preview.map(escapeHtml).join('<br>');
+    }
+
+
+    /**
+     * Sends numbering options to Apps Script.
+     */
+    function applyNumbering() {
+      clearStatus();
+
+      const minimumLevel =
+        Number(document.getElementById('minimumLevel').value);
+
+      const maximumLevel =
+        Number(document.getElementById('maximumLevel').value);
+
+      if (minimumLevel > maximumLevel) {
+        showStatus(
+          'First heading level cannot exceed last heading level.',
+          'error'
+        );
+        return;
+      }
+
+      const startMode =
+        document.getElementById('startSelected').checked
+          ? 'selected'
+          : 'beginning';
+
+      const startKey =
+        document.getElementById('startHeading').value;
+
+      if (startMode === 'selected' && !startKey) {
+        showStatus('Select a starting heading.', 'error');
+        return;
+      }
+
+      const options = {
+        scope: getSelectedScope(),
+        startMode,
+        startKey,
+        separator: getSeparator(),
+        suffix: getSuffix(),
+        minimumLevel,
+        maximumLevel,
+        firstNumber:
+          Number(document.getElementById('firstNumber').value),
+        resetPerTab:
+          document.getElementById('resetPerTab').checked,
+        removeExistingNumbers:
+          document.getElementById('removeExistingNumbers').checked,
+        skipMissingParents:
+          document.getElementById('skipMissingParents').checked,
+      };
+
+      setOperationButtonsDisabled(true);
+      showStatus('Applying heading numbering…', 'info');
+
+      google.script.run
+        .withSuccessHandler(result => {
+          setOperationButtonsDisabled(false);
+
+          let message = result.message;
+
+          if (result.warnings && result.warnings.length > 0) {
+            message += ` ${result.warnings.join(' ')}`;
+            showStatus(message, 'warning');
+          } else {
+            showStatus(message, 'success');
+          }
+
+          refreshNavigation();
+          loadStartOptions();
+        })
+        .withFailureHandler(error => {
+          setOperationButtonsDisabled(false);
+          handleFailure(error);
+        })
+        .applyHeadingNumbering(options);
+    }
+
+
+    /**
+     * Removes recognized numeric prefixes.
+     */
+    function removeNumbering() {
+      const minimumLevel =
+        Number(document.getElementById('minimumLevel').value);
+
+      const maximumLevel =
+        Number(document.getElementById('maximumLevel').value);
+
+      if (minimumLevel > maximumLevel) {
+        showStatus(
+          'First heading level cannot exceed last heading level.',
+          'error'
+        );
+        return;
+      }
+
+      const confirmed = window.confirm(
+        'Remove recognized numeric prefixes from the selected heading levels?'
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      setOperationButtonsDisabled(true);
+      showStatus('Removing heading numbering…', 'info');
+
+      google.script.run
+        .withSuccessHandler(result => {
+          setOperationButtonsDisabled(false);
+          showStatus(result.message, 'success');
+          refreshNavigation();
+          loadStartOptions();
+        })
+        .withFailureHandler(error => {
+          setOperationButtonsDisabled(false);
+          handleFailure(error);
+        })
+        .removeHeadingNumbering({
+          scope: getSelectedScope(),
+          minimumLevel,
+          maximumLevel,
+        });
+    }
+
+
+    function getSelectedScope() {
+      return document.getElementById('scopeActive').checked
+        ? 'active'
+        : 'all';
+    }
+
+
+    function getSeparator() {
+      const selected =
+        document.getElementById('separator').value;
+
+      if (selected === 'custom') {
+        return (
+          document.getElementById('customSeparator').value || '.'
+        );
+      }
+
+      return selected;
+    }
+
+
+    function getSuffix() {
+      const selected =
+        document.getElementById('suffix').value;
+
+      if (selected === 'custom') {
+        return document.getElementById('customSuffix').value || ' ';
+      }
+
+      return selected;
+    }
+
+
+    function setOperationButtonsDisabled(disabled) {
+      document.getElementById('applyButton').disabled = disabled;
+      document.getElementById('removeButton').disabled = disabled;
+    }
+
+
+    function normalizeSearchText(value) {
+      return String(value || '')
+        .toLocaleLowerCase()
+        .trim();
+    }
+
+
+    function showStatus(message, type) {
+      const status = document.getElementById('status');
+
+      status.textContent = message;
+      status.className = `status visible ${type || 'info'}`;
+    }
+
+
+    function clearStatus() {
+      const status = document.getElementById('status');
+      status.textContent = '';
+      status.className = 'status';
+    }
+
+
+    function handleFailure(error) {
+      const message =
+        error && error.message
+          ? error.message
+          : String(error || 'Unknown error');
+
+      showStatus(message, 'error');
+    }
+
+
+    function escapeHtml(value) {
+      const element = document.createElement('div');
+      element.textContent = String(value);
+      return element.innerHTML;
+    }
+  </script>
+</body>
+</html>

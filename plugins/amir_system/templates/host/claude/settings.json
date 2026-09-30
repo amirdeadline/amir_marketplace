@@ -1,0 +1,7 @@
+{
+  "amir.host": "claude",
+  "amir.agentsRoot": ".claude/agents",
+  "amir.sharedAiRoot": ".ai",
+  "amir.reportIndex": ".ai/reports.md",
+  "notes": "Claude Code project settings. Skills, hooks, and agent workspaces for Claude live under .claude/ only."
+}

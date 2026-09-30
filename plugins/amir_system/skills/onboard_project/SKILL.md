@@ -145,6 +145,17 @@ explicit confirmation. Cancel = zero side effects (backups may already exist; sa
 5. Install ONLY selected components (renderer subset or full amir_project fast path — see
    create_project Phase 4 step 5).
 6. Render both hosts as selected (Cursor flat commands/rules/mcp merge; Claude files).
+6b. Ensure uniform host layout per `templates/project-layout.md` (create missing only;
+    never overwrite user content):
+    - `.ai/settings.json` + required `.ai` markdown files from `templates/dot-ai/`
+      (required: TODO.md, project.md, status.md, assumptions.md, design.md, tasks.md,
+      reports.md; also seed missing retained files: decisions, risks, architecture,
+      references, changelog, context_handoff)
+    - `.cursor/`, `.claude/`, `.codex/` each with `settings.json` and
+      `agents/{orchestrator,qa}/report.md` stubs from `templates/host/`
+    - `.vscode/settings.json` from vscode template + random theme palette if missing
+    - If `.ai/agents/` exists (legacy): leave it, note in onboarding report that new agent
+      workspaces go under `.<host>/agents/`; do not delete without confirmation
 7. Run the legacy `ai/` → `.ai/` migration if it was accepted in the plan (procedure above,
    including the `.amir\migration\ai-to-dot-ai.md` report).
 8. Create `.amir\portfolio.yaml` from this plugin's `templates\portfolio.yaml.tmpl`, filled

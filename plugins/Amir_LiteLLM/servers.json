@@ -1,0 +1,21 @@
+{
+  "$comment": "Registry of MCP servers published by the Palo Alto LiteLLM MCP gateway. 'remote' is the server name on the proxy (URL = <base>/<remote>/mcp). 'local' is the name registered in Claude Code / Cursor. Override the base URL with LITELLM_MCP_BASE_URL or `litellm_mcp.py config --base-url`.",
+  "default_base_url": "https://api.mcp.pan.dev",
+  "auth_header": "x-litellm-api-key",
+  "auth_env_var": "LITELLM_MCP_API_KEY",
+  "servers": {
+    "confluence":       { "remote": "confluence",       "local": "litellm-confluence",       "risk": "read",        "summary": "Search and read Confluence pages, children, comments" },
+    "jira":             { "remote": "jira",             "local": "litellm-jira",             "risk": "read",        "summary": "JQL search, issue details, projects, fields, attachments" },
+    "asana":            { "remote": "asana",            "local": "litellm-asana",            "risk": "write",       "summary": "Workspaces, projects, search/create/update tasks" },
+    "gitlab":           { "remote": "gitlab",           "local": "litellm-gitlab",           "risk": "write",       "summary": "Repos, files, issues, merge requests, CI pipelines" },
+    "google_workspace": { "remote": "google-workspace", "local": "litellm-google-workspace", "risk": "read",        "summary": "Gmail, Drive, Docs, Sheets, Slides (read)" },
+    "cortex_bot":       { "remote": "cortex-bot",       "local": "litellm-cortex-bot",       "risk": "destructive", "summary": "Full Cortex XSIAM/XSOAR/XDR incl. destructive IR actions" },
+    "cortex_mcp":       { "remote": "cortex-mcp",       "local": "litellm-cortex-mcp",       "risk": "read",        "summary": "Read-only Cortex XDR: cases, issues, assets, vulns" },
+    "gcp_bq":           { "remote": "gcp_bq",           "local": "litellm-gcp-bq",           "risk": "query",       "summary": "BigQuery datasets, tables, dry-run cost, SQL" },
+    "figma_desktop":    { "remote": "figma-desktop",    "local": "litellm-figma-desktop",    "risk": "read",        "summary": "Design context from the local Figma desktop app" },
+    "playwright":       { "remote": "playwright",       "local": "litellm-playwright",       "risk": "write",       "summary": "Browser automation (Playwright)" },
+    "chrome_devtools":  { "remote": "chrome_devtools",  "local": "litellm-chrome-devtools",  "risk": "write",       "summary": "Chrome DevTools automation" },
+    "secure_fetch":     { "remote": "secure_fetch",     "local": "litellm-secure-fetch",     "risk": "read",        "summary": "Sanitized fetch of public or internal (VPN) URLs" },
+    "gateway":          { "remote": "",                 "local": "mcp-gateway",              "risk": "destructive", "summary": "Aggregated endpoint: every server behind one entry (tool names match .ai/docs/mcp_gw.md)" }
+  }
+}

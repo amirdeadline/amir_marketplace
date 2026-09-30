@@ -16,8 +16,8 @@ from util import GENERATED_MARKER_KEY, AmirError, read_json
 
 SNAKE_RE = re.compile(r"^[a-z0-9][a-z0-9_]*$")
 ENV_NAME_RE = re.compile(r"^[A-Z][A-Z0-9_]*$")
-SKILL_NAME_EXCEPTIONS = {"create-project-doc", "amir-project-cleanup"}  # user-specified exact names
-COMMAND_NAME_EXCEPTIONS = {"amir-project-cleanup"}  # slash name mirrors skill; hyphen form
+SKILL_NAME_EXCEPTIONS = {"create-project-doc", "no-slop", "amir-project-cleanup"}  # user-specified exact names
+COMMAND_NAME_EXCEPTIONS = {"no-slop", "amir-project-cleanup"}  # slash name mirrors skill; user-specified hyphen form
 
 
 @dataclass
@@ -91,11 +91,11 @@ def _check_naming(cat: dict, checks: list) -> None:
                    if not SNAKE_RE.match(s) and s not in SKILL_NAME_EXCEPTIONS)
     if bad:
         checks.append(Check("naming", "error",
-                            "non-snake_case names (create-project-doc, amir-project-cleanup exempt): "
+                            "non-snake_case names (create-project-doc, no-slop, amir-project-cleanup exempt): "
                             + ", ".join(sorted(bad))))
     else:
         checks.append(Check("naming", "ok", "all command/skill names comply with /amir: snake_case "
-                            "(create-project-doc, amir-project-cleanup exempt)"))
+                            "(create-project-doc, no-slop, amir-project-cleanup exempt)"))
 
 
 def _check_duplicates(project_root: Path, cat: dict, checks: list) -> None:

@@ -6,8 +6,11 @@ Contains ONLY capabilities needed before a project exists: create/onboard/orches
 
 Command files: `commands/<name>.md` with frontmatter `description` (+ `argument-hint` where useful).
 Skill dirs: `skills/<name>/SKILL.md` for the complex flows (create_project, onboard_project, use_subagents,
-cleanup_context, system_rules; exact-name exceptions `create-project-doc`, `amir-project-cleanup` — DO NOT rename them).
-`/amir:amir-project-cleanup` rebuilds project memory from implementation (not session handoff; that is `cleanup_context`).
+user_subagents2, amir_critical, amir_doc_review, amir_handoff, btw, cleanup_context, system_rules;
+exact-name exceptions already exist — `create-project-doc`, `no-slop`, `amir-project-cleanup` — DO NOT rename them).
+`/amir:btw` redirects to Cursor native Side Chat (`/btw` / `/side`) and must not answer in the parent thread.
+`/amir:amir-project-cleanup` rebuilds project memory from implementation (not session handoff; that is
+`cleanup_context` / `amir_handoff`).
 Rules: `rules/*.mdc` (Cursor consumes these via plugin; Claude gets the same content via the `system_rules` skill).
 
 ## Core skill requirements

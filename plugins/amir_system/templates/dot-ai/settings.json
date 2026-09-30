@@ -1,0 +1,19 @@
+{
+  "amir.layoutVersion": 1,
+  "amir.sharedDocs": [
+    "TODO.md",
+    "project.md",
+    "status.md",
+    "assumptions.md",
+    "design.md",
+    "tasks.md",
+    "reports.md"
+  ],
+  "amir.reportIndex": "reports.md",
+  "amir.hostAgentRoots": {
+    "cursor": ".cursor/agents",
+    "claude": ".claude/agents",
+    "codex": ".codex/agents"
+  },
+  "notes": "Host-independent project AI settings. Do not put Cursor/Claude/Codex-only config here."
+}

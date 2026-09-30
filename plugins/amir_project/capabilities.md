@@ -31,7 +31,7 @@ Install copies or links the full amir package so `skills/`, `tools/`, and `core/
 | **Rules / always-on context** | Skills + optional `settings.json` agent | `rules/amir-core.mdc` (`alwaysApply: true`) | `AGENTS.md` at adapter root |
 | **Context-size introspection** | Host `/context` + model window; amir `compact` skill | Cursor context meter; amir `compact` skill | Codex context limits; amir `compact` skill |
 | **Token / cost telemetry** | **Estimate** — `node tools/cost.js` from `activity.jsonl`; no native billing API | **Estimate** — same `tools/cost.js` | **Estimate** — same `tools/cost.js` |
-| **Ephemeral session (`/btw`)** | **Intentionally absent** — no true zero-pollution ephemeral session in Claude Code; not registered | **Closest primitive** — read-only Ask / ephemeral-style command (`commands/btw.md`); residual host history | **Closest primitive** — `.agents/skills/btw/SKILL.md` self-imposed read-only single turn; residual transcript retention |
+| **Ephemeral session (`/btw`)** | **Intentionally absent** — no true zero-pollution ephemeral session in Claude Code; not registered | **Preferred:** Cursor native Side Chat (`/btw` / `/side`, 3.11+). **amir_system** `/amir:btw` redirects only (does not answer in-parent). Legacy harness `commands/harness/btw.md` is an in-session approximation (residual history) | **Closest primitive** — `.agents/skills/btw/SKILL.md` self-imposed read-only single turn; residual transcript retention |
 
 ---
 
@@ -56,11 +56,11 @@ Install copies or links the full amir package so `skills/`, `tools/`, and `core/
 | Feature | Detail |
 |---------|--------|
 | Packaging | `.cursor-plugin/plugin.json`, `commands/`, `rules/`, optional `skills/`, `hooks/` |
-| Commands | One `commands/<skill>.md` per amir skill + `commands/btw.md` |
+| Commands | One `commands/<skill>.md` per amir skill; harness may include legacy files |
 | Rules | `rules/amir-core.mdc` — `alwaysApply: true`, points to `core/` paths, message contract, JSON truth |
 | Subagents | Prefer native **Task** when present (Mode A for `/amir:use_subagent`). If Task unavailable: Mode C sequential isolated contexts — label explicitly; do not claim parallel native subagents |
-| `/btw` | `commands/btw.md` — temporary read-only, single turn, banner **BTW MODE — Temporary • Read-only • Not saved**, close with **Temporary session closed.** |
-| Residual `/btw` limits | Cursor may retain the turn in chat history; tool write blocking depends on mode — agent must refuse writes even if tools appear available |
+| `/btw` | **Prefer Cursor native** `/btw` or `/side` (Side Chat — parent transcript stays clean). **amir_system** `/amir:btw` redirects to that and must not answer in-session. Legacy harness `commands/harness/btw.md` remains as an in-session read-only approximation when Side Chat is unavailable |
+| Residual `/btw` limits | Native Side Chat is local-only (not Cloud Agents). Legacy in-session BTW may retain the turn in host history; agent must still refuse writes |
 
 ---
 
@@ -91,7 +91,7 @@ Native subagents available?
 
 /btw requested?
 ├── Claude Code: refuse / not registered — use fresh chat for side questions
-├── Cursor: btw.md read-only command (honest residual limits)
+├── Cursor: prefer native /btw or /side (Side Chat); amir_system /amir:btw redirects only
 └── Codex: btw skill (honest residual limits)
 ```
 

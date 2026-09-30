@@ -122,30 +122,57 @@ Present the complete configuration plan:
 
 ### Folder structure that will be created (show it in the plan, then build exactly this)
 
-Mandatory, every project:
+Mandatory, every project — follow `templates/project-layout.md` exactly:
 
 ```
 <project>\
-  .amir\project.yaml            # manifest (schema v2)
-  .amir\portfolio.yaml          # from templates\portfolio.yaml.tmpl — blanks, not fabrications
+  .amir\project.yaml
+  .amir\portfolio.yaml
   .amir\components.lock.json
-  .ai\project.md  .ai\status.md  .ai\tasks.md  .ai\decisions.md  .ai\risks.md
-  .ai\architecture.md  .ai\references.md  .ai\changelog.md  .ai\context_handoff.md
+  .ai\
+    settings.json
+    TODO.md  project.md  status.md  assumptions.md  design.md  tasks.md  reports.md
+    decisions.md  risks.md  architecture.md  references.md  changelog.md  context_handoff.md
+  .cursor\
+    settings.json
+    agents\orchestrator\report.md
+    agents\qa\report.md
+  .claude\
+    settings.json
+    agents\orchestrator\report.md
+    agents\qa\report.md
+  .codex\
+    settings.json
+    agents\orchestrator\report.md
+    agents\qa\report.md
+  .vscode\
+    settings.json          # Default Dark Modern + ONE random theme palette
   README.md  AGENTS.md  CLAUDE.md  .gitignore
 ```
 
-The 9 `.ai\` files are seeded from `templates\dot-ai\` in this plugin — structured headers,
-empty content sections; never pre-filled with invented state.
+**Separation (non-negotiable):**
+
+- Host-independent project data → `.ai/` only
+- Cursor agents / skills / rules / commands / settings → `.cursor/` only
+- Claude agents / skills / settings → `.claude/` only
+- Codex agents / settings → `.codex/` only
+- Do **not** create `.ai/agents/` for host agent workspaces (legacy path — migrate to hosts)
+
+`.ai\` markdown + `settings.json` come from `templates\dot-ai\`. Host `settings.json` +
+agent `report.md` stubs come from `templates\host\`. `.vscode\settings.json` is built from
+`templates\vscode\settings.json.tmpl` + a randomly chosen entry in
+`templates\vscode\theme-palettes.json` (record the chosen `theme id` in the creation report).
 
 Conditional (only when selected/applicable):
 
-- `.cursor\` (commands/rules/mcp.json) — Cursor selected
-- `.claude\` (settings, rendered subset) — Claude Code selected
+- `.cursor\commands\`, `.cursor\rules\`, `.cursor\mcp.json` — Cursor selected (renderer)
+- Claude rendered subset / project settings extras — Claude Code selected
+- additional host agent dirs under `.cursor\agents\`, `.claude\agents\`, `.codex\agents\` —
+  only for roles actually needed beyond `orchestrator` + `qa`
 - `tests\` — testing requirements selected (adapt name to the framework's convention)
 - `docs\` — user opted into docs scaffold
 - graphify config — Graphify enabled
-- `.ai\agents\<role>\` — subagent orchestration enabled: create ONLY the roles needed, with
-  `.ai\agents\orchestrator\` and `.ai\agents\qa\` as the mandatory minimum
+- `.ai\state\`, `.ai\views\` — only when amir_project harness/subagent orchestration needs them
 - source layout — **language/framework-specific adaptation**: use the framework's canonical
   layout (e.g. a Next.js `app\`, a Rust `src\` via cargo, a Python package dir). Do NOT
   create an empty generic `src\` when the chosen framework scaffolds or expects a different
@@ -167,18 +194,26 @@ actions each get called out in the plan. "Cancel" here still means zero side eff
      `claude plugin install amir_project@amir-marketplace --scope project`
    - subset → render via the renderer engine into `.amir/generated/claude/...` and register.
 6. Generate Cursor project files (flat `.cursor/commands/amir_<name>.md`, `.cursor/rules/
-   amir_*.mdc`, merge-preserving `.cursor/mcp.json`) — only if Cursor was selected.
-7. Generate Claude project files — only if Claude Code was selected.
-8. Initialize the FULL `.ai\` workspace from `templates\dot-ai\`: `project.md`, `status.md`,
-   `tasks.md`, `decisions.md`, `risks.md`, `architecture.md`, `references.md`,
-   `changelog.md`, `context_handoff.md` — plus `.ai\agents\orchestrator\` and
-   `.ai\agents\qa\` (and only the additional role dirs actually needed) when subagent
-   orchestration is enabled. **All AI-needed docs live under `.ai\`** — never create parallel
-   AI doc trees at the repo root.
+   amir_*.mdc`, merge-preserving `.cursor/mcp.json`) — only if Cursor was selected. Always
+   ensure `.cursor/settings.json` and `.cursor/agents/{orchestrator,qa}/report.md` exist
+   (from `templates/host/`) even when Cursor is not selected — layout is uniform.
+7. Generate Claude project files — only if Claude Code was selected. Always ensure
+   `.claude/settings.json` and `.claude/agents/{orchestrator,qa}/report.md` exist.
+7b. Always ensure `.codex/settings.json` and `.codex/agents/{orchestrator,qa}/report.md` exist.
+8. Initialize the FULL `.ai\` workspace from `templates\dot-ai\`:
+   `settings.json`, `TODO.md`, `project.md`, `status.md`, `assumptions.md`, `design.md`,
+   `tasks.md`, `reports.md`, `decisions.md`, `risks.md`, `architecture.md`, `references.md`,
+   `changelog.md`, `context_handoff.md`.
+   **Shared project data lives under `.ai\` only.** Host agent workspaces live under
+   `.<host>\agents\<role>\` — never under `.ai\agents\` for new projects.
 8b. If Graphify is enabled: set `project_tools.graphify.output_directory: .amir/graphify-out`
     in the manifest, and ensure `.gitignore` contains `.amir/graphify-out/` (and a defensive
     `graphify-out/` entry) unless the user chose to commit the graph. Never leave Graphify
     writing to a root-level `graphify-out/`.
+8c. Write `.vscode/settings.json` from `templates/vscode/settings.json.tmpl`: pick ONE random
+    palette from `templates/vscode/theme-palettes.json`, substitute `{{THEME_ID}}` and
+    `{{THEME_CUSTOMIZATIONS}}` (the palette's `workbench.colorCustomizations` object as JSON).
+    Report which theme id was chosen. Do not invent colors outside the palette file.
 9. Worktrees config if selected.
 10. Run validation (`amirctl validate` / validator) and capture its real output.
 11. Continue with the post-creation portfolio steps below (they include registration).

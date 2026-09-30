@@ -49,9 +49,9 @@ Read `project_tools.graphify.enabled` from the manifest.
 
 Show the user exactly what will be indexed BEFORE anything runs:
 
-- **Included**: project source per graphify config; `.ai\` docs (project.md, status.md,
-  tasks.md, decisions.md, risks.md, architecture.md, references.md, changelog.md,
-  context_handoff.md); SAFE manifest metadata (id, name, languages, frameworks, enabled
+- **Included**: project source per graphify config; `.ai\` docs (TODO.md, project.md, status.md,
+  assumptions.md, design.md, tasks.md, reports.md, decisions.md, risks.md, architecture.md,
+  references.md, changelog.md, context_handoff.md); SAFE manifest metadata (id, name, languages, frameworks, enabled
   components — never credential names' values or secret store paths).
 - **Excluded, always**: secrets and secret stores (`.env*`, `*credential*`, key material,
   `%USERPROFILE%\.amir\secrets\`), `.git\`, dependency dirs (node_modules, venvs, vendor),

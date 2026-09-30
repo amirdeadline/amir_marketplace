@@ -1,0 +1,124 @@
+{
+  "palettes": [
+    {
+      "id": "green",
+      "workbench.colorCustomizations": {
+        "sideBar.background": "#0F2F1D",
+        "editor.background": "#071A10",
+        "editorGroupHeader.tabsBackground": "#0F2F1D",
+        "terminal.background": "#071A10",
+        "statusBar.background": "#15803D",
+        "statusBar.foreground": "#FFFFFF",
+        "activityBar.background": "#166534",
+        "activityBar.foreground": "#FFFFFF",
+        "titleBar.activeBackground": "#14532D",
+        "titleBar.activeForeground": "#FFFFFF"
+      }
+    },
+    {
+      "id": "blue",
+      "workbench.colorCustomizations": {
+        "sideBar.background": "#111C3A",
+        "editor.background": "#080F24",
+        "editorGroupHeader.tabsBackground": "#111C3A",
+        "terminal.background": "#080F24",
+        "statusBar.background": "#1D4ED8",
+        "statusBar.foreground": "#FFFFFF",
+        "activityBar.background": "#1E3A8A",
+        "activityBar.foreground": "#FFFFFF",
+        "titleBar.activeBackground": "#1E3A8A",
+        "titleBar.activeForeground": "#FFFFFF"
+      }
+    },
+    {
+      "id": "red",
+      "workbench.colorCustomizations": {
+        "sideBar.background": "#2B1010",
+        "editor.background": "#1A0808",
+        "editorGroupHeader.tabsBackground": "#2B1010",
+        "terminal.background": "#1A0808",
+        "statusBar.background": "#B91C1C",
+        "statusBar.foreground": "#FFFFFF",
+        "activityBar.background": "#991B1B",
+        "activityBar.foreground": "#FFFFFF",
+        "titleBar.activeBackground": "#7F1D1D",
+        "titleBar.activeForeground": "#FFFFFF"
+      }
+    },
+    {
+      "id": "orange",
+      "workbench.colorCustomizations": {
+        "sideBar.background": "#2A1508",
+        "editor.background": "#1A0C05",
+        "editorGroupHeader.tabsBackground": "#2A1508",
+        "terminal.background": "#1A0C05",
+        "statusBar.background": "#C2410C",
+        "statusBar.foreground": "#FFFFFF",
+        "activityBar.background": "#9A3412",
+        "activityBar.foreground": "#FFFFFF",
+        "titleBar.activeBackground": "#7C2D12",
+        "titleBar.activeForeground": "#FFFFFF"
+      }
+    },
+    {
+      "id": "purple",
+      "workbench.colorCustomizations": {
+        "sideBar.background": "#1F1230",
+        "editor.background": "#120A1C",
+        "editorGroupHeader.tabsBackground": "#1F1230",
+        "terminal.background": "#120A1C",
+        "statusBar.background": "#7E22CE",
+        "statusBar.foreground": "#FFFFFF",
+        "activityBar.background": "#6B21A8",
+        "activityBar.foreground": "#FFFFFF",
+        "titleBar.activeBackground": "#581C87",
+        "titleBar.activeForeground": "#FFFFFF"
+      }
+    },
+    {
+      "id": "teal",
+      "workbench.colorCustomizations": {
+        "sideBar.background": "#0C2A2A",
+        "editor.background": "#061616",
+        "editorGroupHeader.tabsBackground": "#0C2A2A",
+        "terminal.background": "#061616",
+        "statusBar.background": "#0F766E",
+        "statusBar.foreground": "#FFFFFF",
+        "activityBar.background": "#115E59",
+        "activityBar.foreground": "#FFFFFF",
+        "titleBar.activeBackground": "#134E4A",
+        "titleBar.activeForeground": "#FFFFFF"
+      }
+    },
+    {
+      "id": "slate",
+      "workbench.colorCustomizations": {
+        "sideBar.background": "#1E293B",
+        "editor.background": "#0F172A",
+        "editorGroupHeader.tabsBackground": "#1E293B",
+        "terminal.background": "#0F172A",
+        "statusBar.background": "#334155",
+        "statusBar.foreground": "#FFFFFF",
+        "activityBar.background": "#334155",
+        "activityBar.foreground": "#FFFFFF",
+        "titleBar.activeBackground": "#1E293B",
+        "titleBar.activeForeground": "#FFFFFF"
+      }
+    },
+    {
+      "id": "rose",
+      "workbench.colorCustomizations": {
+        "sideBar.background": "#2A1220",
+        "editor.background": "#180710",
+        "editorGroupHeader.tabsBackground": "#2A1220",
+        "terminal.background": "#180710",
+        "statusBar.background": "#BE123C",
+        "statusBar.foreground": "#FFFFFF",
+        "activityBar.background": "#9F1239",
+        "activityBar.foreground": "#FFFFFF",
+        "titleBar.activeBackground": "#881337",
+        "titleBar.activeForeground": "#FFFFFF"
+      }
+    }
+  ]
+}

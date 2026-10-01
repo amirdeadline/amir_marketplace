@@ -1,6 +1,6 @@
 {
   "name": "Amir_LiteLLM",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Palo Alto LiteLLM MCP gateway toolkit: per-server installers for Claude Code and Cursor (litellm_install_*), gateway status, setup, and tool usage docs. Keys come from the LITELLM_MCP_API_KEY env var, never from config files.",
   "author": { "name": "Amir" },
   "keywords": ["litellm", "mcp", "gateway", "confluence", "jira", "gitlab", "cortex", "cursor"]

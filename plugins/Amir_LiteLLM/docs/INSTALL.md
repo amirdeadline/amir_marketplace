@@ -10,7 +10,7 @@
 
 | Command | What it does |
 |---|---|
-| `deploy [--cursor-skills]` | Copy the script + `servers.json` to `~/.amir/litellm`; copy `litellm_*` skills to Cursor |
+| `deploy [--cursor-skills]` | Copy the script + `servers.json` to `~/.amir/litellm`; copy `litellm_*` skills + `amir_use_litellm_subagent` and slash commands to Cursor |
 | `config [--base-url URL]` | Show or set the gateway base URL (default `https://api.mcp.pan.dev`; env `LITELLM_MCP_BASE_URL` wins) |
 | `set-key` | Interactive, hidden. Stores `LITELLM_MCP_API_KEY` as a Windows user env var (prints instructions on macOS/Linux) |
 | `list` | All servers, risk level, and whether each is installed in Claude / Cursor |

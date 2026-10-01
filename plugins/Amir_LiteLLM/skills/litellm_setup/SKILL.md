@@ -10,8 +10,11 @@ description: "One-time setup of the Amir_LiteLLM toolkit on a machine — deploy
    ```
    python "<plugin>/scripts/litellm_mcp.py" deploy --cursor-skills
    ```
-   This copies the installer + `servers.json` to `~/.amir/litellm/` and the `litellm_*` skills to
-   `~/.cursor/skills/` so Cursor gets the same skills.
+   This copies the installer + `servers.json` to `~/.amir/litellm/`, the `litellm_*` skills and
+   **`amir_use_litellm_subagent`** to `~/.cursor/skills/`, and slash commands (including
+   `/amir_use_litellm_subagent`) to `~/.cursor/commands/`.
+   For the subagent skill, install [workspaces-venv](https://github.com/amirdeadline/workspaces-venv)
+   first (`install.py`) and configure palo LiteLLM credentials (`litellm --api-token`, `litellm --models`).
 2. **Base URL.** Show it with `python ~/.amir/litellm/litellm_mcp.py config`. Default is
    `https://api.mcp.pan.dev`. Only change it if the user gives a different gateway URL:
    `... config --base-url <url>` (or set env `LITELLM_MCP_BASE_URL`).

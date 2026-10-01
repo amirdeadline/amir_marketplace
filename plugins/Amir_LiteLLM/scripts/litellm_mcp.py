@@ -45,9 +45,12 @@ DEPLOY_DIR = HOME / ".amir" / "litellm"
 CONFIG_FILE = DEPLOY_DIR / "config.json"
 CURSOR_MCP = HOME / ".cursor" / "mcp.json"
 CURSOR_SKILLS = HOME / ".cursor" / "skills"
+CURSOR_COMMANDS = HOME / ".cursor" / "commands"
 PROTOCOL_VERSION = "2025-06-18"
 HTTP_TIMEOUT_S = 30
 SKILL_PREFIX = "litellm_"
+# Cursor skills copied by deploy --cursor-skills (not litellm_* prefixed).
+EXTRA_CURSOR_SKILL_DIRS = frozenset({"amir_use_litellm_subagent"})
 
 
 # ---------------------------------------------------------------- registry/config
@@ -328,6 +331,16 @@ def tcp_check(url: str) -> tuple[bool, str]:
 
 # ---------------------------------------------------------------- commands
 
+def _cursor_skill_sources(skills_root: Path) -> list[Path]:
+    out: list[Path] = []
+    for p in sorted(skills_root.iterdir()):
+        if not p.is_dir():
+            continue
+        if p.name.startswith(SKILL_PREFIX) or p.name in EXTRA_CURSOR_SKILL_DIRS:
+            out.append(p)
+    return out
+
+
 def cmd_deploy(args) -> None:
     DEPLOY_DIR.mkdir(parents=True, exist_ok=True)
     shutil.copy2(Path(__file__).resolve(), DEPLOY_DIR / "litellm_mcp.py")
@@ -339,13 +352,22 @@ def cmd_deploy(args) -> None:
             sys.exit(f"skills folder not found at {src} (run deploy from the plugin checkout)")
         CURSOR_SKILLS.mkdir(parents=True, exist_ok=True)
         count = 0
-        for skill in sorted(p for p in src.iterdir() if p.is_dir() and p.name.startswith(SKILL_PREFIX)):
+        for skill in _cursor_skill_sources(src):
             dst = CURSOR_SKILLS / skill.name
             if dst.exists():
                 shutil.rmtree(dst)
             shutil.copytree(skill, dst)
             count += 1
-        print(f"copied {count} {SKILL_PREFIX}* skills -> {CURSOR_SKILLS}")
+        print(f"copied {count} Cursor skills ({SKILL_PREFIX}* + amir_use_litellm_subagent) -> {CURSOR_SKILLS}")
+        cmd_src = HERE.parent / "commands"
+        if cmd_src.is_dir():
+            CURSOR_COMMANDS.mkdir(parents=True, exist_ok=True)
+            cmd_count = 0
+            for md in sorted(cmd_src.glob("*.md")):
+                shutil.copy2(md, CURSOR_COMMANDS / md.name)
+                cmd_count += 1
+            if cmd_count:
+                print(f"copied {cmd_count} Cursor slash commands -> {CURSOR_COMMANDS}")
 
 
 def cmd_config(args) -> None:

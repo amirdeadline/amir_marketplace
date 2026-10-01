@@ -3,9 +3,10 @@ name: amir_use_litellm_subagent
 description: >-
   Delegates work to Claude Code via Palo LiteLLM (palo venv credentials, litellm
   launcher). Probes the proxy first; plays a sound and alerts the user if LiteLLM
-  fails or does not respond. Use for /amir_use_litellm_subagent or when the user
-  asks for a LiteLLM subagent from Cursor.
+  fails or does not respond. Optional model: opus-4.8 (default 1M) or opus-5 per run.
+  Use for /amir_use_litellm_subagent or when the user asks for a LiteLLM subagent from Cursor.
 disable-model-invocation: true
+argument-hint: "[opus-5|opus-4.8] <task>"
 ---
 
 # amir_use_litellm_subagent
@@ -20,7 +21,22 @@ This is **not** Cursor's built-in Task subagent (that does not use LiteLLM unles
 
 User invokes **`/amir_use_litellm_subagent`** or asks to run a **LiteLLM subagent** with palo tokens.
 
-Extract the **task** from the message (everything after the command name).
+Extract the **task** from the message (everything after the command name and any model hint).
+
+### Model selection (optional)
+
+Default is **palo `.env`** (typically **Opus 4.8**, **1M** context). For **one run only** (does not change palo), pass **`-Model`** to the runner:
+
+| User says / `-Model` | Proxy model (this run) |
+|----------------------|-------------------------|
+| *(omit)* | palo default (`ANTHROPIC_MODEL`, usually `claude-opus-4-8` + 1M) |
+| `opus-4.8`, `4.8`, `default` | `claude-opus-4-8[1m]` |
+| `opus-5`, `5`, `opus5` | `claude-opus-5[1m]` |
+| full id from `litellm --models` | e.g. `claude-opus-4-8[200k]` |
+
+Parse natural language: “use opus 5”, “with 4.8”, “model opus-5” → set `-Model` accordingly. If ambiguous, ask once.
+
+Interactive default remains **`litellm --set-model claude-opus-4-8`** on palo; subagent **`--model`** / **`-Model`** is per delegation only.
 
 ## Required workflow
 
@@ -39,10 +55,11 @@ Extract the **task** from the message (everything after the command name).
 
 3. **If probe succeeds** — run the subagent:
    ```powershell
-   powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.cursor\skills\amir_use_litellm_subagent\scripts\run-litellm-subagent.ps1" -Task "<task>" -ProjectDir "<absolute project root>" -SubagentType "<generalPurpose|explore|code-reviewer|...>"
+   powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.cursor\skills\amir_use_litellm_subagent\scripts\run-litellm-subagent.ps1" -Task "<task>" -ProjectDir "<absolute project root>" -SubagentType "<generalPurpose|explore|code-reviewer|...>" [-Model "<opus-5|opus-4.8|claude-...>"]
    ```
    - Default `-ProjectDir` to the Cursor workspace root.
    - Pick `-SubagentType` from the task (exploration → `explore`, review → `code-reviewer`, else `generalPurpose`).
+   - Omit `-Model` unless the user asked for a non-default model (see table above).
 
 4. **Return** the script stdout as the subagent report. If run script exits non-zero, notification already ran — summarize the failure for the user.
 

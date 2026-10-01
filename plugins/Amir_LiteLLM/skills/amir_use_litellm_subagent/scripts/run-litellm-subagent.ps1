@@ -3,7 +3,8 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Task,
     [string]$ProjectDir = (Get-Location).Path,
-    [string]$SubagentType = 'generalPurpose'
+    [string]$SubagentType = 'generalPurpose',
+    [string]$Model = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -61,10 +62,16 @@ $paloPy = if ($env:WORKSPACES_ROOT) {
 if (-not (Test-Path -LiteralPath $paloPy)) { $paloPy = 'python' }
 $spendBefore = (& $paloPy $usagePy get-spend 2>$null | Select-Object -Last 1)
 
+$launchArgs = @()
+if ($Model -and $Model.Trim()) {
+    $launchArgs += @('--model', $Model.Trim())
+}
+$launchArgs += @($projectDir, '--', '-p', $delegation, '--print')
+
 if ($launcher -like '*.py') {
-    & python $launcher $projectDir '--' '-p' $delegation '--print'
+    & python $launcher @launchArgs
 } else {
-    & $launcher $projectDir '--' '-p' $delegation '--print'
+    & $launcher @launchArgs
 }
 $code = $LASTEXITCODE
 
@@ -86,6 +93,9 @@ Write-Host ''
 Write-Host '--- LiteLLM usage ---'
 & $paloPy @logArgs
 Write-Host "Log file: $(Get-UsageLogPath)"
+if ($Model -and $Model.Trim()) {
+    Write-Host "Model override: $($Model.Trim()) (palo default unchanged)"
+}
 Write-Host ''
 
 exit 0

@@ -12,14 +12,15 @@ host.onMessage((msg) => {
   if (msg.type === 'init') {
     if (app) return;
     const root = document.getElementById('app')!;
-    try {
-      app = new App(root, msg);
-    } catch (err) {
-      root.textContent = `amir_md could not open this file: ${err instanceof Error ? err.message : String(err)}`;
-      host.post({ type: 'log', level: 'error', message: err instanceof Error ? `${err.message}\n${err.stack ?? ''}` : String(err) });
-      return;
-    }
-    for (const m of early.splice(0)) app.handle(m);
+    void App.create(root, msg)
+      .then((a) => {
+        app = a;
+        for (const m of early.splice(0)) app.handle(m);
+      })
+      .catch((err) => {
+        root.textContent = `amir_md could not open this file: ${err instanceof Error ? err.message : String(err)}`;
+        host.post({ type: 'log', level: 'error', message: err instanceof Error ? `${err.message}\n${err.stack ?? ''}` : String(err) });
+      });
     return;
   }
   if (app) app.handle(msg);

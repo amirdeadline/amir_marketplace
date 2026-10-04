@@ -6,7 +6,9 @@ import { history } from 'prosemirror-history';
 import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 import { tableEditing } from 'prosemirror-tables';
-import { parseDocument, reconcile, CodecMeta } from './codec/document';
+import { parseDocument, parseDocumentAsync, reconcile, CodecMeta, ParseResult } from './codec/document';
+import { profileDocument, type DocumentProfile } from '../shared/performance';
+import { scanHeadings } from '../shared/headingsScan';
 import type { SerializeOptions } from './codec/serialize';
 import { applyFoldKeys, foldKey, foldKeys, foldPlugin, revealPos, setAllFolds } from './editor/foldPlugin';
 import { buildKeymaps } from './editor/keymap';
@@ -43,7 +45,7 @@ export class App {
   private settings: Settings;
   private meta: CodecMeta;
   private view!: EditorView;
-  private sync: DocSync;
+  private sync!: DocSync;
   private nav: NavPane;
   private toolbar: Toolbar;
   private bubbles: Bubbles;
@@ -64,13 +66,48 @@ export class App {
 
   private scheduleOutline = debounce(() => this.refreshOutline(), 300);
   private scheduleViewState = debounce(() => this.saveViewState(), 500);
+  private profile!: DocumentProfile;
+  private headingPos = new Map<string, number>();
+  private documentText: string;
+  private parseOpts() {
+    return { skipFidelityCheck: this.profile.skipFidelityCheck };
+  }
 
-  constructor(root: HTMLElement, init: InitMsg) {
+  static async create(root: HTMLElement, init: InitMsg): Promise<App> {
+    const profile = profileDocument(init.text);
+    const opts = serializeOpts(init.settings);
+    const heavy = profile.skipFidelityCheck || profile.bytes >= 512 * 1024;
+    if (!heavy) {
+      const parsed = parseDocument(init.text, opts, { skipFidelityCheck: profile.skipFidelityCheck });
+      return new App(root, init, parsed, profile);
+    }
+    const empty = parseDocument('\n', opts, { skipFidelityCheck: true });
+    const app = new App(root, init, empty, profile, true);
+    app.status('Loading document…', false);
+    const scanned = scanHeadings(init.text);
+    app.headings = scanned.map((s) => ({ level: s.level, text: s.text, key: s.key, pos: -1, topIndex: null }));
+    app.nav.setHeadings(app.headings);
+    const parsed = await parseDocumentAsync(init.text, opts, {
+      skipFidelityCheck: profile.skipFidelityCheck,
+      blocksPerTick: profile.blocksPerTick,
+      onProgress: (done, total) => {
+        if (total > 0 && done % (profile.blocksPerTick * 4) === 0) {
+          app.status(`Loading document… ${Math.min(99, Math.round((100 * done) / total))}%`, false);
+        }
+      },
+    });
+    app.finishInitialLoad(parsed, init);
+    return app;
+  }
+
+  private constructor(root: HTMLElement, init: InitMsg, parsed: ParseResult, profile: DocumentProfile, deferSync = false) {
+    this.profile = profile;
+    this.documentText = init.text;
+    this.scheduleOutline = debounce(() => this.refreshOutline(), profile.outlineDebounceMs);
     this.settings = init.settings;
     this.baseUri = init.baseUri;
     this.navWidth = init.viewState?.navWidth || init.settings.navWidth;
 
-    const parsed = parseDocument(init.text, serializeOpts(this.settings));
     this.meta = parsed.meta;
     this.sourceBlocks = parsed.stats.sourceBlocks;
 
@@ -80,6 +117,7 @@ export class App {
       stateChanged: () => this.scheduleViewState(),
       defaultExpandLevel: () => this.settings.navDefaultExpandLevel,
     });
+    this.nav.setDomCap(profile.navDomCap);
     const splitter = h('div', { class: 'amd-splitter', role: 'separator', 'aria-orientation': 'vertical', 'aria-label': 'Resize navigation pane', tabindex: '0' });
     this.crumb = h('div', { class: 'amd-crumb', 'aria-live': 'polite' });
     const editorHost = h('div', { class: 'amd-page' });
@@ -132,6 +170,34 @@ export class App {
       locateImage: (pos) => this.locateImage(pos),
     });
 
+    if (!deferSync) {
+      this.sync = new DocSync({
+        post: (m) => host.post(m),
+        doc: () => this.view.state.doc,
+        meta: () => this.meta,
+        load: (text) => this.load(text),
+        notify: (m) => this.status(m, true),
+      }, init.text, init.version);
+    } else {
+      this.sync = null as unknown as DocSync;
+    }
+
+    this.restoreViewState(init.viewState);
+    this.refreshOutline();
+    this.toolbar.update(this.view.state);
+    this.scroller.addEventListener('scroll', () => this.onScroll(), { passive: true });
+    window.addEventListener('resize', () => this.onScroll(), { passive: true });
+    if (this.sourceBlocks) this.status(`${this.sourceBlocks} block${this.sourceBlocks === 1 ? '' : 's'} kept as Markdown source.`);
+    if (profile.skipFidelityCheck) {
+      this.status('Large document: fast parse mode (some blocks may stay as Markdown source).', false);
+    }
+  }
+
+  private finishInitialLoad(parsed: ParseResult, init: InitMsg): void {
+    this.meta = parsed.meta;
+    this.sourceBlocks = parsed.stats.sourceBlocks;
+    const tr = this.view.state.tr.replaceWith(0, this.view.state.doc.content.size, parsed.doc.content);
+    this.view.dispatch(tr.setMeta('amir-external', true).setMeta('addToHistory', false));
     this.sync = new DocSync({
       post: (m) => host.post(m),
       doc: () => this.view.state.doc,
@@ -139,12 +205,9 @@ export class App {
       load: (text) => this.load(text),
       notify: (m) => this.status(m, true),
     }, init.text, init.version);
-
-    this.restoreViewState(init.viewState);
     this.refreshOutline();
     this.toolbar.update(this.view.state);
-    this.scroller.addEventListener('scroll', () => this.onScroll(), { passive: true });
-    window.addEventListener('resize', () => this.onScroll(), { passive: true });
+    this.status('');
     if (this.sourceBlocks) this.status(`${this.sourceBlocks} block${this.sourceBlocks === 1 ? '' : 's'} kept as Markdown source.`);
   }
 
@@ -198,7 +261,7 @@ export class App {
   /** Replace the editor content with `text` from the host, keeping unchanged blocks and folds. */
   private load(text: string): void {
     const keys = foldKeys(this.view.state);
-    const r = reconcile(this.view.state.doc, text, serializeOpts(this.settings));
+    const r = reconcile(this.view.state.doc, text, serializeOpts(this.settings), this.parseOpts());
     this.meta = r.meta;
     this.sourceBlocks = r.stats.sourceBlocks;
     const doc = this.view.state.doc;
@@ -266,12 +329,32 @@ export class App {
   // ---------------------------------------------------------------- outline, navigation, scroll-spy
 
   private refreshOutline(): void {
-    this.headings = collectHeadings(this.view.state.doc);
+    this.headingPos.clear();
+    if (this.profile.navFromScan) {
+      const text = this.sync ? this.sync.current() : this.documentText;
+      const scanned = scanHeadings(text);
+      this.headings = scanned.map((s) => ({ level: s.level, text: s.text, key: s.key, pos: -1, topIndex: null }));
+    } else {
+      this.headings = collectHeadings(this.view.state.doc);
+    }
     this.nav.setHeadings(this.headings);
     this.onScroll();
-    const words = this.view.state.doc.textBetween(0, this.view.state.doc.content.size, ' ', ' ').split(/\s+/).filter(Boolean).length;
+    const words = this.profile.navFromScan
+      ? (this.sync ? this.sync.current() : this.documentText).split(/\s+/).filter(Boolean).length
+      : this.view.state.doc.textBetween(0, this.view.state.doc.content.size, ' ', ' ').split(/\s+/).filter(Boolean).length;
     const src = this.sourceBlocks ? ` · ${this.sourceBlocks} source block${this.sourceBlocks === 1 ? '' : 's'}` : '';
     this.statusInfo.textContent = `${words.toLocaleString()} words · ${this.headings.length} headings${src}`;
+  }
+
+  private resolveHeading(e: NavEntry | HeadingInfo): HeadingInfo {
+    if (e.pos >= 0) return e;
+    const cached = this.headingPos.get(e.key);
+    if (cached !== undefined) return { ...e, pos: cached, topIndex: e.topIndex ?? null };
+    for (const h of collectHeadings(this.view.state.doc)) {
+      this.headingPos.set(h.key, h.pos);
+      if (h.key === e.key) return h;
+    }
+    return e;
   }
 
   private headingEl(hd: HeadingInfo): HTMLElement | null {
@@ -283,12 +366,17 @@ export class App {
 
   private onScroll(): void {
     if (this.scrollTicking) return;
+    if (this.profile.navFromScan && this.headings.length > 400) return;
     this.scrollTicking = true;
     requestAnimationFrame(() => {
       this.scrollTicking = false;
       const top = this.scroller.getBoundingClientRect().top + 24;
       let current: HeadingInfo | null = null;
-      for (const hd of this.headings) {
+      const list = this.profile.navFromScan
+        ? this.headings.map((h) => this.resolveHeading(h))
+        : this.headings;
+      for (const hd of list) {
+        if (hd.pos < 0) continue;
         const el = this.headingEl(hd);
         if (!el || el.closest('[hidden]')) continue;
         if (el.getBoundingClientRect().top <= top) current = hd;
@@ -304,12 +392,14 @@ export class App {
   }
 
   private goToHeading(e: NavEntry | HeadingInfo): void {
-    const reveal = revealPos(this.view.state, e.pos);
+    const target = this.resolveHeading(e);
+    if (target.pos < 0) return;
+    const reveal = revealPos(this.view.state, target.pos);
     if (reveal) this.view.dispatch(reveal);
-    const node = this.view.state.doc.nodeAt(e.pos);
+    const node = this.view.state.doc.nodeAt(target.pos);
     if (!node) return;
-    this.view.dispatch(this.view.state.tr.setSelection(TextSelection.create(this.view.state.doc, e.pos + 1 + node.content.size)));
-    const el = this.view.nodeDOM(e.pos) as HTMLElement | null;
+    this.view.dispatch(this.view.state.tr.setSelection(TextSelection.create(this.view.state.doc, target.pos + 1 + node.content.size)));
+    const el = this.view.nodeDOM(target.pos) as HTMLElement | null;
     if (el && el.nodeType === 1) {
       const box = this.scroller.getBoundingClientRect();
       this.scroller.scrollTop += el.getBoundingClientRect().top - box.top - 12;

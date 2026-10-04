@@ -109,11 +109,11 @@
           "default": false,
           "description": "Open Markdown files in amir_md by default. Turning this on adds an entry to workbench.editorAssociations after you confirm."
         },
-        "amir_md.maxFileSizeMB": {
-          "type": "number",
-          "default": 5,
-          "description": "Files larger than this open with a warning."
-        },
+				"amir_md.maxFileSizeMB": {
+					"type": "number",
+					"default": 2,
+					"description": "Files larger than this open with a warning. amir_md uses fast-parse mode automatically above ~512 KB."
+				},
         "amir_md.images.folder": {
           "type": "string",
           "default": "images",

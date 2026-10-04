@@ -71,42 +71,71 @@ export class NavPane {
     if (level) this.level = level;
   }
 
+  private domCap = 10_000;
+
+  setDomCap(cap: number): void {
+    this.domCap = Math.max(200, cap);
+  }
+
   setHeadings(headings: HeadingInfo[]): void {
     this.entries = buildNavTree(headings);
     this.open = this.initialised
       ? carryOpen(this.entries, this.open, this.deps.defaultExpandLevel())
       : carryOpen(this.entries, {}, this.deps.defaultExpandLevel());
     this.initialised = true;
-    this.render();
+    this.renderChunked();
     if (this.filter.value.trim()) this.applyFilter();
   }
 
   // ---------------------------------------------------------------- rendering
 
-  private render(): void {
+  private renderChunked(): void {
     this.items.clear();
     this.tree.textContent = '';
+    const cap = this.domCap;
+    const toRender = this.entries.length > cap ? this.entries.slice(0, cap) : this.entries;
     const groups = new Map<NavEntry, HTMLUListElement>();
-    for (const e of this.entries) {
-      const li = h('li', { role: 'treeitem', 'aria-level': String(e.level), tabindex: '-1' });
-      const row = h('div', { class: 'amd-nav-row-item', style: `padding-left:${(this.depth(e)) * 14 + 4}px` },
-        h('span', { class: 'amd-tw', 'aria-hidden': 'true' }),
-        h('span', { class: 'amd-nav-text' }, e.text || '(empty heading)'));
-      li.append(row);
-      (li as HTMLLIElement & { entry?: NavEntry }).entry = e;
-      if (e.children.length) {
-        const ul = h('ul', { role: 'group' });
-        li.append(ul);
-        groups.set(e, ul);
+    const CHUNK = 80;
+    let i = 0;
+    const step = () => {
+      const end = Math.min(i + CHUNK, toRender.length);
+      for (; i < end; i++) this.appendEntry(toRender[i], groups);
+      if (i < toRender.length) {
+        requestAnimationFrame(step);
+        return;
       }
-      (e.parent ? groups.get(e.parent)! : this.tree).append(li);
-      this.items.set(e, li);
+      this.finishRender(toRender);
+    };
+    if (!toRender.length) this.finishRender(toRender);
+    else requestAnimationFrame(step);
+  }
+
+  private appendEntry(e: NavEntry, groups: Map<NavEntry, HTMLUListElement>): void {
+    const li = h('li', { role: 'treeitem', 'aria-level': String(e.level), tabindex: '-1' });
+    const row = h('div', { class: 'amd-nav-row-item', style: `padding-left:${(this.depth(e)) * 14 + 4}px` },
+      h('span', { class: 'amd-tw', 'aria-hidden': 'true' }),
+      h('span', { class: 'amd-nav-text' }, e.text || '(empty heading)'));
+    li.append(row);
+    (li as HTMLLIElement & { entry?: NavEntry }).entry = e;
+    if (e.children.length) {
+      const ul = h('ul', { role: 'group' });
+      li.append(ul);
+      groups.set(e, ul);
     }
+    (e.parent && groups.has(e.parent) ? groups.get(e.parent)! : this.tree).append(li);
+    this.items.set(e, li);
+  }
+
+  private finishRender(rendered: NavEntry[]): void {
     this.paintOpen();
-    const focusable = (this.focusedKey && this.entries.find((e) => e.key === this.focusedKey)) || this.entries[0];
-    if (focusable) this.items.get(focusable)!.tabIndex = 0;
+    const focusable = (this.focusedKey && rendered.find((e) => e.key === this.focusedKey)) || rendered[0];
+    if (focusable && this.items.get(focusable)) this.items.get(focusable)!.tabIndex = 0;
     if (this.currentKey) this.markCurrent(this.currentKey);
-    this.count.textContent = `${this.entries.length} heading${this.entries.length === 1 ? '' : 's'}`;
+    const total = this.entries.length;
+    const suffix = total > rendered.length
+      ? ` (showing first ${rendered.length} — use Filter to narrow)`
+      : '';
+    this.count.textContent = `${total} heading${total === 1 ? '' : 's'}${suffix}`;
   }
 
   private depth(e: NavEntry): number {

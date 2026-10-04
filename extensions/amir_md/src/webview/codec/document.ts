@@ -17,6 +17,7 @@ import { createRefMd } from '../../shared/markdownIt';
 import { MdEnv, parseBlock, sameContent } from './parse';
 import { ESC_MODES, renderBlock, SerializeOptions } from './serialize';
 import type { TextChange } from '../../shared/messages';
+import { yieldToMain } from '../../shared/performance';
 
 const refMd = createRefMd();
 
@@ -35,6 +36,14 @@ export interface CodecMeta {
 }
 
 let nextOrigin = 1;
+
+export interface ParseOptions {
+  /** When true, accept a successful parse without HTML round-trip verification (much faster). */
+  skipFidelityCheck?: boolean;
+  /** Yield to the UI every N blocks (0 = synchronous). */
+  blocksPerTick?: number;
+  onProgress?: (done: number, total: number) => void;
+}
 
 export interface ParseResult {
   doc: Node;
@@ -143,7 +152,35 @@ function withOrigin(node: Node, origin: number): Node {
 
 const toEol = (s: string, eol: string) => (eol === '\n' ? s : s.replace(/\r?\n/g, eol));
 
-export function parseDocument(text: string, opts: SerializeOptions): ParseResult {
+function blockNode(
+  seg: Seg,
+  body: string,
+  env: MdEnv,
+  meta: Pick<CodecMeta, 'env' | 'opts'>,
+  skipFidelity: boolean,
+): { node: Node; source: boolean } {
+  let node: Node | null = null;
+  if (!seg.raw) {
+    const parsed = parseBlock(body, env);
+    if (parsed) {
+      if (skipFidelity) node = parsed;
+      else {
+        const ser = serializeBlockVerified(parsed, meta);
+        if (renderRef(body, env) === renderRef(ser, env)) node = parsed;
+      }
+    }
+  }
+  const origin = nextOrigin++;
+  if (!node) {
+    return {
+      node: schema.nodes.raw_block.create({ text: body.replace(/\r\n/g, '\n'), srcIdx: origin }),
+      source: true,
+    };
+  }
+  return { node: withOrigin(node, origin), source: false };
+}
+
+export function parseDocument(text: string, opts: SerializeOptions, parseOpts: ParseOptions = {}): ParseResult {
   const lines = splitLines(text);
   const eol = detectEol(text);
   const { segs, env } = segment(text, lines);
@@ -168,7 +205,9 @@ export function parseDocument(text: string, opts: SerializeOptions): ParseResult
   const nodes: Node[] = [];
   let sourceBlocks = 0;
   let prevEnd = 0;
-  segs.forEach((seg, k) => {
+  const skipFidelity = !!parseOpts.skipFidelityCheck;
+  for (let k = 0; k < segs.length; k++) {
+    const seg = segs[k];
     const start = lineStart[seg.s];
     const end = lineStart[seg.e] - eolLen(lines[seg.e - 1]);
     const body = text.slice(start, end);
@@ -177,29 +216,78 @@ export function parseDocument(text: string, opts: SerializeOptions): ParseResult
     prevEnd = end;
     meta.bodies.push(body);
 
-    let node: Node | null = null;
-    if (!seg.raw) {
-      const parsed = parseBlock(body, env);
-      if (parsed) {
-        const ser = serializeBlockVerified(parsed, meta);
-        if (renderRef(body, env) === renderRef(ser, env)) node = parsed;
-      }
-    }
-    const origin = nextOrigin++;
-    if (!node) {
-      node = schema.nodes.raw_block.create({ text: body.replace(/\r\n/g, '\n'), srcIdx: origin });
-      sourceBlocks++;
-    } else {
-      node = withOrigin(node, origin);
-    }
+    const { node, source } = blockNode(seg, body, env, meta, skipFidelity);
+    if (source) sourceBlocks++;
+    const origin = node.attrs.srcIdx as number;
     meta.nodeIndex.set(node, k);
     meta.order.set(origin, k);
     nodes.push(node);
-  });
+  }
   if (segs.length) meta.tail = text.slice(prevEnd);
   else meta.prefix = text;
 
   const doc = schema.node('doc', null, nodes.length ? nodes : [schema.nodes.paragraph.create()]);
+  parseOpts.onProgress?.(segs.length, segs.length);
+  return { doc, meta, stats: { blocks: nodes.length, sourceBlocks } };
+}
+
+/** Same as parseDocument but yields so the webview stays responsive on huge files. */
+export async function parseDocumentAsync(text: string, opts: SerializeOptions, parseOpts: ParseOptions = {}): Promise<ParseResult> {
+  const tick = parseOpts.blocksPerTick ?? 0;
+  if (!tick) return parseDocument(text, opts, parseOpts);
+
+  const lines = splitLines(text);
+  const eol = detectEol(text);
+  const { segs, env } = segment(text, lines);
+
+  const lineStart: number[] = [0];
+  for (const l of lines) lineStart.push(lineStart[lineStart.length - 1] + l.length);
+
+  const meta: CodecMeta = {
+    original: text,
+    eol,
+    prefix: '',
+    tail: '',
+    bodies: [],
+    gaps: [],
+    nodeIndex: new WeakMap(),
+    order: new Map(),
+    cache: new WeakMap(),
+    env,
+    opts,
+  };
+
+  const nodes: Node[] = [];
+  let sourceBlocks = 0;
+  let prevEnd = 0;
+  const skipFidelity = !!parseOpts.skipFidelityCheck;
+  for (let k = 0; k < segs.length; k++) {
+    const seg = segs[k];
+    const start = lineStart[seg.s];
+    const end = lineStart[seg.e] - eolLen(lines[seg.e - 1]);
+    const body = text.slice(start, end);
+    if (k === 0) meta.prefix = text.slice(0, start);
+    else meta.gaps.push(text.slice(prevEnd, start));
+    prevEnd = end;
+    meta.bodies.push(body);
+
+    const { node, source } = blockNode(seg, body, env, meta, skipFidelity);
+    if (source) sourceBlocks++;
+    const origin = node.attrs.srcIdx as number;
+    meta.nodeIndex.set(node, k);
+    meta.order.set(origin, k);
+    nodes.push(node);
+
+    if ((k + 1) % tick === 0) {
+      parseOpts.onProgress?.(k + 1, segs.length);
+      await yieldToMain();
+    }
+  }
+  if (segs.length) meta.tail = text.slice(prevEnd);
+  else meta.prefix = text;
+
+  const doc = schema.node('doc', null, nodes.length ? nodes : [schema.nodes.paragraph.create()]);
+  parseOpts.onProgress?.(segs.length, segs.length);
   return { doc, meta, stats: { blocks: nodes.length, sourceBlocks } };
 }
 
@@ -245,8 +333,8 @@ export interface Reconciled {
  * rebase). Unchanged leading and trailing blocks keep their node identity, so the
  * view does not redraw them and their source text stays exact.
  */
-export function reconcile(oldDoc: Node, newText: string, opts: SerializeOptions): Reconciled {
-  const { doc: next, meta, stats } = parseDocument(newText, opts);
+export function reconcile(oldDoc: Node, newText: string, opts: SerializeOptions, parseOpts: ParseOptions = {}): Reconciled {
+  const { doc: next, meta, stats } = parseDocument(newText, opts, parseOpts);
   const oldN = oldDoc.childCount;
   const newN = next.childCount;
   let p = 0;

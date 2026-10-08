@@ -1,0 +1,6 @@
+{
+  "research_root": "E:\\PC3_Shared\\Palo\\COE\\prisma-sdwan-sme-research",
+  "kb_root": "E:\\PC3_Shared\\Palo\\COE\\Prisma_SASE_KB",
+  "kbq_path": "",
+  "_comment": "research_root = editing place of the knowledge corpus (sync_knowledge.py copies it into knowledge/). kb_root = read-only Palo Alto KB passed to the sibling skill's kbq.py. kbq_path empty = use ../amir_prisma_sdwan/scripts/kbq.py or the user-level junction."
+}

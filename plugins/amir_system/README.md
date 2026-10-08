@@ -56,6 +56,30 @@ installed at user scope under
 `/amir_critical`, `/amir_handoff`, `/amir_doc_review`, `/amir_humanized`,
 `/amir-project-cleanup`, `/amir_agent_notification`).
 
+### Prisma SD-WAN SME and official documentation pair
+
+`amir_prisma_sdwan` (evidence-first Prisma SD-WAN answers from the local Palo Alto KB) and
+`amir_official_doc` (numbered, checked, human-written Markdown documents with an evidence register) are
+user-scope skills for both tools. One real copy lives in `skills/`; directory junctions in
+`%USERPROFILE%\.claude\skills\` and `%USERPROFILE%\.cursor\skills\` point at it, created and verified by
+`scripts\install-user-skills.ps1` (`-Verify` reports only). Each skill folder has a README.
+
+Platform notes: Claude Code supports stacking (`/amir_prisma_sdwan /amir_official_doc <request>`) and
+fills `${CLAUDE_SKILL_DIR}`; Cursor attaches one skill per `/` pick and shows the SKILL.md path, so each
+skill loads its partner itself when a task needs both. Cursor's documentation asks for hyphenated names;
+underscore names are accepted by Cursor 3.22 (as with `amir_humanized`). The plugin copy
+(`/amir:amir_prisma_sdwan`) appears only after the plugin cache is updated.
+
+### Prisma SD-WAN SME knowledge layer
+
+`amir_prisma_sdwan_sme` is the curated reasoning layer above `amir_prisma_sdwan`: a synced copy of the
+Prisma SD-WAN SME research corpus (58 notes with claims registers, 14 worked scenarios, term index, question
+router, source catalog, gap register) where every claim is labelled VERIFIED / CORROBORATED / INFERRED /
+UNVERIFIED / CONFLICTED / OBSOLETE with an evidence type (DOC / SCENARIO / LAB). `scripts/sme.py` looks up
+routes, notes, scenarios, terms, gaps and sources without loading the corpus; `scripts/sync_knowledge.py`
+refreshes `knowledge/` from the research workspace and writes a SHA-256 manifest. Same junction install as
+the pair above (`scripts\install-user-skills.ps1`); Python-only automation examples. See its README.
+
 ## MCP servers
 
 - **asana** — local Python FastMCP server (17 tools), launched via

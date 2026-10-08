@@ -1,0 +1,407 @@
+{
+  "generated_at": "2026-10-08T23:27:42Z",
+  "source_root": "E:\\PC3_Shared\\Palo\\COE\\prisma-sdwan-sme-research",
+  "file_count": 80,
+  "files": [
+    {
+      "path": "03_SOURCE_CATALOG.md",
+      "size": 28560,
+      "sha256": "6a122e2c9a68252b87d21e13d19b5c237500df11e7cff2ef6a49a010a193889e"
+    },
+    {
+      "path": "04_KNOWLEDGE_GAPS.md",
+      "size": 27513,
+      "sha256": "8ab1feddcd169a32da22b03e648a167e37304aaa0c123deb9cff83ff6be93ab7"
+    },
+    {
+      "path": "05_UNRESOLVED_QUESTIONS.md",
+      "size": 11968,
+      "sha256": "0600828eaa67a1fe2404af6f4e83a404463b4dde76973a7c9bf5e592dee39cb2"
+    },
+    {
+      "path": "06_SME_READINESS_ASSESSMENT.md",
+      "size": 7968,
+      "sha256": "d1b490a9198ad110ae0af5202e98164f23b684bbb285c0400bd4b008c876be55"
+    },
+    {
+      "path": "index/00_NOTE_INDEX.md",
+      "size": 12106,
+      "sha256": "fa9c8a87ecbdf3e535e78b318440edd1087ff916d207eb664e2033646fa20b00"
+    },
+    {
+      "path": "index/01_TERM_INDEX.md",
+      "size": 7069,
+      "sha256": "ea3f221740d8f116acc61a3862fc02d8035c542cbbecedab6851e6cbe0d13135"
+    },
+    {
+      "path": "index/02_ROUTER.md",
+      "size": 6064,
+      "sha256": "ba4c0a178dfc6f0feffe36510b1a36ecceb24be13ccc12a1fd23e56ab0bb45cf"
+    },
+    {
+      "path": "notes/01-fundamentals/01-architecture-and-planes.md",
+      "size": 9351,
+      "sha256": "fe691e13606d74cd1b97c1961817a0698420e7e9834cbd005db1ab0b72a1ca66"
+    },
+    {
+      "path": "notes/01-fundamentals/02-deployment-modes-and-insertion.md",
+      "size": 5142,
+      "sha256": "6d20b51bfb1545001e01b68c50d7439fb874f437f49f37f5fd420903e818602a"
+    },
+    {
+      "path": "notes/01-fundamentals/03-tenancy-tsg-activation.md",
+      "size": 7052,
+      "sha256": "8d0c0fd7d470f10d0fb88054081edf56e3356518f4e2df03110b1ce2faccaa87"
+    },
+    {
+      "path": "notes/01-fundamentals/04-licensing-and-subscriptions.md",
+      "size": 6374,
+      "sha256": "2869d152d04bcbaf41e73a3a3fc933b3070b728ffb275a78d13955e5fbf85298"
+    },
+    {
+      "path": "notes/01-fundamentals/05-ion-models-hardware-virtual.md",
+      "size": 8983,
+      "sha256": "a672e8eb4522ebbc2cb38c766856c04ebf877fd0e411c79c50257835d7e26893"
+    },
+    {
+      "path": "notes/01-fundamentals/06-sites-and-object-model-overview.md",
+      "size": 6084,
+      "sha256": "983b2334e9b8f4685759168c7b0d75d8bfe6c76fcb8bd4698727205fe09cb827"
+    },
+    {
+      "path": "notes/01-fundamentals/07-controller-releases-and-maintenance.md",
+      "size": 2510,
+      "sha256": "f314b16a07a82213f397879278539d558ab0d76797124520e93af0a9b41cf011"
+    },
+    {
+      "path": "notes/01-fundamentals/08-device-onboarding-claim-assign.md",
+      "size": 6482,
+      "sha256": "24b85478b99cb98854901282d2d3b0a4a223c405b38b43a2391d8eb45c9c52b8"
+    },
+    {
+      "path": "notes/01-fundamentals/09-lifecycle-rma-templates-msp.md",
+      "size": 11365,
+      "sha256": "78ffb5622a621c8062fd0c608592c6495d493a854bb49c131a684006165342db"
+    },
+    {
+      "path": "notes/02-network/01-circuits-categories-wan-networks.md",
+      "size": 8301,
+      "sha256": "10401e1ba127e44796548530c7f751a38fd7ceba271dd0707aced667f81e339d"
+    },
+    {
+      "path": "notes/02-network/02-ports-and-interfaces.md",
+      "size": 13507,
+      "sha256": "a829cbb7d487ac528b54f012759feebfd3b98868b46814cf1d4d85b79ab65774"
+    },
+    {
+      "path": "notes/02-network/03-cellular-interfaces.md",
+      "size": 4962,
+      "sha256": "4a84e92d9327644da2e04e2b7501c71d9e9e6ff8682cc3cfdfb24acdd860d586"
+    },
+    {
+      "path": "notes/02-network/04-standard-vpn-ipsec-gre.md",
+      "size": 4249,
+      "sha256": "c09715fa572ec8106805ac494c6fe93b21a09a04c3cf59b45683cfa4c3667006"
+    },
+    {
+      "path": "notes/02-network/05-vpn-keepalives-bfd-lqm-settings.md",
+      "size": 3494,
+      "sha256": "3941f5ec239140253e64a446de18f1347691f3d54ab8aec3f31bf9d8bd1165b6"
+    },
+    {
+      "path": "notes/02-network/06-fabric-topologies-dc-clusters-branch-gateway.md",
+      "size": 12605,
+      "sha256": "04f36bb51b22372e6428d17342bcb339aa05e6aff766294bb780bb39ba10c54f"
+    },
+    {
+      "path": "notes/02-network/07-branch-ha-and-dc-redundancy.md",
+      "size": 8565,
+      "sha256": "7032937cd91cbcd85ca89253ac990ce6559baa070a8fef38f10df39849232120"
+    },
+    {
+      "path": "notes/02-network/08-routing-static-bgp-ospf.md",
+      "size": 15687,
+      "sha256": "1ea087f8896f15341fd744d6f628e346aba27bc62156796e3e982edf263cb560"
+    },
+    {
+      "path": "notes/02-network/09-vrf-segmentation.md",
+      "size": 5854,
+      "sha256": "0ee05ae49442039b9e69645a40429a743101a48d8be1a398229f2657d7dddb0a"
+    },
+    {
+      "path": "notes/02-network/10-multicast.md",
+      "size": 4857,
+      "sha256": "84c1fabec90d2f1722d59b9c3eef64ca12e8b900f3ed3c495ee4e7f61e3aa738"
+    },
+    {
+      "path": "notes/02-network/11-nat-policies.md",
+      "size": 5189,
+      "sha256": "00f197b063145fbfb5223f8fa8a243212cd3c81b0660d1505c2e4ac0679c7618"
+    },
+    {
+      "path": "notes/02-network/12-cloud-deployments-and-cloudblades.md",
+      "size": 11037,
+      "sha256": "1979e58cfd7df7128eab119258b034262be35bb4ba46c370911ea1ae98733730"
+    },
+    {
+      "path": "notes/03-application-traffic/01-applications-and-identification.md",
+      "size": 5419,
+      "sha256": "78cf2268aec6a796e763a26b1ebe676a11fd8898075621ecd0ab2f302e10d85c"
+    },
+    {
+      "path": "notes/03-application-traffic/02-path-policy-and-path-selection.md",
+      "size": 9638,
+      "sha256": "1685af968e2c7b61068bcc15ab98cfac6799f79b51f3fe87fb2c123186a437af"
+    },
+    {
+      "path": "notes/03-application-traffic/03-service-dc-groups-domains-network-contexts.md",
+      "size": 5450,
+      "sha256": "3db90f41b834a56d0a3ef69fda0d87572ec82de7581976cddba3a82b660b7ddf"
+    },
+    {
+      "path": "notes/03-application-traffic/04-qos-circuit-capacities-dscp.md",
+      "size": 4592,
+      "sha256": "15c9840c7fb7ae1b1c99bfbc62b20cf4ba2822c92c4443cdc485750909faa2fc"
+    },
+    {
+      "path": "notes/03-application-traffic/05-performance-policy-fec-packet-duplication.md",
+      "size": 10652,
+      "sha256": "47c9e7b7075e500d64e58132eef8b64d3fb36b853381cfde1fe8c6d53bd4d4cf"
+    },
+    {
+      "path": "notes/03-application-traffic/06-measurement-lqm-probes-reachability.md",
+      "size": 6595,
+      "sha256": "e2f0d6974d498aac3394a6afbfeb67a1d4c48d42c7793532204a0b7cf134eeb9"
+    },
+    {
+      "path": "notes/03-application-traffic/07-app-acceleration.md",
+      "size": 4097,
+      "sha256": "da96bfaba97c705b99c1d54e3a16837fbc5cceadc20b05d845ed33af0b9f46b4"
+    },
+    {
+      "path": "notes/04-security/01-zbfw-stacked-security-policies.md",
+      "size": 8898,
+      "sha256": "1afcb0cfb86ab3a5979a60dd9cc7f98a2b4cd4793608fa80d5d007de4526a905"
+    },
+    {
+      "path": "notes/04-security/02-user-id-cie-device-id.md",
+      "size": 6301,
+      "sha256": "66a31fb1d6b45e086ce580ee789893177ef94732167c72e05c52f3cbdbc9a6d4"
+    },
+    {
+      "path": "notes/04-security/03-branch-security-cdss.md",
+      "size": 4393,
+      "sha256": "ac12231d43608541cf38f2ba52877526293ed85e5773873d383866035d3697e8"
+    },
+    {
+      "path": "notes/04-security/04-iot-device-visibility.md",
+      "size": 3049,
+      "sha256": "d9c9e3faac52f188b30cf212f5d02b80c66019dcf077ee1eef43ec006dcc833b"
+    },
+    {
+      "path": "notes/04-security/05-admin-access-rbac-tacacs-radius-audit.md",
+      "size": 5787,
+      "sha256": "d3d67d999e39c757f717fcef12915bf18c40beb40ed29702fc70b27c2aac3d2a"
+    },
+    {
+      "path": "notes/04-security/06-prisma-access-integration-easy-onboarding.md",
+      "size": 9594,
+      "sha256": "f6c1cb548035a121bd0b69f99f230cb0525f7727d429c72c9696480f6138e562"
+    },
+    {
+      "path": "notes/04-security/07-converged-sdwan-ngfw-hub.md",
+      "size": 3957,
+      "sha256": "b502e81a09c5596fdc227148225b7a7362650029952ac646517d75c8e643f3c2"
+    },
+    {
+      "path": "notes/04-security/08-post-quantum-cryptography.md",
+      "size": 3376,
+      "sha256": "622edf43968d79fcb9ca8a8ce5a2bc7b4e62d8683638b20c5f7bfa9d4ed8b3d6"
+    },
+    {
+      "path": "notes/04-security/09-sso-saml-service-accounts-tpm-cli-access.md",
+      "size": 6214,
+      "sha256": "a1c296b26365248c084958bc4d61b1b8715ac34c6871af73e5cdd2b080c08145"
+    },
+    {
+      "path": "notes/05-scm/01-navigation-map-version-scoped.md",
+      "size": 8789,
+      "sha256": "9703629f03f55c61c2dec8523e39bc0c5602b5ed538eae2f0b3eba8d505fb3e3"
+    },
+    {
+      "path": "notes/05-scm/02-dashboards-monitoring-screens.md",
+      "size": 9238,
+      "sha256": "ecf678d0a45139b7230e51f020e4f7fb732bbcd1d3b02b0955f1a953e2f545f3"
+    },
+    {
+      "path": "notes/06-api-automation/01-unified-api-authentication-conventions.md",
+      "size": 6202,
+      "sha256": "475f9e037760a5f7831b15e24e15d9ab59ae2a2ab7ece31340382d5bede0656b"
+    },
+    {
+      "path": "notes/06-api-automation/02-api-object-model-scopes-versions-async-errors.md",
+      "size": 10545,
+      "sha256": "3fefd621ebe960e983295f3102b2f1d43d121e55e9f75a636416b2b32024c316"
+    },
+    {
+      "path": "notes/06-api-automation/03-sdks-tooling-terraform-config-utility.md",
+      "size": 6603,
+      "sha256": "6b826a473e95b2035369887b2ca8a3e9af42f04ca468cadb8c7a21ee7843c400"
+    },
+    {
+      "path": "notes/07-operations/01-incidents-alerts-event-codes.md",
+      "size": 13744,
+      "sha256": "1770bd4ff45bb658a948c6a463d313a39f6233444af1a3b2627c0731ac1b50ca"
+    },
+    {
+      "path": "notes/07-operations/02-external-services-ipfix-syslog-snmp-dns-ntp-dhcp.md",
+      "size": 8057,
+      "sha256": "1202d52182e95cc0fae0570a9507b29b1399fbf8c51e39595649735a6fdd879c"
+    },
+    {
+      "path": "notes/07-operations/03-software-upgrades-release-lifecycle.md",
+      "size": 7755,
+      "sha256": "c185e13f2ee38c6c02074295c8c423fb671ba0723f27727c0613acc8331ca4ba"
+    },
+    {
+      "path": "notes/07-operations/04-feature-chronology-6x.md",
+      "size": 7596,
+      "sha256": "600587f41fe74ee17e018db9f72aa73b796bfa6e6ce1894911b12bcdae69acc7"
+    },
+    {
+      "path": "notes/08-troubleshooting/01-golden-workflow-isolation-escalation.md",
+      "size": 11632,
+      "sha256": "75e07586a1ecb0cabb37170176e33ce731687fd5a7171ff53774939898b91029"
+    },
+    {
+      "path": "notes/08-troubleshooting/02-cli-command-reference-by-problem-area.md",
+      "size": 11755,
+      "sha256": "d771a861e83dee989a5a7b2cd1535091005bde3932ec78a9b802bd36b5bc3cf0"
+    },
+    {
+      "path": "notes/08-troubleshooting/03-controller-connectivity-device-offline-onboarding.md",
+      "size": 6902,
+      "sha256": "05181a20c19e3c456d0cb0667d17c3a3abf1685a74bf008d6587f87ce818a91c"
+    },
+    {
+      "path": "notes/08-troubleshooting/04-performance-app-detection-services-cellular.md",
+      "size": 8724,
+      "sha256": "bb51d9e99839a8ab335f8e4e45aacb714c71681dbc5fe7c246e9899562bfeb15"
+    },
+    {
+      "path": "notes/08-troubleshooting/05-branch-security-troubleshooting.md",
+      "size": 6955,
+      "sha256": "b5093a5ca2f2c53aa197049b88805391c8cf5ed8bbbf6e368b406784f86e245a"
+    },
+    {
+      "path": "notes/09-datapath/01-datapath-architecture-ovs-vs-dpdk.md",
+      "size": 6012,
+      "sha256": "05701fedc77fff684ccbbd7f5d9ccefd847bb23ea8da703b2fca11e78beaefca"
+    },
+    {
+      "path": "notes/09-datapath/02-datapath-diagnostics-fc-debug-dpdk-counters-route-manager-mrl.md",
+      "size": 10813,
+      "sha256": "950f094a5b76057a27197920dbe21f1901516198cf6982a204c0ddb6765de191"
+    },
+    {
+      "path": "notes/10-design/01-reference-architecture-enterprise-connectivity-design-guide-oct2025.md",
+      "size": 18487,
+      "sha256": "2160016121790032fa2baca376105beb5286e8ed1ba44d9c2064ceb999d6cbc2"
+    },
+    {
+      "path": "notes/10-design/02-deployment-blueprint-greenfield-with-prisma-access-oct2025.md",
+      "size": 12276,
+      "sha256": "553539fa3c5a5c9c7387b05f75836382ba5662a0251a713dc53545d4f9ec4191"
+    },
+    {
+      "path": "notes/10-design/03-segmentation-zones-subinterfaces-guest-design.md",
+      "size": 5060,
+      "sha256": "3501a2437b93b5dfcf1993d714f992c7b3d3a9154aa31c230e3d8f6454507b79"
+    },
+    {
+      "path": "notes/10-design/04-msp-multitenant-cloud-manager-and-on-premises-controller.md",
+      "size": 7470,
+      "sha256": "74a37b394f708dd68f522a7ac1972f83099ffb5ca55756489cb5f90e82920497"
+    },
+    {
+      "path": "notes/10-design/05-design-anti-patterns-and-review-checklist.md",
+      "size": 9890,
+      "sha256": "705a8f6d9b0ee7e1aae591b65b882a718b7e852478851657aeb4d809af406133"
+    },
+    {
+      "path": "scenarios/00_SCENARIO_INDEX.md",
+      "size": 4566,
+      "sha256": "d41790c2ced2198cd0459f260e3e9c25f9009c0795a1ddec8786da855d2e2728"
+    },
+    {
+      "path": "scenarios/S01-multisite-enterprise-two-dcs-vrf-prisma-access.md",
+      "size": 10853,
+      "sha256": "5b5cafedce9204590d1c595d7ae128d3b50f2ff0be169bd9fd47cd5ef41c68f5"
+    },
+    {
+      "path": "scenarios/S02-policy-conflict-path-vs-performance-sla.md",
+      "size": 4712,
+      "sha256": "7e38f984d235fdb9cf7d02f196178d00e95dc7b5eaa8f2437157e266662a3179"
+    },
+    {
+      "path": "scenarios/S03-asymmetric-return-path-dc-bgp-nat.md",
+      "size": 5459,
+      "sha256": "7a996d1f8a9a28957dfc92b69a1ddc336c75bbd8ebdab5b5210abbef3162e923"
+    },
+    {
+      "path": "scenarios/S04-brownfield-migration-branch-gateway.md",
+      "size": 5449,
+      "sha256": "e669687336855393ce80a7d92c52637450dee6e86870888d6df3fa18b8474487"
+    },
+    {
+      "path": "scenarios/S05-api-idempotent-site-buildout-and-teardown.md",
+      "size": 6629,
+      "sha256": "b922f8ac5c22e19f32d91469ef72efad321ec4d8d7c43319b628dd85442e59ea"
+    },
+    {
+      "path": "scenarios/S06-branch-offline-after-cutover.md",
+      "size": 4872,
+      "sha256": "4a962ea49c73aad7c68dc5554e86e5a3048c68a8d6898459c7a5b1ba7ecfcdcd"
+    },
+    {
+      "path": "scenarios/S07-poor-voice-quality-mpls-internet-branch.md",
+      "size": 5098,
+      "sha256": "b756282cf856545cac40722997821db282b057068f276eb1ee053cdf253703c1"
+    },
+    {
+      "path": "scenarios/S08-zbfw-drops-inbound-dnat-service.md",
+      "size": 4174,
+      "sha256": "71df42a1aec8e0bce12e8a849cff6471e7db2d8d0411846a4aacc86f2b5c5599"
+    },
+    {
+      "path": "scenarios/S09-ha-pair-never-fails-over.md",
+      "size": 4520,
+      "sha256": "0aa072507aab6e75d3d87d9252d7a4f9bfcf64f453052b6c8cd8c048861b1f21"
+    },
+    {
+      "path": "scenarios/S10-upgrade-planning-mixed-gen1-gen2-fleet.md",
+      "size": 5002,
+      "sha256": "4974ac9dc399f2e6d1b29a38253a5b4e20cfadf66aaa007b78cb6493921d5f50"
+    },
+    {
+      "path": "scenarios/S11-guest-wifi-segmentation.md",
+      "size": 3833,
+      "sha256": "8d8db7b1138f14867547e0d419d48936052aea589c7156da9c1d918425ebaa21"
+    },
+    {
+      "path": "scenarios/S12-datapath-drop-escalation-and-incident-triage.md",
+      "size": 5305,
+      "sha256": "71ad81e2361e8a2b0e0d5ec010c5756c8fb40c0c240861f612b5c54b53917e5f"
+    },
+    {
+      "path": "scenarios/S13-msp-allocates-devices-and-vion-licences.md",
+      "size": 4230,
+      "sha256": "e1d8a7bf97f033700bbd11e4a573bc0523f9ae981c6aee2ee3dc0aa3da43c070"
+    },
+    {
+      "path": "scenarios/S14-where-is-it-in-scm-ui-generations.md",
+      "size": 4634,
+      "sha256": "89f88dba615c2837948eca4b14b318916cedc54a422f798970f804768aad3720"
+    }
+  ]
+}

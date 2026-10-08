@@ -1,0 +1,4 @@
+{
+  "kb_root": "E:\\PC3_Shared\\Palo\\COE\\Prisma_SASE_KB",
+  "_comment": "Fallback KB location. Used only when --root, PRISMA_DOCS_PATH and the current folder do not point at a KB."
+}

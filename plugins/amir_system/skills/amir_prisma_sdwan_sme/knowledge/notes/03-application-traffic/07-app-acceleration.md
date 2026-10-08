@@ -28,3 +28,7 @@ Architecture: the controller derives the branch location from site latitude/long
 ## Open questions
 
 - KG-089: current list of L7-accelerated applications and whether private-app acceleration through Prisma Access is covered by the SD-WAN license or the Prisma Access license (public docs under D2).
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- CONFLICT (KG-142): the 6.4.1 release notes (PUB-011, VERIFIED) list "App Acceleration for SaaS and direct internet applications ... up to 5x ... controlled by the App Acceleration performance policy action ... zero-touch" under **6.4.1**, whereas this note's floors (6.4.2 network optimisation, 6.5.2 SaaS acceleration) come from the admin guide. Present both until the App Acceleration chapter is re-read.

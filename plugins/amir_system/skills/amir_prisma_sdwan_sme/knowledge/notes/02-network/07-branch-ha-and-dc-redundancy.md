@@ -67,3 +67,7 @@ Terminate each WAN circuit directly on one ION and indirectly via fail-to-wire o
 
 - KG-011 partially answered: branch HA detection = advertisement interval × 3 (official); process-crash decrements and "<4 s" claims need an official source.
 - KG-078: official statement of DC-side active/backup selection per branch and failover time.
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- **6.6.1 Branch HA optimization** (PUB-010, VERIFIED): application identification maps (UDP app-map) replicated to the standby in real time and pre-installed in its data plane; LAN-side dynamic routes replicated and merged into the forwarding table during role transition (pairs with BGP graceful restart); **readiness-based preempt**: the HA manager checks routing, firewall and interfaces before a device may resume the Active role. Gen-2 and ION 9000 only (6.6.1 platform rule).

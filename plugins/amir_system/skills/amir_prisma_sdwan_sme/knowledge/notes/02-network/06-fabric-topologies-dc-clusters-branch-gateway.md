@@ -81,3 +81,7 @@ Describes a future converged Prisma SD-WAN / PAN-OS SD-WAN fabric (fabric cluste
 
 - 6.8.1 release considerations (note 07-operations/04, VERIFIED official): branch-gateway **hop-count / prefix-filter** behaviour changes in 6.8.1 (branch gateway prefix filters) — read before advising on multi-BGW designs; WS-001 (internal) warns that more than two branch gateways in full mesh, or several DCs with branch gateways, can produce asymmetry until the native fix ships (workaround: prefix-based path policies).
 - Design Guide Oct 2025 (SRC-000038 pp.32–33, VERIFIED) link matrices: branch↔DC public all-to-all automatic; private all-to-all **within the same circuit category**; branch↔branch and branch↔other-region branch gateway only selectively; the guide still states "never between data-center sites", which the admin guide supersedes from 6.5.1 (inter-DC fabric tunnels).
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- 6.8.1 release notes (PUB-008/009, VERIFIED): **hop-count-based forwarding in Branch Gateway mode** (lowest hop count preferred; DC mode since 6.5.1) and **Branch Gateway overlay prefix filters** exist as a feature (remove before downgrading). Metric 0/30 symmetry and Anynet filter semantics remain internal (KG-077 PARTIAL).

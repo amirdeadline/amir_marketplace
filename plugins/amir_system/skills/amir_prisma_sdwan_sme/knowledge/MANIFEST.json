@@ -1,27 +1,27 @@
 {
-  "generated_at": "2026-10-08T23:27:42Z",
+  "generated_at": "2026-10-08T23:53:32Z",
   "source_root": "E:\\PC3_Shared\\Palo\\COE\\prisma-sdwan-sme-research",
   "file_count": 80,
   "files": [
     {
       "path": "03_SOURCE_CATALOG.md",
-      "size": 28560,
-      "sha256": "6a122e2c9a68252b87d21e13d19b5c237500df11e7cff2ef6a49a010a193889e"
+      "size": 33339,
+      "sha256": "1f128724e7437a70992f72f6f8c93dd69efde906cafa6d15a926c7e021494ccd"
     },
     {
       "path": "04_KNOWLEDGE_GAPS.md",
-      "size": 27513,
-      "sha256": "8ab1feddcd169a32da22b03e648a167e37304aaa0c123deb9cff83ff6be93ab7"
+      "size": 32605,
+      "sha256": "974899fbbf9ad926565af1c282b19062eeeb3c930421a6e6d2d9b328d4c99f27"
     },
     {
       "path": "05_UNRESOLVED_QUESTIONS.md",
-      "size": 11968,
-      "sha256": "0600828eaa67a1fe2404af6f4e83a404463b4dde76973a7c9bf5e592dee39cb2"
+      "size": 13531,
+      "sha256": "261ebad8a2bfbaca93e7258312cb52adc93ce8b68fa5e44dd55d02e89082544e"
     },
     {
       "path": "06_SME_READINESS_ASSESSMENT.md",
-      "size": 7968,
-      "sha256": "d1b490a9198ad110ae0af5202e98164f23b684bbb285c0400bd4b008c876be55"
+      "size": 8225,
+      "sha256": "4d46716bc924d5f227ef03d0e96f389b73616f5346f9cda0fedb639ddf614143"
     },
     {
       "path": "index/00_NOTE_INDEX.md",
@@ -60,8 +60,8 @@
     },
     {
       "path": "notes/01-fundamentals/05-ion-models-hardware-virtual.md",
-      "size": 8983,
-      "sha256": "a672e8eb4522ebbc2cb38c766856c04ebf877fd0e411c79c50257835d7e26893"
+      "size": 10230,
+      "sha256": "599f16031b7fc686b11c1753c7227fb7b58c259e71884967aaefd789e67348eb"
     },
     {
       "path": "notes/01-fundamentals/06-sites-and-object-model-overview.md",
@@ -110,13 +110,13 @@
     },
     {
       "path": "notes/02-network/06-fabric-topologies-dc-clusters-branch-gateway.md",
-      "size": 12605,
-      "sha256": "04f36bb51b22372e6428d17342bcb339aa05e6aff766294bb780bb39ba10c54f"
+      "size": 13106,
+      "sha256": "d221895a929d25739f7c31e48a2d7be0d9acf6842504039b6626ac1a58d7340a"
     },
     {
       "path": "notes/02-network/07-branch-ha-and-dc-redundancy.md",
-      "size": 8565,
-      "sha256": "7032937cd91cbcd85ca89253ac990ce6559baa070a8fef38f10df39849232120"
+      "size": 9207,
+      "sha256": "e1e903ca7df550b8f8a9bf748499d082f75eb893a15c3702222a9c4f457c7323"
     },
     {
       "path": "notes/02-network/08-routing-static-bgp-ospf.md",
@@ -125,8 +125,8 @@
     },
     {
       "path": "notes/02-network/09-vrf-segmentation.md",
-      "size": 5854,
-      "sha256": "0ee05ae49442039b9e69645a40429a743101a48d8be1a398229f2657d7dddb0a"
+      "size": 6828,
+      "sha256": "f206b888c62f86e45d8b5e4433e7dc1c496cf9c66a1e8addf8dba41052e81125"
     },
     {
       "path": "notes/02-network/10-multicast.md",
@@ -150,8 +150,8 @@
     },
     {
       "path": "notes/03-application-traffic/02-path-policy-and-path-selection.md",
-      "size": 9638,
-      "sha256": "1685af968e2c7b61068bcc15ab98cfac6799f79b51f3fe87fb2c123186a437af"
+      "size": 10466,
+      "sha256": "ead6b1efc8d2113b6033c5652b53c67f160b9b123aacf55d6156a05478d0dc9c"
     },
     {
       "path": "notes/03-application-traffic/03-service-dc-groups-domains-network-contexts.md",
@@ -175,8 +175,8 @@
     },
     {
       "path": "notes/03-application-traffic/07-app-acceleration.md",
-      "size": 4097,
-      "sha256": "da96bfaba97c705b99c1d54e3a16837fbc5cceadc20b05d845ed33af0b9f46b4"
+      "size": 4626,
+      "sha256": "a6a67eb5aa9f5d7313f1d76805a4a82627fa716b83441fcbeeeeb3dfb254f5b7"
     },
     {
       "path": "notes/04-security/01-zbfw-stacked-security-policies.md",
@@ -190,8 +190,8 @@
     },
     {
       "path": "notes/04-security/03-branch-security-cdss.md",
-      "size": 4393,
-      "sha256": "ac12231d43608541cf38f2ba52877526293ed85e5773873d383866035d3697e8"
+      "size": 4889,
+      "sha256": "660f99e2769644cb8b9db296ffd46ca8ea4d2e0a698f44d7c7c39b6a09b79a1c"
     },
     {
       "path": "notes/04-security/04-iot-device-visibility.md",
@@ -205,8 +205,8 @@
     },
     {
       "path": "notes/04-security/06-prisma-access-integration-easy-onboarding.md",
-      "size": 9594,
-      "sha256": "f6c1cb548035a121bd0b69f99f230cb0525f7727d429c72c9696480f6138e562"
+      "size": 10459,
+      "sha256": "a95818bd4c824e959aea990d93e15742548f07d3bddeeeb8210aa5b328a574fc"
     },
     {
       "path": "notes/04-security/07-converged-sdwan-ngfw-hub.md",
@@ -215,8 +215,8 @@
     },
     {
       "path": "notes/04-security/08-post-quantum-cryptography.md",
-      "size": 3376,
-      "sha256": "622edf43968d79fcb9ca8a8ce5a2bc7b4e62d8683638b20c5f7bfa9d4ed8b3d6"
+      "size": 3968,
+      "sha256": "cb987f1ae6cff976c8771a892c1615f59d0acbbe3565eda0f91625660c53b44f"
     },
     {
       "path": "notes/04-security/09-sso-saml-service-accounts-tpm-cli-access.md",
@@ -225,8 +225,8 @@
     },
     {
       "path": "notes/05-scm/01-navigation-map-version-scoped.md",
-      "size": 8789,
-      "sha256": "9703629f03f55c61c2dec8523e39bc0c5602b5ed538eae2f0b3eba8d505fb3e3"
+      "size": 10105,
+      "sha256": "84698e41e7b1322f837ced80afbb36d4149f5411c4cb762b15cb2e51342f6f8d"
     },
     {
       "path": "notes/05-scm/02-dashboards-monitoring-screens.md",
@@ -260,13 +260,13 @@
     },
     {
       "path": "notes/07-operations/03-software-upgrades-release-lifecycle.md",
-      "size": 7755,
-      "sha256": "c185e13f2ee38c6c02074295c8c423fb671ba0723f27727c0613acc8331ca4ba"
+      "size": 8523,
+      "sha256": "7b88f51f67dcad63bc45fee619780e7f12299ea5dfe76873339b38005955fed6"
     },
     {
       "path": "notes/07-operations/04-feature-chronology-6x.md",
-      "size": 7596,
-      "sha256": "600587f41fe74ee17e018db9f72aa73b796bfa6e6ce1894911b12bcdae69acc7"
+      "size": 10983,
+      "sha256": "3476ef942a97282e76e58ffe923fd3c31fd841f6929925e9c07d7e899d01c4a2"
     },
     {
       "path": "notes/08-troubleshooting/01-golden-workflow-isolation-escalation.md",

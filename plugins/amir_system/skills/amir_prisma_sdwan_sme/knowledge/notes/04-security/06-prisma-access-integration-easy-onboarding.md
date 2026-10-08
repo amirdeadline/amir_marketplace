@@ -54,3 +54,7 @@ Asymmetry when a branch sends DC-bound traffic via Prisma Access (Remote Network
 - KG-098: the Prisma Access CloudBlade integration guides (Cloud Managed 2.1.2, Panorama Managed 3.1.5) are not in the KB; fetch under D2 if legacy CloudBlade support is in scope for the skill.
 - KG-099: official release that introduced Easy Onboarding (deck says 6.4.1; 6.4 release notes only describe 6.4.2 enhancements); check public 6.4.1 notes under D2.
 - KG-100: whether Easy Onboarding tunnels count against the standard VPN limits per platform and how bandwidth allocation per site interacts with Aggregate vs Site-Based licensing (official text).
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- 6.4.2 release notes (PUB-011, VERIFIED) list "SASE Easy Onboarding Enhancements" (site templates, automated BGP deployment modes, region redundancy, IPsec profile changes); no ION release page names the original introduction (KG-099 PARTIAL). 6.6.1 "VRF Service Link Multiplexing" (PUB-010) routes custom-VRF internet traffic to Prisma Access over Global service links without manual leaks. 6.8.1 Coffeeshop policies (PUB-008) auto-steer Mobile User / Explicit Proxy gateway traffic direct at branches. Compatibility matrix (PUB-007): Easy Onboarding with Panorama-managed Prisma Access 10.2.4 needs plugin cloud_services-5.2.0-h24; Cloud Managed CloudBlade 3.1.6 needs Prisma Access 2.1.2+ with Aggregate Bandwidth.

@@ -28,3 +28,7 @@ Nothing in the official May 2025 documentation or the 6.3–6.5 release notes de
 ## Addendum 2026-10-08 (B17 finding, supersedes "roadmap" wording above)
 
 Post-quantum cryptography **shipped in ION 6.8.1** (official 6.8 features page, cached `c269c51d0b2c`; note 07-operations/04): RFC 8784 post-quantum pre-shared keys (PPK) for IKEv2, RFC 9370/9242 hybrid key exchange with ML-KEM, and TLS 1.3 hybrid groups for controller connections. Treat earlier statements in this note that describe PQC as planned as OBSOLETE. KG-101 CLOSED. Label: VERIFIED (official feature page); configuration details and limits still to be read (D2).
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- Official detail now cached (PUB-008, 6.8.1 release notes, VERIFIED): PPK negotiation modes Mandatory and Preferred; up to seven additional key-exchange rounds; ML-KEM-512/768/1024 combined with ECDH or Diffie-Hellman; TLS 1.3 hybrid groups X25519MLKEM768, SecP256r1MLKEM768, SecP384r1MLKEM1024 for ION-to-controller; configured in IPsec profiles for Standard VPN; fabric tunnels unchanged (symmetric ciphers). Downgrade rule: remove PPK/ML-KEM settings first (PUB-009).

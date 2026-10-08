@@ -43,3 +43,7 @@ Download ahead of the window; bulk upgrades for scale; **HA pairs: upgrade the b
 - KG-065 (existing): Live Community "ION Software Release Guidelines" (recommended/preferred release policy) not in KB.
 - KG-115: full EOL and compatibility matrix tables (per model, per train) as first-hand text (cached HTML exists, no text extraction).
 - KG-116: 6.6.x upgrade/downgrade considerations page (not among cached pages).
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- 6.8 upgrade/downgrade page cached (PUB-009); the 6.6 release-notes index has **no** considerations page (KG-116 CLOSED). Compatibility matrix (PUB-007, 2026-10-05) is now first-hand text: per-model release support through 6.8.1; ION 7000 last 6.3.x with the "sustained CPU at or below 50 % for branch deployments" advisory. EOL summary page still not retrieved (reachable from SCM EoL alerts per the Feb 2026 feature note, KG-115). Recommended-release policy: community thread PUB-001 says Palo Alto Networks does not publish one and refers customers to the account team; the Live Community FAQ (2024-03) is sign-in only (KG-144).

@@ -12,7 +12,8 @@ Date: 2026-10-08. Source: `04_KNOWLEDGE_GAPS.md` KG-001..141 after Phases 2–3.
 | A4 | Should the skill include **TypeScript** API examples (none in the KB) or Python only? | Phase 7 content. | KG-008 |
 | A5 | Skill folder name and relation to the existing `amir_prisma_sdwan` skill (`prisma_sdwan_sme` vs `amir_prisma_sdwan_sme`; reuse `kbq.py` or fork). | Phase 7 construction; already deferred to Phase 7 by decision. | KG-051 |
 | A6 | May the project **render** PDF figures and the 87 base64 images in WS-001 (HA topologies, RMA table) locally to verify figure-only facts? | Closes figure-dependent gaps without any external transfer. | KG-023, KG-024, KG-067 |
-| A7 | Is the Live Community (Palo Alto Networks community site, login may be required) an allowed public source under D2? | KG-065 and KG-103 both point at Live Community PDFs. | KG-065, KG-103 |
+| A7 | Is the Live Community an allowed public source under D2? | **Answered 2026-10-08: yes.** Public threads fetched (PUB-001, PUB-002). | KG-065, KG-103 |
+| A8 | Two Live Community items need a Palo Alto Networks sign-in that the project cannot perform: the FAQ "Prisma SD-WAN Software Release Guidance" (ba-p/570090) and the attachment "SCM Nav 3.0 UI Mapping Preview.pdf". Can you download them and drop copies into `inventory/public/`? | Recommended-release policy and the SD-WAN sub-label mapping depend on them. | KG-144, KG-065, KG-103 |
 
 ## B. Questions a lab or live tenant must answer (cannot be closed from documents)
 
@@ -33,11 +34,11 @@ Date: 2026-10-08. Source: `04_KNOWLEDGE_GAPS.md` KG-001..141 after Phases 2–3.
 
 | # | Question | Target document(s) | Gap IDs |
 |---|---|---|---|
-| C1 | 6.6 and 6.8 release notes (features, considerations, retired codes), 6.6.x considerations page, 6.4.1 notes (Easy Onboarding floor). | ION release notes 6.4.1, 6.6.x, 6.8.x | KG-001, KG-113, KG-116, KG-099, KG-087 (confirm), KG-080, KG-074 |
-| C2 | ION Software Release Guidelines (recommended/preferred release policy). | Live Community (see A7) | KG-065 |
-| C3 | SCM Nav 3.0 UI mapping (before/after menus). | Live Community PDF (see A7); SCM release notes | KG-103, KG-004, KG-046 |
-| C4 | Current datasheet / hardware pages: vION and ION 5200/9200 throughput (three-way conflict), ION 7132V, Blackhawk 3545R-D-C5G-WW, hardware references for ION 1000/2000/3000/7000. | Datasheets, hardware references | KG-063, KG-031, KG-003, KG-120 |
-| C5 | EOL summary and compatibility matrix as text; controller release identifiers. | EOL / compatibility pages; controller release notes | KG-115, KG-117 |
+| C1 | **Done 2026-10-08 (features and considerations: PUB-008/009/010/011).** Still open: addressed-issues pages (retired codes KG-113), 6.6.1 per-VRF BGP router ID wording (KG-080), port-channel WAN floor (KG-074). No 6.6 considerations page exists (KG-116 closed). | ION release notes addressed-issues pages | KG-113, KG-080, KG-074 |
+| C2 | ION Software Release Guidelines: public thread fetched (PUB-001); the FAQ blog itself needs sign-in (A8). | Live Community FAQ ba-p/570090 | KG-065, KG-144 |
+| C3 | **Partly done 2026-10-08:** official top-level navigation cached (PUB-013) and vendor preview thread (PUB-002); the mapping PDF needs sign-in (A8); Prisma SD-WAN sub-labels still unverified. | First Look page; mapping PDF | KG-103, KG-004, KG-046, KG-104 |
+| C4 | **Partly done 2026-10-08:** hardware pages 3200/5200/9200/1200-S cached (no throughput on them, PUB-012); vION sizing from the NFV guide (PUB-014) matches the datasheet; compatibility matrix cached (PUB-007, includes 7116V/7132V). Still open: Blackhawk, ION 1000/3000/7000/9000 hardware pages (exist publicly, not cached), 5200/9200 throughput beyond datasheet vs Design Guide. | Hardware references, datasheet | KG-063, KG-031, KG-003, KG-120 |
+| C5 | Compatibility matrix done (PUB-007). EOL summary page not located (linked from SCM EoL alerts); controller release identifiers open. | EOL summary page; controller release notes | KG-115, KG-117 |
 | C6 | Cloud User-ID / User Context page and floor; Device-ID GA and licence; Branch Security first release and "-I" image meaning, platform support and throughput impact; Intra-VLAN Segmentation. | Admin guide (newer rev), Branch Security pages | KG-092, KG-093, KG-094, KG-095, KG-122 |
 | C7 | Common Services Identity and Access (roles, `accessPolicies`, service accounts), role mapping SCM vs legacy roles; access-token lifetime; `X-PANW-Region`; legacy login deprecation. | Common Services docs; pan.dev | KG-102, KG-097, KG-107, KG-108, KG-109 |
 | C8 | Official API rate limits / 429 handling; monitor metrics semantics; error-code reference; maintained successor to `cloudgenix_config`; unified-API procedure for binding stacks and zones. | pan.dev, OpenAPI docs | KG-006, KG-007, KG-110, KG-111, KG-139 |
@@ -46,7 +47,7 @@ Date: 2026-10-08. Source: `04_KNOWLEDGE_GAPS.md` KG-001..141 after Phases 2–3.
 | C11 | PQC configuration details after 6.8.1; path affinity options; "drop but track" and Best Available Bandwidth; soft/hard failure semantics; app-map expiry and QUIC; L7 acceleration list. | Admin guide newer rev; 6.8 docs | KG-101 (follow-up), KG-084, KG-085, KG-086, KG-121, KG-089 |
 | C12 | On-Premises Controller administrator guide and feature parity. | On-prem controller docs | KG-009, KG-131 |
 | C13 | Branch gateway limits and 6.8.1 full-mesh behaviour (hop-aware, metric 0/30, Anynet filters); BGW max per domain. | 6.8 release notes / admin guide | KG-077, KG-136 |
-| C14 | VRF: release introducing per-VRF Internet NAT and VRF on edge/classic peers; custom VRF over standard VPN (Prisma Access). | Admin guide VRF chapter (newer), release notes | KG-081, KG-133 |
+| C14 | **Done 2026-10-08:** VRF standard VPN 6.4.1, VRF DIA 6.4.2, VRF service-link multiplexing 6.6.1 (PUB-010/011). Open only: VRF on edge/classic peers. | Admin guide VRF chapter | KG-081 (closed), KG-133 (closed) |
 | C15 | Prisma Access ↔ fabric asymmetry correction (6.5.1); Internet-Only mode behaviour. | Prisma Access / SD-WAN integration docs | KG-135 |
 | C16 | Official scale limits table (sites, tunnels, routes, flows, rules); analytics retention per licence; licensing/subscription model text (tiers, DC subscription). | Scale/limits page; subscription guide (WS-046 partly) | KG-010, KG-106, KG-005, KG-126 |
 | C17 | IPv6 support per feature; certificate lifecycle (MIC/CIC, TPM, renewals); offline-statistics buffering claim; fail-to-wire semantics per model. | Admin guide chapters; release notes | KG-014, KG-012, KG-061, KG-062 |
@@ -76,10 +77,11 @@ Date: 2026-10-08. Source: `04_KNOWLEDGE_GAPS.md` KG-001..141 after Phases 2–3.
 
 | Conflict | Sources | Rule applied in notes | Gap |
 |---|---|---|---|
-| vION / ION 5200 / 9200 throughput | datasheet Nov 2025 vs Design Guide Oct 2025 vs WS-001 May 2026 | quote all three with mode and source; never a single number | KG-063 |
+| vION / ION 5200 / 9200 throughput | datasheet Nov 2025 + NFV guide 2024 (PUB-014) vs Design Guide Oct 2025 vs WS-001 May 2026 | datasheet/NFV = licensed sizing, Design Guide = recommended range; quote both; hardware pages carry no throughput | KG-063 |
+| App Acceleration floor 6.4.1 vs 6.4.2/6.5.2 | 6.4.1 release notes (PUB-011) vs admin guide chapter | present both until the chapter is re-read | KG-142 |
 | Media SLA jitter 40 vs 75 ms | admin guide p.505 / Design Guide vs admin guide p.510 / WS-001 | state both; prefer the policy screen on the tenant | KG-088, KG-127 |
 | Best Path Selection floor 6.4.2 vs 6.5.1 | public 6.4.2 notes vs deck | 6.4.2 (public notes) with note on the deck | KG-087 (PARTIAL) |
-| Branch Security first release 6.5.1-I vs 6.5.3-I | admin guide vs WS-001 playbooks | official 6.5.1-I, internal recommends 6.5.3-I | KG-094 |
+| Branch Security first release 6.5.1-I vs 6.5.3-I | admin guide p.570 vs 6.8 release notes (PUB-008) and WS-001 | two official sources disagree; recommend 6.5.3-I (newer release note) | KG-094 |
 | TACACS+ vs local precedence | admin guide p.363 vs p.365 | present both; recommend testing | KG-096 |
 | Path affinity options Strict/None vs Required/Required Strict | admin guide screen vs WS-001 | official two options; internal three noted | KG-084 |
 | Loopback maximum 4 vs 12 | admin guide L2 vs L3 sections | state both with context | KG-073 |
@@ -92,7 +94,7 @@ Date: 2026-10-08. Source: `04_KNOWLEDGE_GAPS.md` KG-001..141 after Phases 2–3.
 
 ## F. Closed or noted since inventory (for the record)
 
-CLOSED: KG-020, KG-021 (extractions), KG-030 (Azure copies identical), KG-040 (TSG definition), KG-042 (negative routing), KG-066 (device roles, TACACS+), KG-075 (metered LTE recipe), KG-101 (PQC shipped 6.8.1). PARTIAL: KG-001, KG-009, KG-023, KG-024, KG-071, KG-077, KG-079, KG-086, KG-087. NOTED (process rules, no action): KG-032, KG-033, KG-034, KG-035, KG-041, KG-050.
+CLOSED: KG-020, KG-021 (extractions), KG-030 (Azure copies identical), KG-040 (TSG definition), KG-042 (negative routing), KG-051 (skill name), KG-066 (device roles, TACACS+), KG-075 (metered LTE recipe), KG-081 (VRF floors), KG-101 (PQC shipped 6.8.1, details cached), KG-116 (no 6.6 considerations page), KG-133 (VRF over standard VPN / service-link multiplexing). PARTIAL: KG-001, KG-003, KG-004/046, KG-009, KG-023, KG-024, KG-065, KG-071, KG-077, KG-079, KG-086, KG-087, KG-099, KG-103, KG-115, KG-136. New 2026-10-08 (round 2): KG-142 (CONFLICTED), KG-143, KG-144. NOTED (process rules, no action): KG-032, KG-033, KG-034, KG-035, KG-041, KG-050.
 
 ## G. Suggested order of resolution
 

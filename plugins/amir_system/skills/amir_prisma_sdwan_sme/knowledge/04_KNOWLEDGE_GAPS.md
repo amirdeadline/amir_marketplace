@@ -79,7 +79,7 @@ Imported KB gap IDs (`GAP-nnnnnn`) and terminology issues (`TERM-nnnn`) are note
 | KG-023, KG-024 | PARTIAL: original PDFs accessible; figures can be inspected on demand from the PDFs. WS-001 base64 images still need rendering. |
 | KG-040 | RESEARCHING: WS-046 is the official Common Services document the TSG question needed. |
 | KG-050 | NEW: WS-033 deck (Feb 2026) is confidential and includes forward-looking statements (disclaimer on slide 2). Roadmap items must be labelled UNVERIFIED and never presented as shipped. |
-| KG-051 | NEW: skill folder naming for the amir marketplace (`prisma_sdwan_sme` vs `amir_prisma_sdwan_sme`) and its relation to the existing `amir_prisma_sdwan` skill: user decision in Phase 7. |
+| KG-051 | NEW: skill folder naming for the amir marketplace (`prisma_sdwan_sme` vs `amir_prisma_sdwan_sme`) and its relation to the existing `amir_prisma_sdwan` skill: user decision in Phase 7. **CLOSED 2026-10-08**: folder `amir_prisma_sdwan_sme` (plugin snake_case convention); curated layer above `amir_prisma_sdwan`, reuses its `kbq.py` by reference. |
 
 ## G. Updates after batches B1–B3 (2026-10-08)
 
@@ -193,4 +193,27 @@ Gap IDs below are the ones cited in the notes' "Open questions" sections (KG-069
 | KG-140 | S07 / 03-app/04 | Official statement of the default QoS rule class (Bronze) and whether transfer type alone changes class assignment. | read | OPEN |
 | KG-141 | S12 / 07-ops/01 | Official description of `DEVICESW_GENERAL_PROCESSRESTART` sub-reasons / process names in incident text. | D2 | OPEN |
 
-Next free ID: **KG-142**.
+## K. Updates after the public fetches (2026-10-08, D2 + Live Community allowed)
+
+| ID | Update | Status |
+|---|---|---|
+| KG-001 | 6.6.1 and 6.8.1 feature pages and the 6.8 considerations page cached as text (PUB-008/009/010); addressed-issues pages not cached. | PARTIAL (features/considerations VERIFIED) |
+| KG-003 | Public hardware-reference pages exist for ION 1000, 3000, 7000, 9000 (search results; not cached). Compatibility matrix (PUB-007) gives the full model list incl. ION 1200-C5G-EXP, 3200H(-C5G-WW), 7116V, 7132V. | PARTIAL |
+| KG-004 / KG-046 | Official "First Look" page (PUB-013, 2026-10-06): top-level navigation Command Center, Insights, Reports, Incidents, Log Viewer, Configuration, System Settings; System Settings sub-items listed. Live Community preview (PUB-002): Insights = Monitor + Dashboards, Configuration = Manage + Workflows. Prisma SD-WAN sub-labels still unverified. | PARTIAL (top level VERIFIED) |
+| KG-063 | Hardware-reference pages for 3200/5200/9200/1200-S carry no throughput (PUB-012). The KVM/NFV guide (PUB-014, 2024) states 3102v 100 / 3104v 200 / 3108v 350 / 7108v 500 Mbps, matching the datasheet; the Oct 2025 Design Guide values (700/1,100/1,800/3,000 Mbps) remain the outlier. Rule: datasheet/NFV figures = licensed sizing; Design Guide = "recommended range"; always both sources. ION 5200/9200: datasheet vs Design Guide only. | CONFLICTED (documented) |
+| KG-065 | Community thread (PUB-001): "PA does not publish a recommended release" (user, 2023-11); account team named 6.1.5-b1 then; Live Community FAQ "Prisma SD-WAN Software Release Guidance" (2024-03) needs sign-in (KG-144). Feb 2026 feature "ION End-of-Life Notifications" links SCM alerts to "Release Guidance and End-of-Life Summary" (search snippet; page not retrieved). | PARTIAL |
+| KG-077 | 6.8.1 release notes (PUB-008/009) confirm hop-count-based forwarding for BGW mode and the existence of Branch Gateway overlay prefix filters. Metric 0/30 and Anynet semantics still internal. | PARTIAL |
+| KG-081 | CLOSED by PUB-011: VRF support for Standard VPN/NTP/Syslog/SNMP in 6.4.1; Direct Internet Access for VRF-based segments in 6.4.2. The TSE 6.3.1 limitation list is OBSOLETE from 6.4.x. | CLOSED |
+| KG-094 | 6.8 release notes (PUB-008) say Branch Security is supported "starting with the release 6.5.3-I", agreeing with WS-001 against admin guide p.570 (6.5.1-I). Two official sources disagree; the newer release note wins for recommendations. | CONFLICTED (official vs official; prefer 6.5.3-I) |
+| KG-099 | PUB-011 lists only "SASE Easy Onboarding Enhancements" under 6.4.2; no ION release page names the introduction (controller/SCM feature; admin guide requires ION 5.6.x+). | PARTIAL |
+| KG-101 | Follow-up closed: PQC configuration summary cached (PUB-008): PPK Mandatory/Preferred, up to seven additional key-exchange rounds, ML-KEM-512/768/1024, TLS 1.3 hybrid groups; configured in IPsec profiles for Standard VPN; fabric tunnels unchanged. | CLOSED |
+| KG-103 | Mapping PDF is a sign-in-only attachment (attachment-id 16372); the official First Look page (PUB-013) supplies the top-level mapping instead. | PARTIAL |
+| KG-115 | Compatibility matrix cached as text (PUB-007). EOL summary page not located (reachable from SCM alert links per the Feb 2026 feature note). | PARTIAL |
+| KG-116 | CLOSED: the 6.6 release-notes index has only "Features Introduced" and "Addressed Issues"; no 6.6 upgrade/downgrade considerations page exists (checked 2026-10-08). | CLOSED |
+| KG-133 | CLOSED by PUB-011/010: a Standard VPN can be placed in any VRF from 6.4.1 (path policy steers; route leak when all VRFs share one tunnel); from 6.6.1 "VRF Service Link Multiplexing" lets custom-VRF internet traffic use Global service links to Prisma Access without manual leaks (VNI in connection marks, failover, native-VRF preference). | CLOSED |
+| KG-136 | 6.8.1 hop-count forwarding for BGW mode is official (PUB-008); maximum BGWs per domain still undocumented. | PARTIAL |
+| KG-142 | NEW, CONFLICTED: App Acceleration floor. 6.4.1 release notes (PUB-011) list "App Acceleration for SaaS and direct internet applications" under 6.4.1; note 03-application-traffic/07 (admin guide) records network optimisation from 6.4.2 and SaaS acceleration from 6.5.2. Re-read the App Acceleration chapter. | CONFLICTED |
+| KG-143 | NEW: 6.8.1 "Coffeeshop" policies (auto-learned Prisma Access Mobile User / Explicit Proxy gateway prefixes; "Default Path Coffeeshop Simple Stack Policy Set" with two protected rules; RN-HP tenants) covered only by an addendum in 03-application-traffic/02; admin-guide chapter to read. | OPEN |
+| KG-144 | NEW (user decision A8): Live Community FAQ "Prisma SD-WAN Software Release Guidance" (ba-p/570090) and the Nav 3.0 mapping PDF need a Palo Alto Networks sign-in. The project cannot sign in; the user may download them and drop copies into `inventory/public/`. | OPEN |
+
+Next free ID: **KG-145**.

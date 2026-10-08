@@ -32,3 +32,7 @@ Branch Security adds PAN-OS style threat inspection to the ION itself: Anti-Spyw
 
 - KG-094: which release first supports Branch Security (6.5.1-I vs 6.5.3-I) and whether "-I" images are a distinct image train; the extracted 6.5 release notes contain no "branch security" entry; check public docs under D2.
 - KG-095: platform support and throughput impact of Branch Security per ION model (not in the guide).
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- The 6.8 release notes (PUB-008, VERIFIED) state that Branch Security "requires a subscription license and is supported starting with the release 6.5.3-I", and that SLS logging needs an SLS licence. This agrees with WS-001 and contradicts admin guide p.570 (6.5.1-I). Recommend 6.5.3-I as the floor; record the admin-guide value as the older official statement (KG-094).

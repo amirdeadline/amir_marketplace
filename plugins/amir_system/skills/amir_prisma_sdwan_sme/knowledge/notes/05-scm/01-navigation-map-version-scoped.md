@@ -68,3 +68,8 @@ Observed variance (WS-024/WS-030, 2026-09-12): the Insights group holding the SD
 - KG-046 (existing): keep both generations date-stamped; close only after a live click-test (D4).
 - KG-103: the "SCM Nav 3.0 UI Mapping Preview" PDF (Live Community) is referenced but not stored in the KB; fetch under D2 so the before/after mapping is first-hand.
 - KG-104: exact sub-labels under `Configuration > Prisma SD-WAN > Policies` and `> Resources` in the current SCM (WS-030 marks them "confirm").
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- **Official top-level navigation (PUB-013 "First Look at Strata Cloud Manager", updated 2026-10-06, VERIFIED):** Command Center, Insights, Reports, Incidents, Log Viewer, Configuration, System Settings, plus the navigation search bar ("find specific features within Insights, Configuration, and System Settings") and Strata Visions task filters. System Settings sub-items: Identity & Access Management, Audit Logs, Tenants, Trusted IPs, Device Associations, Device Management, Folder Management, Strata Logging Service, Subscriptions. Insights monitors, among others, Applications, Users, Branch Sites, Data Centers, Prisma SD-WAN, Assets.
+- **Vendor preview (PUB-002, Live Community, posted 2025-06-06, edited 2025-08-18, rank 9):** Insights = former Monitor + Dashboards; Configuration = former Manage + Workflows; Help/Announcements/Favorites unchanged; attachment "SCM Nav 3.0 UI Mapping Preview.pdf" (sign-in only, KG-144); staff reply 2025-09-12 "changes are coming in the next coming weeks". "Nav 3.0" is the preview file name, not an official product term. Prisma SD-WAN sub-labels under Insights and Configuration are still unverified (KG-104).

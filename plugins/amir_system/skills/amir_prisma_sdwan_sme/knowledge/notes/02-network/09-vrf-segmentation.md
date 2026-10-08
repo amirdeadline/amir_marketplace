@@ -36,3 +36,7 @@ A VRF is a separate routing table. Prisma SD-WAN lets you define VRFs once for t
 ## Open questions
 
 - KG-081: which release introduced per-VRF Internet NAT (simplified DIA) and VRF support on edge/classic peers; needed to date the playbook limitations.
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- **Release floors now VERIFIED** (PUB-011, PUB-010, PUB-008): Standard VPN, NTP, Syslog and SNMP inside a VRF from **6.4.1** ("put a standard VPN in any VRF, for example Guest"; path policy steers; a route leak gives basic reachability when all VRFs share one tunnel); **Direct Internet Access for VRF-based segments from 6.4.2**; **VRF Service Link Multiplexing from 6.6.1** (custom-VRF internet traffic over Global service links to Prisma Access without manual leaks; VNI encoded in connection marks for symmetric return; failover between Global service links; native custom-VRF service links preferred); VRF-aware IPFIX and multi-VRF DNS service from 6.6.1; custom-VRF L3 loopbacks (LAN side) from 6.8.1. The TSE 6.3.1 limitation list (standard VPN Global only, per-VRF NAT unsupported) is OBSOLETE from 6.4.x (KG-081 CLOSED; KG-133 CLOSED).

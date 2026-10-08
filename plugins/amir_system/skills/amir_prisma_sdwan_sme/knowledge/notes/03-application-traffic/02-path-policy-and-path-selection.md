@@ -65,3 +65,7 @@ Distinguishes **soft failures** (L3 unreachability, app unreachability, LQM, BFD
 
 - KG-085: official statement of "drop but track and re-evaluate" and of the Best Available Bandwidth algorithm name.
 - KG-086: official text on which failures move existing flows vs only new flows (soft vs hard) in current releases.
+
+## Addendum 2026-10-08 (public pages cached under D2; see 03_SOURCE_CATALOG.md §J)
+
+- **6.8.1 Coffeeshop policies** (PUB-008, VERIFIED): the controller learns Prisma Access Mobile User and Explicit Proxy gateway IP addresses and keeps read-only, dynamically updated prefix lists; for tenants with Remote Network High Performance it creates a "Default Path Coffeeshop Simple Stack Policy Set" with two protected rules sending that traffic directly to the internet, with backup and L3 failure paths synchronised to the default rule; activate by attaching the set to the active path stack and enabling the rules. Replaces hand-maintained static routes/path rules for GlobalProtect-to-Prisma-Access traffic from branches (KG-143 for the admin-guide chapter).

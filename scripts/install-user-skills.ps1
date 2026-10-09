@@ -4,7 +4,7 @@
 #   powershell -File scripts\install-user-skills.ps1 -Verify          # report only
 #   powershell -File scripts\install-user-skills.ps1 -Skills amir_critical,amir_handoff
 param(
-  [string[]]$Skills = @("amir_prisma_sdwan", "amir_prisma_sdwan_sme", "amir_official_doc",
+  [string[]]$Skills = @("amir_prisma_sdwan", "amir_prisma_sdwan_sme", "amir_prisma_sdwan_training", "amir_official_doc",
                       "amir_md_artifact", "amir_md_to_words"),
   [switch]$Verify
 )

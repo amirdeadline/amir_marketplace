@@ -80,6 +80,10 @@ routes, notes, scenarios, terms, gaps and sources without loading the corpus; `s
 refreshes `knowledge/` from the research workspace and writes a SHA-256 manifest. Same junction install as
 the pair above (`scripts\install-user-skills.ps1`); Python-only automation examples. See its README.
 
+### Prisma SD-WAN training architect
+
+`amir_prisma_sdwan_training` designs Prisma SD-WAN curricula (Basic five-day course through advanced SME path) on the `amir_prisma_sdwan_sme` knowledge layer, maps exercises to the documented Prisma SASE lab with READY / PARTIAL / MISSING / UNVERIFIED statuses, validates schedules with `scripts/check_schedule.py`, and stops for approval after the curriculum structure. Same junction install. See its README.
+
 ## MCP servers
 
 - **asana** — local Python FastMCP server (17 tools), launched via

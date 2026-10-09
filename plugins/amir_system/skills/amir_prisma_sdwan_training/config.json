@@ -1,0 +1,7 @@
+{
+  "sme_skill_dir": "",
+  "lab_root": "E:\\PC3_Shared\\Palo\\COE\\Prisma_SASE_LAB",
+  "kb_root": "E:\\PC3_Shared\\Palo\\COE\\Prisma_SASE_KB",
+  "default_output_root": "E:\\PC3_Shared\\Palo\\COE\\prisma-sdwan-training",
+  "_comment": "sme_skill_dir empty = use ../amir_prisma_sdwan_sme or the user-level junction. lab_root is read-only; never read .env, secrets/ or credential columns. default_output_root is where curriculum folders are created unless the user names another place."
+}

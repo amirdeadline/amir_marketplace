@@ -1,0 +1,7 @@
+{
+  "name": "Amir_Workspace_MCP",
+  "version": "0.1.0",
+  "description": "Personal-token MCP servers for Confluence, Jira, and Asana (palo env). Installers for Claude Code, Cursor, and Codex.",
+  "author": { "name": "Amir" },
+  "keywords": ["mcp", "confluence", "jira", "asana", "palo", "workspace", "cursor", "codex"]
+}

@@ -50,6 +50,101 @@ def el(tag, **attrs):
     return e
 
 
+# ---------------------------------------------------------------- numbering
+# Every paragraph in Word's built-in "List Number" style shares ONE numbering
+# definition, so a document's second ordered list carries on from where the
+# first stopped: 1,2,3 then 4,5,6 instead of 1,2,3 again. The style alone
+# cannot fix that. Each list needs its own numbering instance, which is what
+# these build.
+_NUM = {"abstract": None}
+
+
+def _numbering_root(doc):
+    try:
+        return doc.part.numbering_part.element
+    except Exception:
+        return None
+
+
+def _decimal_abstract(doc):
+    """One abstract definition for ordered lists: 1. then a. then i."""
+    if _NUM["abstract"] is not None:
+        return _NUM["abstract"]
+    root = _numbering_root(doc)
+    if root is None:
+        return None
+    used = []
+    for a in root.findall(qn("w:abstractNum")):
+        try:
+            used.append(int(a.get(qn("w:abstractNumId"))))
+        except (TypeError, ValueError):
+            pass
+    aid = (max(used) + 1) if used else 0
+    an = el("w:abstractNum", **{"w:abstractNumId": aid})
+    fmts = ["decimal", "lowerLetter", "lowerRoman"]
+    texts = ["%1.", "%2.", "%3."]
+    for lvl in range(3):
+        lv = el("w:lvl", **{"w:ilvl": lvl})
+        lv.append(el("w:start", **{"w:val": 1}))
+        lv.append(el("w:numFmt", **{"w:val": fmts[lvl]}))
+        lv.append(el("w:lvlText", **{"w:val": texts[lvl]}))
+        lv.append(el("w:lvlJc", **{"w:val": "left"}))
+        pPr = OxmlElement("w:pPr")
+        pPr.append(el("w:ind", **{"w:left": 360 + 360 * lvl, "w:hanging": 360}))
+        lv.append(pPr)
+        an.append(lv)
+    # the schema wants every abstractNum before the first num
+    first = root.find(qn("w:num"))
+    if first is not None:
+        first.addprevious(an)
+    else:
+        root.append(an)
+    _NUM["abstract"] = aid
+    return aid
+
+
+def new_list_num(doc):
+    """A fresh numbering instance, so the list that uses it restarts at 1."""
+    root = _numbering_root(doc)
+    aid = _decimal_abstract(doc)
+    if root is None or aid is None:
+        return None
+    used = []
+    for n in root.findall(qn("w:num")):
+        try:
+            used.append(int(n.get(qn("w:numId"))))
+        except (TypeError, ValueError):
+            pass
+    nid = (max(used) + 1) if used else 1
+    num = el("w:num", **{"w:numId": nid})
+    num.append(el("w:abstractNumId", **{"w:val": aid}))
+    # startOverride is what actually forces the restart for this instance
+    for lvl in range(3):
+        ov = el("w:lvlOverride", **{"w:ilvl": lvl})
+        ov.append(el("w:startOverride", **{"w:val": 1}))
+        num.append(ov)
+    root.append(num)
+    return nid
+
+
+def set_num(par, num_id, ilvl):
+    """Point one paragraph at a numbering instance and level."""
+    if num_id is None:
+        return
+    pPr = par._p.get_or_add_pPr()
+    try:
+        npr = pPr.get_or_add_numPr()
+        npr.get_or_add_ilvl().val = ilvl
+        npr.get_or_add_numId().val = num_id
+    except Exception:
+        for old in pPr.findall(qn("w:numPr")):
+            pPr.remove(old)
+        npr = OxmlElement("w:numPr")
+        npr.append(el("w:ilvl", **{"w:val": ilvl}))
+        npr.append(el("w:numId", **{"w:val": num_id}))
+        pPr.append(npr)
+
+
 def shade(cell, fill):
     cell._tc.get_or_add_tcPr().append(el("w:shd", **{"w:val": "clear",
                                                      "w:color": "auto",
@@ -137,11 +232,21 @@ class Comments(object):
         self.author = author
         self.items = []
 
-    def add(self, par, text):
+    def add(self, par, text, author=None, reply_to=None):
+        """Anchor a comment to a paragraph.
+
+        author overrides the document-wide one, so a review thread can carry the
+        reviewer's name on the finding and the writer's on the answer.  reply_to
+        is the id of the comment this one answers; Word then shows it nested
+        under that comment rather than as a separate note on the same text.
+        """
         if par is None:
-            return
+            return None
         cid = len(self.items) + 1
-        self.items.append((cid, text))
+        self.items.append({"cid": cid, "text": text,
+                           "author": author or self.author,
+                           "paraId": 0x10000000 + cid,
+                           "parent": reply_to})
         pPr = par._p.find(qn("w:pPr"))
         at = 1 if pPr is not None else 0
         par._p.insert(at, el("w:commentRangeStart", **{"w:id": cid}))
@@ -149,23 +254,57 @@ class Comments(object):
         r = OxmlElement("w:r")
         r.append(el("w:commentReference", **{"w:id": cid}))
         par._p.append(r)
+        return cid
+
+    @staticmethod
+    def _initials(name):
+        parts = [p for p in re.split(r"[\s/_-]+", str(name)) if p]
+        if len(parts) >= 2:
+            return (parts[0][:1] + parts[1][:1]).upper()
+        return str(name)[:2].upper()
 
     def xml(self):
         ns = ('xmlns:w="%s" xmlns:r="http://schemas.openxmlformats.org/'
-              'officeDocument/2006/relationships"' % W)
+              'officeDocument/2006/relationships" '
+              'xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" '
+              'xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" '
+              'mc:Ignorable="w14"' % W)
         when = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         out = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
                "<w:comments %s>" % ns]
-        for cid, text in self.items:
+        for it in self.items:
+            lines = str(it["text"]).split("\n")
             body = ""
-            for i, line in enumerate(str(text).split("\n")):
-                body += ("<w:p><w:r>" +
+            for i, line in enumerate(lines):
+                # the last paragraph carries the paraId that identifies the
+                # comment to Word's threading
+                pid = (' w14:paraId="%08X"' % it["paraId"]) if i == len(lines) - 1 else ""
+                body += ("<w:p%s><w:r>" % pid +
                          ('<w:rPr><w:b/></w:rPr>' if i == 0 else "") +
                          '<w:t xml:space="preserve">' + esc(line) +
                          "</w:t></w:r></w:p>")
             out.append('<w:comment w:id="%d" w:author="%s" w:initials="%s" w:date="%s">%s</w:comment>'
-                       % (cid, esc(self.author), esc(self.author[:2].upper()), when, body))
+                       % (it["cid"], esc(it["author"]),
+                          esc(self._initials(it["author"])), when, body))
         out.append("</w:comments>")
+        return "".join(out)
+
+    def extended_xml(self):
+        """The part that makes a comment a reply rather than a second note."""
+        ns = ('xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" '
+              'xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" '
+              'xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" '
+              'mc:Ignorable="w14 w15"')
+        byid = dict((it["cid"], it) for it in self.items)
+        out = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+               "<w15:commentsEx %s>" % ns]
+        for it in self.items:
+            parent = ""
+            if it["parent"] and it["parent"] in byid:
+                parent = ' w15:paraIdParent="%08X"' % byid[it["parent"]]["paraId"]
+            out.append('<w15:commentEx w15:paraId="%08X"%s w15:done="0"/>'
+                       % (it["paraId"], parent))
+        out.append("</w15:commentsEx>")
         return "".join(out)
 
     def inject(self, path):
@@ -176,9 +315,13 @@ class Comments(object):
         zin = zipfile.ZipFile(path, "r")
         zout = zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED)
         REL = ('<Relationship Id="rIdComments" Type="http://schemas.openxmlformats.org/'
-               'officeDocument/2006/relationships/comments" Target="comments.xml"/>')
+               'officeDocument/2006/relationships/comments" Target="comments.xml"/>'
+               '<Relationship Id="rIdCommentsEx" Type="http://schemas.microsoft.com/'
+               'office/2011/relationships/commentsExtended" Target="commentsExtended.xml"/>')
         CT = ('<Override PartName="/word/comments.xml" ContentType="application/'
-              'vnd.openxmlformats-officedocument.wordprocessingml.comments+xml"/>')
+              'vnd.openxmlformats-officedocument.wordprocessingml.comments+xml"/>'
+              '<Override PartName="/word/commentsExtended.xml" ContentType="application/'
+              'vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml"/>')
         for item in zin.infolist():
             data = zin.read(item.filename)
             if item.filename == "[Content_Types].xml":
@@ -193,6 +336,7 @@ class Comments(object):
                 data = s.encode("utf-8")
             zout.writestr(item, data)
         zout.writestr("word/comments.xml", self.xml().encode("utf-8"))
+        zout.writestr("word/commentsExtended.xml", self.extended_xml().encode("utf-8"))
         zin.close()
         zout.close()
         shutil.move(tmp, path)
@@ -435,7 +579,7 @@ def contents(doc):
     r.font.size = Pt(18)
     hrule(p, "D9D6CF", 6)
     p = doc.add_paragraph()
-    add_field(p, r'TOC \o "1-3" \h \z \u',
+    add_field(p, r'TOC \o "1-4" \h \z \u',
               "Right-click here and choose Update Field to build the contents.")
     doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
 
@@ -506,6 +650,24 @@ def prepare(md, clean):
 
     md = re.sub(r"_*\**<<Screenshot:\s*([\s\S]*?)>>\**_*", single("SCREENSHOT"), md)
     md = re.sub(r"_*\**<<NOTE:\s*([\s\S]*?)>>\**_*", single("NOTE"), md)
+
+    # A review thread: <<Review|Name|finding>> followed by <<Reply|Name|answer>>.
+    # The reply is nested under the finding it answers, so Word shows one thread
+    # rather than two notes on the same text.
+    def authored(kind):
+        def f(mo):
+            removed[0] += 1
+            if clean:
+                return "\n\n"
+            # \x04 stands in for a line break so the token stays on one line;
+            # the main loop turns it back, and each line becomes its own
+            # paragraph in the comment, which keeps a long finding readable
+            return "\n\n@@%s|%s|%s@@\n\n" % (kind, mo.group(1).strip(),
+                                             mo.group(2).strip().replace("\n", "\x04"))
+        return f
+
+    md = re.sub(r"<<Review\|([^|>]*)\|([\s\S]*?)>>", authored("MKA"), md)
+    md = re.sub(r"<<Reply\|([^|>]*)\|([\s\S]*?)>>", authored("MKR"), md)
     md = re.sub(r"\n{3,}", "\n\n", md)
     return md, removed[0]
 
@@ -599,6 +761,10 @@ def convert(md_path, out_path, title=None, product="Prisma SD-WAN",
     stats = {"headings": 0, "tables": 0, "lists": 0, "paras": 0,
              "comments": 0, "removed": removed}
     bid = [1000]
+    last_review = [None]          # the finding a following reply is nested under
+    # the ordered list currently in progress; cleared at every heading so a
+    # new section never carries on the previous section's numbering
+    ord_state = {"num": None}
 
     lines = src.split("\n")
     i, n = 0, len(lines)
@@ -615,6 +781,21 @@ def convert(md_path, out_path, title=None, product="Prisma SD-WAN",
         mo = re.match(r"^@@MK\|([^|]+)\|(.*)@@$", s)
         if mo:
             cmts.add(w.last_par, "%s\n%s" % (mo.group(1), mo.group(2)))
+            i += 1
+            continue
+
+        # a review finding, and the answer that is nested under it
+        mo = re.match(r"^@@MKA\|([^|]*)\|(.*)@@$", s)
+        if mo:
+            last_review[0] = cmts.add(w.last_par, mo.group(2).replace("\x04", "\n"),
+                                      author=mo.group(1))
+            i += 1
+            continue
+
+        mo = re.match(r"^@@MKR\|([^|]*)\|(.*)@@$", s)
+        if mo:
+            cmts.add(w.last_par, mo.group(2).replace("\x04", "\n"),
+                     author=mo.group(1), reply_to=last_review[0])
             i += 1
             continue
 
@@ -635,6 +816,7 @@ def convert(md_path, out_path, title=None, product="Prisma SD-WAN",
                     bid[0] += 1
             w.last_par = p
             stats["headings"] += 1
+            ord_state["num"] = None      # a heading ends any list in progress
             i += 1
             continue
 
@@ -729,6 +911,18 @@ def convert(md_path, out_path, title=None, product="Prisma SD-WAN",
             except KeyError:
                 p = doc.add_paragraph(style="List Bullet")
             p.paragraph_format.space_after = Pt(2)
+            if ordered:
+                # A list starts afresh when the marker says 1, or when nothing
+                # has opened one since the last heading. Everything else
+                # continues the list in progress, so an ordered item separated
+                # from its neighbours by sub-bullets or a paragraph still
+                # counts on correctly.
+                first = re.match(r"^(\d+)", mo.group(2))
+                starts = (first and first.group(1) == "1" and depth == 0)
+                if ord_state["num"] is None or starts:
+                    ord_state["num"] = new_list_num(doc)
+                    stats["lists_restarted"] = stats.get("lists_restarted", 0) + 1
+                set_num(p, ord_state["num"], depth)
             w.inline(p, mo.group(3), depth=depth)
             w.last_par = p
             stats["lists"] += 1

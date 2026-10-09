@@ -65,6 +65,37 @@ inside a table cell is attached to that cell. The body text is left clean in bot
 
 Real images and their `Figure:` captions are content, not markers. They stay in both files.
 
+### Review threads, with a named author and a reply
+
+For a review pass, where a finding needs an answer underneath it rather than a second note beside it:
+
+```
+<<Review|Reviewer name|[MAJOR] What is wrong
+Any number of lines. Each becomes a paragraph in the comment.>>
+
+<<Reply|Writer|The answer, nested under the finding above.>>
+```
+
+- `<<Review|author|text>>` is a comment by that author. `<<Reply|author|text>>` is nested **under
+  the preceding `<<Review>>`**, so Word shows one thread you can resolve as a unit, rather than two
+  comments sitting on the same words.
+- Line breaks inside either marker survive into the comment, so a long finding keeps its shape.
+- The author name is per marker and overrides `--author`.
+- The text may not contain `|`, `<<` or `>>` — substitute `│`, `«` and `»`.
+- Both are dropped by `--clean`, like every other marker.
+
+Threading is written through `word/commentsExtended.xml`, which is the part Word needs in order to
+treat one comment as a reply to another.
+
+__Two places a marker must never be inserted__, or it will print as body text or re-pair the wrong
+halves:
+
+- inside a fenced block — its contents are written out verbatim
+- between the two halves of an existing `<<Comment>> … <<Comment>>` pair — the pair is matched
+  non-greedily, so a marker in the middle orphans one half
+
+Insert after the closing fence or the closing `<<Comment>>` instead.
+
 ## 4. Cross-references become links
 
 Every numbered heading gets a bookmark. The rules, in order:

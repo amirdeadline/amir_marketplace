@@ -1,0 +1,27 @@
+{
+  "$comment": "Local stdio MCP servers using personal API tokens (typically from the palo workspace .env). Install with workspace_mcp.py. Names are distinct from litellm-* gateway entries.",
+  "palo_env_file": "virtual_envs/palo/.env",
+  "servers": {
+    "confluence": {
+      "local": "palo-confluence",
+      "risk": "read",
+      "summary": "Search and read Confluence (Server/DC PAT via CONFLUENCE_API_TOKEN)",
+      "required_env": ["CONFLUENCE_API_TOKEN"],
+      "optional_env": ["CONFLUENCE_BASE_URL"]
+    },
+    "jira": {
+      "local": "palo-jira",
+      "risk": "read",
+      "summary": "JQL search and read Jira issues (Server/DC PAT via JIRA_TOKEN)",
+      "required_env": ["JIRA_TOKEN"],
+      "optional_env": ["JIRA_BASE_URL"]
+    },
+    "asana": {
+      "local": "palo-asana",
+      "risk": "write",
+      "summary": "Asana workspaces, tasks, projects (PAT via ASANA_TOKEN)",
+      "required_env": ["ASANA_TOKEN"],
+      "optional_env": ["ASANA_ACCESS_TOKEN", "ASANA_BASE_URL"]
+    }
+  }
+}

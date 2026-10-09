@@ -347,7 +347,7 @@ body.cpane .cp{display:block}
        aria-label="Resize the comments pane" title="Drag to resize. Double-click to reset."></div>
   <aside class="cp" id="cp" aria-label="Comments">
     <div class="cphead">
-      <h4>Comments</h4>
+      <h4>Comments <span id="cpCount" style="font-weight:400;color:var(--fg-dim)"></span></h4>
       <select class="cpfilter" id="cpFilter">
         <option value="open">Open</option>
         <option value="all">All</option>
@@ -394,6 +394,7 @@ body.cpane .cp{display:block}
   var sections={}, order=[];
   var DB=null, DBSTATE="pending", ME=null, CANWRITE=null, SAMPLE=null;
   var edits={}, threads={}, messages={}, colw={};
+  var CPFAIL=null;   // why the comment store could not be read, if it could not
   var pendingMermaid=[], editing=false, openThread=null;
   var srcMd=null, wiredGlobals=false;
 
@@ -1022,9 +1023,27 @@ body.cpane .cp{display:block}
       $("#newCancel").onclick=function(){ openThread=null; drawPane(); };
     }
     var list=threadList();
+    var hd=$("#cpCount");
+    if(hd){
+      var tot=Object.keys(threads).length;
+      hd.textContent=tot?("("+list.length+" of "+tot+")"):"";
+    }
     if(!list.length&&!newDraft){
-      host.innerHTML='<div class="empty">No comments yet. Select any text in the document and '+
-        'choose <b>Comment</b>.</div>';
+      if(CPFAIL){
+        host.innerHTML='<div class="empty"><b>Comments could not be loaded.</b><br>'+
+          esc(CPFAIL)+'<br><br>The comments are stored with the page, not in it, so this '+
+          'is a loading problem and not an empty document. Reload, and if it persists open '+
+          'the artifact signed in with access to it.</div>';
+      } else if(DBSTATE!=="ready"){
+        host.innerHTML='<div class="empty">This view cannot load comments — it is '+
+          'read-only. Open the artifact signed in with access to it.</div>';
+      } else if(Object.keys(threads).length){
+        host.innerHTML='<div class="empty">No comments match this filter. '+
+          'Choose <b>All</b> to see every comment.</div>';
+      } else {
+        host.innerHTML='<div class="empty">No comments yet. Select any text in the document and '+
+          'choose <b>Comment</b>.</div>';
+      }
       return;
     }
     list.forEach(function(t){
@@ -1190,12 +1209,20 @@ body.cpane .cp{display:block}
       changed.forEach(function(k){ if(sections[k]) applyEdit(sections[k]); });
       refreshStats(); refreshOutlineFlags(); highlight();
     },function(){});
-    DB.collection("threads").onSnapshot(function(s){
+    /* An explicit limit, because a collection subscription left unbounded is
+       served a default page: a document with more comments than that page
+       would quietly show only some of them, or none. */
+    DB.collection("threads").limit(1000).onSnapshot(function(s){
       threads={};
       s.docs.forEach(function(d){ var v=d.data()||{}; v.id=d.id; threads[d.id]=v; });
+      CPFAIL=null;
       drawPane(); refreshStats(); refreshOutlineFlags(); highlight();
-    },function(){});
-    DB.collection("messages").onSnapshot(function(s){
+    },function(e){
+      /* Never let a failed read look like an empty document */
+      CPFAIL=(e&&e.message)||(e&&e.code)||"the comment store did not answer";
+      drawPane();
+    });
+    DB.collection("messages").limit(1000).onSnapshot(function(s){
       messages={};
       s.docs.forEach(function(d){
         var v=d.data()||{};

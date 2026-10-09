@@ -167,6 +167,33 @@
         "cursor"
       ],
       "source": "./plugins/Amir_LiteLLM"
+    },
+    {
+      "name": "Amir_Workspace_MCP",
+      "description": "Personal-token MCP for Confluence, Jira, and Asana (palo workspace env). Local stdio servers + installers for Claude Code, Cursor, and Codex.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Amir"
+      },
+      "category": "integrations",
+      "tags": [
+        "mcp",
+        "confluence",
+        "jira",
+        "asana",
+        "palo",
+        "cursor",
+        "codex"
+      ],
+      "keywords": [
+        "mcp",
+        "confluence",
+        "jira",
+        "asana",
+        "palo",
+        "workspace"
+      ],
+      "source": "./plugins/Amir_Workspace_MCP"
     }
   ]
 }

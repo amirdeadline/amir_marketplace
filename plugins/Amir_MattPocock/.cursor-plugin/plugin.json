@@ -1,0 +1,7 @@
+{
+  "name": "Amir_MattPocock",
+  "version": "1.0.0",
+  "description": "Project-local Matt Pocock skill installers (/amir_install_mattpocock, /amir_install_mattpocock_all) for Cursor, Claude Code, Codex, and Hermes via the Vercel skills CLI.",
+  "author": { "name": "Amir" },
+  "keywords": ["mattpocock", "skills", "installer", "cursor", "codex", "hermes", "claude-code"]
+}

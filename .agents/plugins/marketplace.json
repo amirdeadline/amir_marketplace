@@ -45,6 +45,20 @@
       "category": "integrations",
       "description": "Palo Alto LiteLLM MCP gateway toolkit for Claude Code and Cursor: litellm_install_<server> installers (Confluence, Jira, Asana, GitLab, Cortex, BigQuery, ...), gateway status, setup, and tool usage docs.",
       "version": "0.1.0"
+    },
+    {
+      "name": "Amir_MattPocock",
+      "source": {
+        "source": "local",
+        "path": "./plugins/Amir_MattPocock"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "integrations",
+      "description": "Project-local Matt Pocock skill installers (amir_install_mattpocock, amir_install_mattpocock_all) for Cursor, Claude Code, Codex, and Hermes.",
+      "version": "1.0.0"
     }
   ]
 }

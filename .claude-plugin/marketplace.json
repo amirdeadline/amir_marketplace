@@ -12,7 +12,7 @@
       "name": "amir_system",
       "source": "./plugins/amir_system",
       "description": "User-scope core: project lifecycle (create/onboard/orchestrate/inspect/manage), Graphify wrappers, Asana + Playwright MCP, system rules. Available before any project exists.",
-      "version": "1.1.8",
+      "version": "1.1.9",
       "author": {
         "name": "Amir"
       },
@@ -170,7 +170,7 @@
     },
     {
       "name": "Amir_Workspace_MCP",
-      "description": "Personal-token MCP for Confluence, Jira, and Asana (palo workspace env). Local stdio servers + installers for Claude Code, Cursor, and Codex.",
+      "description": "Personal-token MCP for Confluence, Jira, Asana, and Slack (palo workspace env). Local stdio servers + installers for Claude Code, Cursor, and Codex.",
       "version": "0.1.0",
       "author": {
         "name": "Amir"
@@ -181,6 +181,7 @@
         "confluence",
         "jira",
         "asana",
+        "slack",
         "palo",
         "cursor",
         "codex"
@@ -190,6 +191,7 @@
         "confluence",
         "jira",
         "asana",
+        "slack",
         "palo",
         "workspace"
       ],

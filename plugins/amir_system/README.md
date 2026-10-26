@@ -52,6 +52,9 @@ and `amir_agent_notification`.
 task on the Cursor AI agent installed on this PC: Composer 2.5 fast by default, any Cursor model via
 `--model`/`--param`; Claude writes the brief, launches `skills/amir_cursor_subagent/scripts/run_cursor_subagent.ps1`
 and verifies the result.
+`amir_project_artifact` (`/amir:amir_project_artifact`, user scope `/amir_project_artifact`) creates one
+private claude.ai tracker artifact per project (Overview, Plan, Tasks, Questions, Mind map, Logs on a shared
+database; task edit, cancel and side chat) and installs `CLAUDE.md` rules plus a Stop hook so every agent keeps it current.
 `/amir:btw` redirects to Cursor native `/btw` or `/side` (does not answer in-session).
 `user_subagents2`, `amir_critical`, `amir_handoff`, `amir_doc_review`,
 `amir_humanized`, `amir-project-cleanup`, and `amir_agent_notification` are also

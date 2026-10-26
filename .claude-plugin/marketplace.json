@@ -12,7 +12,7 @@
       "name": "amir_system",
       "source": "./plugins/amir_system",
       "description": "User-scope core: project lifecycle (create/onboard/orchestrate/inspect/manage), Graphify wrappers, Asana + Playwright MCP, system rules. Available before any project exists.",
-      "version": "1.1.9",
+      "version": "1.1.10",
       "author": {
         "name": "Amir"
       },

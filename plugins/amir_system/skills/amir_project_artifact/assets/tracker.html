@@ -1,0 +1,851 @@
+<title>__PROJECT_TITLE__</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column; sticky tab bar; summary first; dense filterable tables; task drawer on the right. */
+:root {
+  --bg: #f6f8f8;
+  --surface: #ffffff;
+  --sunk: #eef3f2;
+  --fg: #16201f;
+  --muted: #5b6b69;
+  --line: #d9e1e0;
+  --accent: #0c6b66;
+  --accent-soft: #e2efee;
+  --ok: #1d7a3a;
+  --bad: #b3261e;
+  --warn: #9a5b00;
+  --info: #2c5d9e;
+  --shade: rgba(10, 20, 20, .35);
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111716; --surface: #18201f; --sunk: #141b1a; --fg: #e3ebea; --muted: #9aaba8; --line: #2b3735;
+  --accent: #4fb8b0; --accent-soft: #1d2f2d; --ok: #5cc27a; --bad: #f08a80; --warn: #e0a64a; --info: #86aee6;
+  --shade: rgba(0, 0, 0, .55); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111716; --surface: #18201f; --sunk: #141b1a; --fg: #e3ebea; --muted: #9aaba8; --line: #2b3735;
+  --accent: #4fb8b0; --accent-soft: #1d2f2d; --ok: #5cc27a; --bad: #f08a80; --warn: #e0a64a; --info: #86aee6;
+  --shade: rgba(0, 0, 0, .55); color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 14px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
+.wrap { max-width: 1280px; margin: 0 auto }
+header { padding-block: 20px 8px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px }
+h1 { font-size: 20px; font-weight: 600; margin: 0; text-wrap: balance }
+.sub { color: var(--muted); font-size: 13px }
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); display: flex; gap: 4px; border-bottom: 1px solid var(--line); padding-block: 8px 0; overflow-x: auto }
+nav.tabs button { font: inherit; font-weight: 500; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); padding: 8px 12px; cursor: pointer; white-space: nowrap }
+nav.tabs button[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent) }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.count { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-left: 4px }
+section.panel { padding-block: 16px }
+.status-block { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) }
+.status-block > div { padding: 12px 14px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0 }
+.k { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted) }
+.v { font-size: 16px; font-weight: 600; margin-top: 2px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
+.v.small { font-size: 14px; font-weight: 500 }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-top: 16px }
+@media (max-width: 760px) { .grid2 { grid-template-columns: minmax(0, 1fr) } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; min-width: 0 }
+.card h2, .drawer h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; font-weight: 600 }
+.card ul, .card ol { margin: 0; padding-left: 18px }
+.card li { margin: 3px 0 }
+.full { grid-column: 1 / -1 }
+.mt { margin-top: 16px }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px }
+.toolbar input[type=search] { flex: 1 1 220px; min-width: 0 }
+.spacer { flex: 1 1 auto }
+input, select, textarea { font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 6px 8px; min-width: 0 }
+textarea { width: 100%; min-height: 70px; resize: vertical }
+.chips { display: flex; flex-wrap: wrap; gap: 4px }
+.chip { font: inherit; font-size: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 999px; padding: 3px 10px; cursor: pointer }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent) }
+.tablebox { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px }
+table { border-collapse: collapse; width: 100%; font-size: 13px }
+th, td { text-align: left; vertical-align: top; padding: 7px 10px; border-bottom: 1px solid var(--line) }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--surface) }
+td.mono, .mono { font-family: var(--font-mono); font-size: 12px; white-space: nowrap }
+td.wide { min-width: 260px }
+td.mid { min-width: 150px }
+tr:last-child td { border-bottom: 0 }
+tr.click { cursor: pointer }
+tr.click:hover td { background: var(--sunk) }
+tr.cancelled td { color: var(--muted) }
+tr.cancelled td.title { text-decoration: line-through }
+.icon { font-size: 15px; width: 28px; text-align: center }
+.pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap }
+.s-done, .s-answered { color: var(--ok) } .s-failed, .s-blocked { color: var(--bad) }
+.s-progress, .s-follow { color: var(--warn) } .s-not, .s-cancelled { color: var(--muted) }
+.t-decision { color: var(--accent) } .t-finding { color: var(--bad) } .t-change { color: var(--info) } .t-question { color: var(--warn) } .t-action { color: var(--muted) }
+.empty { padding: 20px; color: var(--muted) }
+.btn { font: inherit; font-size: 12px; border: 1px solid var(--accent); color: var(--accent); background: none; border-radius: 4px; padding: 4px 10px; cursor: pointer; white-space: nowrap }
+.btn.primary { background: var(--accent); color: var(--surface) }
+.btn.danger { border-color: var(--bad); color: var(--bad) }
+.btn:disabled { opacity: .5; cursor: default }
+.linkbtn { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-align: left }
+.note { font-size: 12px; color: var(--muted) }
+.banner { margin-top: 12px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--muted); font-size: 13px }
+.pre { white-space: pre-wrap; overflow-wrap: anywhere }
+/* Plan */
+.ms { display: grid; gap: 12px }
+.ms-head { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline }
+.ms-head h2 { font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--fg); margin: 0 }
+.bar { height: 6px; background: var(--sunk); border-radius: 3px; overflow: hidden; margin-block: 8px }
+.bar > span { display: block; height: 100%; background: var(--ok) }
+.ms-tasks { list-style: none; margin: 0; padding: 0 }
+.ms-tasks li { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; border-top: 1px solid var(--line) }
+.ms-tasks li:first-child { border-top: 0 }
+.gantt { display: grid; grid-template-columns: minmax(120px, 220px) minmax(0, 1fr); gap: 6px 10px; align-items: center; min-width: 560px }
+.gtrack { position: relative; height: 18px; background: var(--sunk); border-radius: 3px }
+.gbar { position: absolute; top: 3px; bottom: 3px; border-radius: 3px; background: var(--accent) }
+.gtoday { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--bad) }
+/* Mind map */
+.mapbox { overflow: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; max-height: 75vh }
+.mapbox svg { display: block }
+.mm-edge { fill: none; stroke: var(--line); stroke-width: 1.5 }
+.mm-node rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.2 }
+.mm-node.root rect { fill: var(--accent); stroke: var(--accent) }
+.mm-node.root text { fill: var(--surface); font-weight: 600 }
+.mm-node.branch rect { fill: var(--accent-soft); stroke: var(--accent) }
+.mm-node text { fill: var(--fg); font-family: var(--font-body); font-size: 12px }
+.mm-node .badge { fill: var(--muted); font-size: 11px; font-family: var(--font-mono) }
+.mm-node { cursor: pointer }
+.mm-node:focus-visible rect { stroke: var(--accent); stroke-width: 2.5 }
+.mm-node.st-done rect { stroke: var(--ok) } .mm-node.st-bad rect { stroke: var(--bad) } .mm-node.st-warn rect { stroke: var(--warn) }
+.mm-node.st-muted text { fill: var(--muted) }
+/* Drawer */
+.shade { position: fixed; inset: 0; background: var(--shade); z-index: 20 }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 100%); z-index: 21; background: var(--bg); border-left: 1px solid var(--line); overflow-y: auto;
+  padding-top: max(16px, env(safe-area-inset-top, 0px)); padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  padding-left: 18px; padding-right: max(18px, env(safe-area-inset-right, 0px)); display: grid; gap: 14px; align-content: start }
+.drawer h2 { font-size: 17px; margin: 0; text-wrap: balance }
+.dhead { display: grid; gap: 8px }
+.dactions { display: flex; flex-wrap: wrap; gap: 6px }
+.kv { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 4px 10px; font-size: 13px }
+.kv dt { color: var(--muted) } .kv dd { margin: 0; overflow-wrap: anywhere }
+.form { display: grid; gap: 8px }
+.form label { display: grid; gap: 3px; font-size: 12px; color: var(--muted) }
+.form .row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px }
+.chat { display: grid; gap: 8px }
+.msg { padding: 8px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px }
+.msg.me { background: var(--accent-soft); border-color: var(--accent) }
+.msg .who { display: block; font-size: 11px; color: var(--muted); margin-bottom: 2px }
+.rel { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 13px }
+.rel li { border-top: 1px solid var(--line); padding-top: 6px }
+.rel li:first-child { border-top: 0; padding-top: 0 }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1 id="ptitle">__PROJECT_TITLE__</h1>
+    <span class="sub" id="psub">__PROJECT_SUBTITLE__</span>
+  </header>
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="overview" aria-selected="true">Overview</button>
+    <button role="tab" data-tab="plan" aria-selected="false">Plan<span class="count" id="c-plan"></span></button>
+    <button role="tab" data-tab="tasks" aria-selected="false">Tasks<span class="count" id="c-tasks"></span></button>
+    <button role="tab" data-tab="questions" aria-selected="false">Questions<span class="count" id="c-questions"></span></button>
+    <button role="tab" data-tab="mindmap" aria-selected="false">Mind map</button>
+    <button role="tab" data-tab="logs" aria-selected="false">Logs<span class="count" id="c-logs"></span></button>
+  </nav>
+  <div id="dbnote" class="banner" hidden></div>
+
+  <section class="panel" id="p-overview">
+    <div class="status-block">
+      <div><div class="k">Overall status</div><div class="v" id="sb-overall">Loading</div></div>
+      <div><div class="k">Current stage</div><div class="v small" id="sb-stage">n/a</div></div>
+      <div><div class="k">Last updated</div><div class="v small mono" id="sb-updated">n/a</div></div>
+      <div><div class="k">Tasks done</div><div class="v" id="sb-tasks">0 / 0</div></div>
+      <div><div class="k">Open questions</div><div class="v" id="sb-open">0</div></div>
+      <div><div class="k">Blockers</div><div class="v small" id="sb-blockers">none</div></div>
+    </div>
+    <div class="card mt" id="phasecard" hidden><h2>Process map</h2>
+      <div class="tablebox"><table><thead><tr><th>Phase</th><th>Name</th><th>Status</th><th>What happens</th></tr></thead><tbody id="phases"></tbody></table></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h2>Project summary</h2><ol id="summary"><li class="note">The summary appears here once Claude writes it.</li></ol></div>
+      <div class="card"><h2>What is needed from you</h2><ul id="needed"><li class="note">Nothing listed yet.</li></ul></div>
+      <div class="card full" id="filescard" hidden><h2>Key project files</h2>
+        <div class="tablebox"><table><thead><tr><th>Path</th><th>What it is</th></tr></thead><tbody id="keyfiles"></tbody></table></div>
+      </div>
+      <div class="card full"><h2>Decisions log</h2>
+        <div class="tablebox"><table><thead><tr><th>Date</th><th>Decision</th><th>Why</th></tr></thead><tbody id="decisions"><tr><td colspan="3" class="empty">Decisions are logged here as they are made.</td></tr></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="p-plan" hidden>
+    <div class="card" id="ganttcard"><h2>Timeline</h2><div id="gantt" style="overflow-x:auto"></div></div>
+    <div class="ms mt" id="milestones"><div class="card empty">The plan appears here once Claude writes its milestones.</div></div>
+  </section>
+
+  <section class="panel" id="p-tasks" hidden>
+    <div class="toolbar">
+      <input type="search" id="t-search" placeholder="Search tasks" aria-label="Search tasks">
+      <select id="t-stage" aria-label="Filter by stage"><option value="">All stages</option></select>
+      <button class="btn primary" id="t-new" hidden>New task</button>
+    </div>
+    <div class="toolbar"><div class="chips" id="t-status"></div></div>
+    <div class="tablebox"><table><thead><tr><th></th><th>Task ID</th><th>Task</th><th>Stage</th><th>Owner</th><th>Status</th><th>Due</th><th>Notes</th></tr></thead>
+      <tbody id="tasks"><tr><td colspan="8" class="empty">The work plan appears here once Claude writes it.</td></tr></tbody></table></div>
+    <p class="note">Select a task to see its details, logs and questions, to edit or cancel it, or to start a side chat about it. Icons: &#9989; Done, &#10060; Failed, &#11036; Not started, &#128260; In progress, &#9940; Blocked, &#128683; Cancelled.</p>
+  </section>
+
+  <section class="panel" id="p-questions" hidden>
+    <div class="toolbar"><input type="search" id="q-search" placeholder="Search questions and answers" aria-label="Search questions"></div>
+    <div class="toolbar"><div class="chips" id="q-status"></div><button class="chip" id="q-openonly" aria-pressed="false">Not answered or Follow up</button></div>
+    <div class="tablebox"><table><thead><tr><th>Q ID</th><th>Question</th><th>Why it matters</th><th>Asked on</th><th>Status</th><th>My answer</th><th>Answered on</th><th>What it unblocks</th></tr></thead>
+      <tbody id="questions"><tr><td colspan="8" class="empty">Open questions appear here once Claude writes them.</td></tr></tbody></table></div>
+    <p class="note">Type an answer with the Answer button. Choose Follow up when the answer is partial and say what is still missing.</p>
+  </section>
+
+  <section class="panel" id="p-mindmap" hidden>
+    <div class="toolbar">
+      <button class="btn" id="mm-expand">Expand all</button>
+      <button class="btn" id="mm-collapse">Collapse to branches</button>
+      <span class="spacer"></span>
+      <button class="btn" id="mm-out" aria-label="Zoom out">-</button>
+      <span class="note mono" id="mm-zoom">100%</span>
+      <button class="btn" id="mm-in" aria-label="Zoom in">+</button>
+    </div>
+    <div class="mapbox" id="mapbox"><div class="empty">The mind map is drawn from the plan, tasks, questions and decisions.</div></div>
+    <p class="note">Select a branch to open or close it. Select a task to open it; select a question to find it in Questions.</p>
+  </section>
+
+  <section class="panel" id="p-logs" hidden>
+    <div class="toolbar">
+      <input type="search" id="l-search" placeholder="Search logs" aria-label="Search logs">
+      <label class="note" for="l-from">From</label><input type="date" id="l-from">
+      <label class="note" for="l-to">To</label><input type="date" id="l-to">
+    </div>
+    <div class="toolbar"><div class="chips" id="l-type"></div></div>
+    <div class="tablebox"><table><thead><tr><th>Timestamp</th><th>Type</th><th>Summary</th><th>Detail</th><th>Files touched</th></tr></thead>
+      <tbody id="logs"><tr><td colspan="5" class="empty">Every decision, change and finding is logged here.</td></tr></tbody></table></div>
+  </section>
+</div>
+
+<div class="shade" id="shade" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title" hidden></aside>
+
+<script>
+(function () {
+  var TASK_STATUS = ["Not started", "In progress", "Done", "Failed", "Blocked", "Cancelled"];
+  var ICON = { "Done": "✅", "Failed": "❌", "Not started": "⬜", "In progress": "🔄", "Blocked": "⛔", "Cancelled": "🚫" };
+  var Q_STATUS = ["Not answered", "Answered", "Follow up"];
+  var LOG_TYPES = ["decision", "change", "question", "finding", "action"];
+  var CHAT_KEEP = 30;
+  var state = { meta: null, tasks: [], questions: [], logs: [], plan: [], chats: {} };
+  var f = { tStatus: new Set(), tStage: "", tText: "", qStatus: new Set(), qOpen: false, qText: "", lType: new Set(), lText: "", lFrom: "", lTo: "" };
+  var db = null, sample = null, canWrite = true, editingQ = null;
+  var drawer = { id: null, mode: "view", chatBusy: false, ctl: null };
+
+  function $(id) { return document.getElementById(id) }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e }
+  function today() { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0") }
+  function stamp() { var d = new Date(); return today() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0") }
+  function cls(status) {
+    var s = (status || "").toLowerCase();
+    if (s === "done") return "s-done"; if (s === "answered") return "s-answered"; if (s === "failed") return "s-failed";
+    if (s === "blocked") return "s-blocked"; if (s === "in progress") return "s-progress"; if (s === "follow up") return "s-follow";
+    if (s === "cancelled") return "s-cancelled"; return "s-not";
+  }
+  function pill(text, c) { return el("span", "pill " + c, text) }
+  function hay(o, keys) { return keys.map(function (k) { return String(o[k] || "") }).join(" ").toLowerCase() }
+  function natural(a, b) { return String(a).localeCompare(String(b), undefined, { numeric: true }) }
+  function emptyRow(tb, cols, text) { var tr = el("tr"); var td = el("td", "empty", text); td.colSpan = cols; tr.appendChild(td); tb.appendChild(tr) }
+  function taskById(id) { for (var i = 0; i < state.tasks.length; i++) if (state.tasks[i].id === id || state.tasks[i]._id === id) return state.tasks[i]; return null }
+  function mentions(text, id) { return new RegExp("(^|[^A-Za-z0-9-])" + id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "([^0-9]|$)").test(String(text || "")) }
+  function logId() { return "L-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6) }
+  function addLog(entry) {
+    if (!db) return Promise.resolve();
+    var row = Object.assign({ ts: stamp(), type: "change", summary: "", detail: "", files: "n/a" }, entry);
+    return db.collection("logs").doc(logId()).set(row).then(function () {
+      return db.doc("meta/project").update({ last_updated: today() }).catch(function () {});
+    });
+  }
+  function errText(e) { return e && e.code === "invalid_argument" ? "You do not have write access to this page." : "Not saved. Try again in a moment." }
+
+  // Tabs, with a bare hash token per view; a task id in the hash opens that task
+  var TABS = ["overview", "plan", "tasks", "questions", "mindmap", "logs"];
+  function show(tab) {
+    if (TABS.indexOf(tab) < 0) tab = "overview";
+    TABS.forEach(function (t) { $("p-" + t).hidden = t !== tab });
+    Array.prototype.forEach.call(document.querySelectorAll("#tabs button"), function (b) { b.setAttribute("aria-selected", String(b.dataset.tab === tab)) });
+    try { localStorage.setItem("tab", tab) } catch (e) {}
+    if (tab === "mindmap") renderMap();
+  }
+  $("tabs").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) show(b.dataset.tab) });
+  var hash = (location.hash || "").slice(1), pendingTask = null;
+  if (/^T-?\d+/i.test(hash)) { pendingTask = hash; hash = "tasks" }
+  if (!hash) { try { hash = localStorage.getItem("tab") || "" } catch (e) {} }
+  show(hash || "overview");
+
+  function chips(container, values, set, onChange) {
+    container.textContent = "";
+    values.forEach(function (v) {
+      var c = el("button", "chip", (ICON[v] ? ICON[v] + " " : "") + v);
+      c.setAttribute("aria-pressed", String(set.has(v)));
+      c.addEventListener("click", function () { if (set.has(v)) set.delete(v); else set.add(v); c.setAttribute("aria-pressed", String(set.has(v))); onChange() });
+      container.appendChild(c);
+    });
+  }
+  chips($("t-status"), TASK_STATUS, f.tStatus, renderTasks);
+  chips($("q-status"), Q_STATUS, f.qStatus, renderQuestions);
+  chips($("l-type"), LOG_TYPES, f.lType, renderLogs);
+  $("t-search").addEventListener("input", function (e) { f.tText = e.target.value.toLowerCase(); renderTasks() });
+  $("t-stage").addEventListener("change", function (e) { f.tStage = e.target.value; renderTasks() });
+  $("t-new").addEventListener("click", function () { openDrawer(null, "edit") });
+  $("q-search").addEventListener("input", function (e) { f.qText = e.target.value.toLowerCase(); renderQuestions() });
+  $("q-openonly").addEventListener("click", function (e) { f.qOpen = !f.qOpen; e.currentTarget.setAttribute("aria-pressed", String(f.qOpen)); renderQuestions() });
+  $("l-search").addEventListener("input", function (e) { f.lText = e.target.value.toLowerCase(); renderLogs() });
+  $("l-from").addEventListener("change", function (e) { f.lFrom = e.target.value; renderLogs() });
+  $("l-to").addEventListener("change", function (e) { f.lTo = e.target.value; renderLogs() });
+
+  // ---------- Overview
+  function renderOverview() {
+    var m = state.meta || {};
+    if (m.project_name) { $("ptitle").textContent = m.project_name }
+    if (m.subtitle) { $("psub").textContent = m.subtitle }
+    $("sb-overall").textContent = m.overall_status || "n/a";
+    $("sb-stage").textContent = m.current_stage || "n/a";
+    $("sb-updated").textContent = m.last_updated || "n/a";
+    var live = state.tasks.filter(function (t) { return t.status !== "Cancelled" });
+    $("sb-tasks").textContent = live.filter(function (t) { return t.status === "Done" }).length + " / " + live.length;
+    $("sb-open").textContent = String(state.questions.filter(function (q) { return q.status !== "Answered" }).length);
+    var blockers = Array.isArray(m.blockers) ? m.blockers : [];
+    $("sb-blockers").textContent = blockers.length ? blockers.join("; ") : "none";
+    fillList($("summary"), m.summary); fillList($("needed"), m.needed);
+    var ph = Array.isArray(m.phases) ? m.phases : [];
+    $("phasecard").hidden = !ph.length;
+    var pb = $("phases"); pb.textContent = "";
+    ph.forEach(function (p) {
+      var tr = el("tr"); tr.appendChild(el("td", "mono", p.id)); tr.appendChild(el("td", "mid", p.name));
+      var s = el("td"); s.appendChild(pill(p.status || "Open", p.status === "Outline agreed" || p.status === "Done" ? "s-done" : (p.status === "Draft" ? "s-progress" : "s-not"))); tr.appendChild(s);
+      tr.appendChild(el("td", "wide", p.summary)); pb.appendChild(tr);
+    });
+    var kf = Array.isArray(m.key_files) ? m.key_files : [];
+    $("filescard").hidden = !kf.length;
+    var kb = $("keyfiles"); kb.textContent = "";
+    kf.forEach(function (k) { var tr = el("tr"); tr.appendChild(el("td", "mono", k.path)); tr.appendChild(el("td", "wide", k.purpose)); kb.appendChild(tr) });
+    var dec = state.logs.filter(function (l) { return l.type === "decision" }).sort(function (a, b) { return natural(b.ts, a.ts) });
+    var tb = $("decisions");
+    if (dec.length) {
+      tb.textContent = "";
+      dec.forEach(function (d) { var tr = el("tr"); tr.appendChild(el("td", "mono", String(d.ts || "").slice(0, 10))); tr.appendChild(el("td", "wide", d.summary)); tr.appendChild(el("td", "wide", d.detail)); tb.appendChild(tr) });
+    }
+  }
+  function fillList(list, items) {
+    if (!Array.isArray(items) || !items.length) return;
+    list.textContent = ""; items.forEach(function (l) { list.appendChild(el("li", null, l)) });
+  }
+
+  // ---------- Plan
+  function msTasks(ms) { return state.tasks.filter(function (t) { return t.milestone === ms.id }).sort(function (a, b) { return natural(a.id, b.id) }) }
+  function renderPlan() {
+    var plan = state.plan.slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0) || natural(a.id, b.id) });
+    $("c-plan").textContent = plan.length ? String(plan.length) : "";
+    renderGantt(plan);
+    var box = $("milestones");
+    if (!plan.length) return;
+    box.textContent = "";
+    var placed = new Set();
+    plan.forEach(function (ms) {
+      var ts = msTasks(ms); ts.forEach(function (t) { placed.add(t._id) });
+      box.appendChild(msCard(ms, ts));
+    });
+    var loose = state.tasks.filter(function (t) { return !placed.has(t._id) }).sort(function (a, b) { return natural(a.id, b.id) });
+    if (loose.length) box.appendChild(msCard({ id: "", name: "Not in a milestone", goal: "Tasks without a milestone field." }, loose));
+  }
+  function msCard(ms, ts) {
+    var card = el("div", "card");
+    var head = el("div", "ms-head");
+    if (ms.id) head.appendChild(el("span", "mono", ms.id));
+    head.appendChild(el("h2", null, ms.name));
+    if (ms.status) head.appendChild(pill(ms.status, cls(ms.status)));
+    if (ms.start || ms.end) head.appendChild(el("span", "note mono", (ms.start || "?") + " to " + (ms.end || "?")));
+    card.appendChild(head);
+    if (ms.goal) card.appendChild(el("div", null, ms.goal));
+    var live = ts.filter(function (t) { return t.status !== "Cancelled" });
+    var done = live.filter(function (t) { return t.status === "Done" }).length;
+    var bar = el("div", "bar"); var fill = el("span"); fill.style.width = (live.length ? Math.round(100 * done / live.length) : 0) + "%"; bar.appendChild(fill); card.appendChild(bar);
+    card.appendChild(el("div", "note", done + " of " + live.length + " tasks done" + (ms.exit ? ". Done when: " + ms.exit : "")));
+    if (ts.length) {
+      var ul = el("ul", "ms-tasks mt");
+      ts.forEach(function (t) {
+        var li = el("li"); li.appendChild(el("span", null, ICON[t.status] || ICON["Not started"]));
+        li.appendChild(el("span", "mono", t.id));
+        var b = el("button", "linkbtn", t.task); b.addEventListener("click", function () { openDrawer(t._id, "view") }); li.appendChild(b);
+        if (t.owner) li.appendChild(el("span", "note", t.owner));
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+    }
+    return card;
+  }
+  function renderGantt(plan) {
+    var dated = plan.filter(function (m) { return m.start && m.end });
+    var g = $("gantt"); g.textContent = "";
+    if (!dated.length) { g.appendChild(el("div", "note", "Give milestones a start and end date (YYYY-MM-DD) to see the timeline.")); return }
+    var t0 = Math.min.apply(null, dated.map(function (m) { return Date.parse(m.start) }));
+    var t1 = Math.max.apply(null, dated.map(function (m) { return Date.parse(m.end) }));
+    var span = Math.max(t1 - t0, 86400000), now = Date.parse(today());
+    var grid = el("div", "gantt");
+    grid.appendChild(el("div", "note mono", dated[0].start)); grid.appendChild(el("div", "note mono", "to " + new Date(t1).toISOString().slice(0, 10)));
+    dated.forEach(function (m) {
+      grid.appendChild(el("div", null, (m.id ? m.id + " " : "") + m.name));
+      var tr = el("div", "gtrack"); var b = el("div", "gbar");
+      var l = (Date.parse(m.start) - t0) / span * 100, w = Math.max((Date.parse(m.end) - Date.parse(m.start)) / span * 100, 1);
+      b.style.left = l + "%"; b.style.width = w + "%"; b.title = m.start + " to " + m.end; tr.appendChild(b);
+      if (now >= t0 && now <= t1) { var td = el("div", "gtoday"); td.style.left = ((now - t0) / span * 100) + "%"; td.title = "Today"; tr.appendChild(td) }
+      grid.appendChild(tr);
+    });
+    g.appendChild(grid);
+  }
+
+  // ---------- Tasks
+  function renderTasks() {
+    var stages = Array.from(new Set(state.tasks.map(function (t) { return t.stage }).filter(Boolean))).sort(natural);
+    var sel = $("t-stage"); var cur = sel.value; sel.textContent = ""; sel.appendChild(new Option("All stages", ""));
+    stages.forEach(function (s) { sel.appendChild(new Option(s, s)) }); sel.value = stages.indexOf(cur) >= 0 ? cur : "";
+    var rows = state.tasks.filter(function (t) {
+      return (!f.tStatus.size || f.tStatus.has(t.status)) && (!f.tStage || t.stage === f.tStage) && (!f.tText || hay(t, ["id", "task", "stage", "owner", "notes", "description"]).indexOf(f.tText) >= 0);
+    }).sort(function (a, b) { return natural(a.id, b.id) });
+    $("c-tasks").textContent = state.tasks.length ? String(state.tasks.length) : "";
+    var tb = $("tasks");
+    if (!state.tasks.length) return;
+    tb.textContent = "";
+    if (!rows.length) { emptyRow(tb, 8, "No task matches these filters."); return }
+    rows.forEach(function (t) {
+      var tr = el("tr", "click" + (t.status === "Cancelled" ? " cancelled" : "")); tr.tabIndex = 0;
+      tr.setAttribute("aria-label", "Open task " + t.id);
+      var ic = el("td", "icon", ICON[t.status] || ICON["Not started"]); ic.title = t.status || ""; tr.appendChild(ic);
+      tr.appendChild(el("td", "mono", t.id)); tr.appendChild(el("td", "wide title", t.task)); tr.appendChild(el("td", "mid", t.stage));
+      tr.appendChild(el("td", null, t.owner));
+      var st = el("td"); st.appendChild(pill(t.status || "Not started", cls(t.status))); tr.appendChild(st);
+      tr.appendChild(el("td", "mono", t.due || "n/a")); tr.appendChild(el("td", "wide", t.notes));
+      tr.addEventListener("click", function () { openDrawer(t._id, "view") });
+      tr.addEventListener("keydown", function (e) { if (e.key === "Enter") openDrawer(t._id, "view") });
+      tb.appendChild(tr);
+    });
+  }
+
+  // ---------- Task drawer: details, edit, cancel, side chat
+  function openDrawer(id, mode) {
+    drawer.id = id; drawer.mode = mode || "view";
+    $("shade").hidden = false; $("drawer").hidden = false;
+    renderDrawer();
+    var h = $("d-title"); if (h) h.focus();
+  }
+  function closeDrawer() {
+    if (drawer.ctl) drawer.ctl.abort();
+    drawer.id = null; $("shade").hidden = true; $("drawer").hidden = true;
+  }
+  $("shade").addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("drawer").hidden) closeDrawer() });
+
+  function renderDrawer() {
+    var d = $("drawer"); if (d.hidden) return;
+    var a = document.activeElement;
+    if (drawer.mode === "view" && a && d.contains(a) && a.tagName === "TEXTAREA" && a.value) return;
+    var t = drawer.id ? taskById(drawer.id) : null;
+    if (drawer.id && !t) { d.textContent = ""; d.appendChild(el("p", "note", "This task no longer exists.")); d.appendChild(closeBtn()); return }
+    d.textContent = "";
+    if (drawer.mode === "edit") { d.appendChild(editForm(t)); return }
+    var head = el("div", "dhead");
+    var title = el("h2", null, (ICON[t.status] || ICON["Not started"]) + " " + t.id + "  " + t.task); title.id = "d-title"; title.tabIndex = -1;
+    head.appendChild(title);
+    var line = el("div", "dactions"); line.appendChild(pill(t.status || "Not started", cls(t.status)));
+    head.appendChild(line);
+    var act = el("div", "dactions");
+    if (db && canWrite) {
+      var eb = el("button", "btn", "Edit"); eb.addEventListener("click", function () { drawer.mode = "edit"; renderDrawer() }); act.appendChild(eb);
+      if (t.status === "Cancelled") {
+        var rb = el("button", "btn", "Reopen"); rb.addEventListener("click", function () { saveTask(t, { status: "Not started", cancel_reason: "" }, "Reopened " + t.id, "") }); act.appendChild(rb);
+      } else {
+        var cb = el("button", "btn danger", "Cancel task"); cb.addEventListener("click", function () { drawer.mode = "cancel"; renderDrawer() }); act.appendChild(cb);
+      }
+    }
+    var cp = el("button", "btn", "Copy for Claude Code"); cp.addEventListener("click", function () { copyPrompt(t, cp) }); act.appendChild(cp);
+    act.appendChild(closeBtn());
+    head.appendChild(act);
+    d.appendChild(head);
+    if (drawer.mode === "cancel") d.appendChild(cancelForm(t));
+
+    var info = el("dl", "kv");
+    [["Stage", t.stage], ["Milestone", t.milestone], ["Owner", t.owner], ["Due", t.due], ["Depends on", t.depends_on], ["Files", t.files], ["Updated", t.updated_on], ["Cancel reason", t.cancel_reason]].forEach(function (p) {
+      if (!p[1]) return; info.appendChild(el("dt", null, p[0])); info.appendChild(el("dd", p[0] === "Files" ? "mono" : null, p[1]));
+    });
+    d.appendChild(section("Details", info));
+    if (t.description) d.appendChild(section("What it is", el("div", "pre", t.description)));
+    if (t.done_when) d.appendChild(section("Done when", el("div", "pre", t.done_when)));
+    if (t.notes) d.appendChild(section("Notes", el("div", "pre", t.notes)));
+
+    var qs = state.questions.filter(function (q) { return mentions(q.unblocks, t.id) || mentions(q.question, t.id) || mentions(q.why, t.id) });
+    var ql = el("ul", "rel");
+    qs.forEach(function (q) {
+      var li = el("li"); li.appendChild(el("span", "mono", q.id + " ")); li.appendChild(pill(q.status, cls(q.status)));
+      li.appendChild(el("div", null, q.question)); if (q.answer) li.appendChild(el("div", "note pre", q.answer)); ql.appendChild(li);
+    });
+    d.appendChild(section("Questions linked (" + qs.length + ")", qs.length ? ql : el("div", "note", "No question names this task.")));
+
+    var ls = state.logs.filter(function (l) { return l.task === t.id || mentions(l.summary, t.id) || mentions(l.detail, t.id) }).sort(function (a, b) { return natural(b.ts, a.ts) });
+    var ll = el("ul", "rel");
+    ls.slice(0, 40).forEach(function (l) {
+      var li = el("li"); li.appendChild(el("span", "mono", l.ts + " ")); li.appendChild(pill(l.type || "action", "t-" + (l.type || "action")));
+      li.appendChild(el("div", null, l.summary)); if (l.detail) li.appendChild(el("div", "note pre", l.detail));
+      if (l.files && l.files !== "n/a") li.appendChild(el("div", "note mono pre", l.files)); ll.appendChild(li);
+    });
+    d.appendChild(section("Logs (" + ls.length + ")", ls.length ? ll : el("div", "note", "No log entry names this task yet.")));
+    d.appendChild(chatSection(t));
+  }
+  function section(title, body) { var s = el("div", "card"); s.appendChild(el("h3", null, title)); s.appendChild(body); return s }
+  function closeBtn() { var b = el("button", "btn", "Close"); b.addEventListener("click", closeDrawer); return b }
+
+  function nextTaskId() {
+    var n = 0; state.tasks.forEach(function (t) { var m = /^T-(\d+)/.exec(t.id || ""); if (m) n = Math.max(n, +m[1]) });
+    return "T-" + String(n + 1).padStart(2, "0");
+  }
+  function editForm(t) {
+    var isNew = !t; var v = t || { id: nextTaskId(), status: "Not started" };
+    var form = el("form", "form");
+    var h = el("h2", null, isNew ? "New task " + v.id : "Edit " + v.id); h.id = "d-title"; h.tabIndex = -1; form.appendChild(h);
+    function field(label, key, kind, opts) {
+      var lab = el("label"); lab.appendChild(document.createTextNode(label));
+      var inp;
+      if (kind === "select") { inp = el("select"); opts.forEach(function (o) { inp.appendChild(new Option(o, o)) }) }
+      else if (kind === "area") inp = el("textarea");
+      else { inp = el("input"); inp.type = kind || "text" }
+      inp.id = "tf-" + key; inp.value = v[key] || (kind === "select" ? opts[0] : ""); lab.appendChild(inp); return lab;
+    }
+    var msIds = [""].concat(state.plan.slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0) }).map(function (m) { return m.id }));
+    form.appendChild(field("Task", "task"));
+    var r1 = el("div", "row2"); r1.appendChild(field("Status", "status", "select", TASK_STATUS)); r1.appendChild(field("Owner", "owner")); form.appendChild(r1);
+    var r2 = el("div", "row2"); r2.appendChild(field("Stage", "stage")); r2.appendChild(field("Milestone", "milestone", "select", msIds)); form.appendChild(r2);
+    var r3 = el("div", "row2"); r3.appendChild(field("Due", "due", "date")); r3.appendChild(field("Depends on", "depends_on")); form.appendChild(r3);
+    form.appendChild(field("What it is", "description", "area"));
+    form.appendChild(field("Done when", "done_when", "area"));
+    form.appendChild(field("Notes", "notes", "area"));
+    form.appendChild(field("Files", "files"));
+    var row = el("div", "dactions"); var save = el("button", "btn primary", isNew ? "Create task" : "Save changes"); save.type = "submit";
+    var cancel = el("button", "btn", "Back"); cancel.type = "button"; var msg = el("span", "note");
+    row.appendChild(save); row.appendChild(cancel); row.appendChild(msg); form.appendChild(row);
+    cancel.addEventListener("click", function () { if (isNew) closeDrawer(); else { drawer.mode = "view"; renderDrawer() } });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var data = {};
+      ["task", "status", "owner", "stage", "milestone", "due", "depends_on", "description", "done_when", "notes", "files"].forEach(function (k) { data[k] = form.querySelector("#tf-" + k).value.trim() });
+      if (!data.task) { msg.textContent = "Give the task a name."; return }
+      save.disabled = true; msg.textContent = "Saving";
+      if (isNew) {
+        data.id = v.id; data.updated_on = today();
+        db.collection("tasks").doc(v.id).set(data).then(function () {
+          return addLog({ type: "change", task: v.id, summary: "Created " + v.id + " in the page: " + data.task, detail: data.description || "" });
+        }).then(function () { drawer.id = v.id; drawer.mode = "view" }).catch(function (er) { save.disabled = false; msg.textContent = errText(er) });
+      } else {
+        var changed = Object.keys(data).filter(function (k) { return (t[k] || "") !== data[k] });
+        if (!changed.length) { drawer.mode = "view"; renderDrawer(); return }
+        saveTask(t, data, "Edited " + t.id + " in the page: " + changed.join(", "), changed.map(function (k) { return k + ": " + data[k] }).join("\n"), msg, save);
+      }
+    });
+    return form;
+  }
+  function cancelForm(t) {
+    var box = el("div", "card form");
+    box.appendChild(el("h3", null, "Cancel " + t.id));
+    var lab = el("label"); lab.appendChild(document.createTextNode("Why is it cancelled?")); var ta = el("textarea"); ta.id = "cancel-reason"; lab.appendChild(ta); box.appendChild(lab);
+    var row = el("div", "dactions"); var ok = el("button", "btn danger", "Cancel task"); var back = el("button", "btn", "Keep task"); var msg = el("span", "note");
+    row.appendChild(ok); row.appendChild(back); row.appendChild(msg); box.appendChild(row);
+    back.addEventListener("click", function () { drawer.mode = "view"; renderDrawer() });
+    ok.addEventListener("click", function () {
+      var why = ta.value.trim(); if (!why) { msg.textContent = "Say why, so the log stays useful."; return }
+      saveTask(t, { status: "Cancelled", cancel_reason: why }, "Cancelled " + t.id + " in the page", why, msg, ok);
+    });
+    setTimeout(function () { ta.focus() }, 0);
+    return box;
+  }
+  function saveTask(t, patch, summary, detail, msg, btn) {
+    if (btn) btn.disabled = true; if (msg) msg.textContent = "Saving";
+    patch.updated_on = today();
+    db.collection("tasks").doc(t._id).update(patch).then(function () {
+      return addLog({ type: "change", task: t.id, summary: summary, detail: detail || "" });
+    }).then(function () { drawer.mode = "view"; renderDrawer() }).catch(function (e) {
+      if (btn) btn.disabled = false; if (msg) msg.textContent = errText(e);
+    });
+  }
+  function copyPrompt(t, btn) {
+    var m = state.meta || {};
+    var text = "Work on task " + t.id + " (" + t.task + ") of the project " + (m.project_name || document.title) + "."
+      + (m.project_path ? "\nProject folder: " + m.project_path : "")
+      + (m.artifact_url ? "\nProject tracker: " + m.artifact_url : "")
+      + "\nRead the task row and its linked questions and logs in the tracker first. Status: " + (t.status || "Not started") + "."
+      + (t.done_when ? "\nDone when: " + t.done_when : "")
+      + "\nUpdate the task row and add a logs row when you finish.";
+    var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy for Claude Code" }, 1500) };
+    try {
+      navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); btn.textContent = "Select and copy below" });
+    } catch (e) { fallbackCopy(text); btn.textContent = "Select and copy below" }
+  }
+  function fallbackCopy(text) {
+    var ta = el("textarea"); ta.value = text; ta.readOnly = true; ta.setAttribute("aria-label", "Prompt to copy");
+    $("drawer").insertBefore(ta, $("drawer").children[1] || null); ta.focus(); ta.select();
+  }
+
+  // Side chat about one task, kept per task in the chats collection
+  function chatSection(t) {
+    var box = el("div", "card chat");
+    box.appendChild(el("h3", null, "Side chat about this task"));
+    if (!sample) { box.appendChild(el("div", "note", "Side chat needs Claude access in this view. Use Copy for Claude Code to take the task to a Claude Code session instead.")); return box }
+    var list = el("div", "chat"); list.id = "chatlist";
+    var msgs = (state.chats[t._id] && state.chats[t._id].messages) || [];
+    if (!msgs.length) list.appendChild(el("div", "note", "Ask about this task: what is left, risks, how to split it, what to check next. Claude sees this task, its linked questions and logs."));
+    msgs.forEach(function (mm) { list.appendChild(bubble(mm)) });
+    box.appendChild(list);
+    var ta = el("textarea"); ta.id = "chat-input"; ta.setAttribute("aria-label", "Message about " + t.id); ta.placeholder = "Ask about " + t.id;
+    var row = el("div", "dactions"); var send = el("button", "btn primary", "Send"); var stop = el("button", "btn", "Stop"); stop.hidden = true; var note = el("span", "note");
+    row.appendChild(send); row.appendChild(stop); row.appendChild(note);
+    box.appendChild(ta); box.appendChild(row);
+    if (msgs.length && db && canWrite) { var clr = el("button", "btn", "Clear chat"); clr.addEventListener("click", function () { db.collection("chats").doc(t._id).delete().catch(function () {}) }); row.appendChild(clr) }
+    send.disabled = drawer.chatBusy;
+    stop.addEventListener("click", function () { if (drawer.ctl) drawer.ctl.abort() });
+    send.addEventListener("click", function () {
+      var text = ta.value.trim(); if (!text || drawer.chatBusy) return;
+      var history = msgs.slice(-CHAT_KEEP).concat([{ role: "user", text: text, ts: stamp() }]);
+      list.appendChild(bubble(history[history.length - 1]));
+      var out = bubble({ role: "assistant", text: "Thinking..." }); list.appendChild(out);
+      ta.value = ""; drawer.chatBusy = true; send.disabled = true; stop.hidden = false; note.textContent = "";
+      drawer.ctl = new AbortController();
+      var turns = [{ role: "user", content: chatContext(t) }].concat(history.map(function (mm) { return { role: mm.role, content: mm.text } }));
+      sample(turns, { cache: false, signal: drawer.ctl.signal, onText: function (u) { out.lastChild.textContent = u.text } }).then(function (r) {
+        history.push({ role: "assistant", text: r.text, ts: stamp() });
+        if (db && canWrite) return db.collection("chats").doc(t._id).set({ task: t.id, messages: history.slice(-CHAT_KEEP) });
+        state.chats[t._id] = { messages: history };
+      }).catch(function (e) {
+        if (e && e.text) out.lastChild.textContent = e.text; else out.remove();
+        if (!e || e.code !== "cancelled") note.textContent = chatError(e && e.code);
+      }).then(function () { drawer.chatBusy = false; stop.hidden = true; send.disabled = false; drawer.ctl = null });
+    });
+    return box;
+  }
+  function bubble(mm) { var b = el("div", "msg" + (mm.role === "user" ? " me" : "")); b.appendChild(el("span", "who", (mm.role === "user" ? "You" : "Claude") + (mm.ts ? " " + mm.ts : ""))); b.appendChild(el("span", null, mm.text)); return b }
+  function chatError(code) {
+    if (code === "not_granted" || code === "sampling_disabled") return "Claude is not allowed for this page in this view.";
+    if (code === "rate_limited") return "Too many requests just now. Try again in a minute.";
+    if (code === "prompt_too_large") return "This chat is too long. Clear it and start again.";
+    return "No answer came back. Try again.";
+  }
+  function chatContext(t) {
+    var m = state.meta || {};
+    var qs = state.questions.filter(function (q) { return mentions(q.unblocks, t.id) || mentions(q.question, t.id) }).slice(0, 15);
+    var ls = state.logs.filter(function (l) { return l.task === t.id || mentions(l.summary, t.id) || mentions(l.detail, t.id) }).sort(function (a, b) { return natural(b.ts, a.ts) }).slice(0, 15);
+    var clean = {}; Object.keys(t).forEach(function (k) { if (k[0] !== "_" && t[k]) clean[k] = t[k] });
+    return "You are helping on one task of a project tracker. Answer in short, plain sentences. Use only the context below. "
+      + "If something is not in it, say so and say what to check. You cannot change the tracker: suggest changes in words.\n\n"
+      + "Project: " + (m.project_name || document.title) + "\nCurrent stage: " + (m.current_stage || "n/a")
+      + "\nSummary: " + (Array.isArray(m.summary) ? m.summary.join(" ") : "") + "\n\nTask:\n" + JSON.stringify(clean, null, 1).slice(0, 6000)
+      + "\n\nLinked questions:\n" + qs.map(function (q) { return q.id + " [" + q.status + "] " + q.question + (q.answer ? " Answer: " + q.answer : "") }).join("\n").slice(0, 6000)
+      + "\n\nRecent logs:\n" + ls.map(function (l) { return l.ts + " " + l.type + ": " + l.summary + (l.detail ? " (" + l.detail + ")" : "") }).join("\n").slice(0, 8000);
+  }
+
+  // ---------- Questions
+  function renderQuestions() {
+    var rows = state.questions.filter(function (q) {
+      if (f.qOpen && q.status === "Answered") return false;
+      return (!f.qStatus.size || f.qStatus.has(q.status)) && (!f.qText || hay(q, ["id", "question", "why", "answer", "unblocks", "group"]).indexOf(f.qText) >= 0);
+    }).sort(function (a, b) { return natural(a.id, b.id) });
+    $("c-questions").textContent = state.questions.length ? String(state.questions.filter(function (q) { return q.status !== "Answered" }).length) + " open" : "";
+    var tb = $("questions");
+    if (!state.questions.length) return;
+    tb.textContent = "";
+    if (!rows.length) { emptyRow(tb, 8, "No question matches these filters."); return }
+    rows.forEach(function (q) {
+      var tr = el("tr");
+      var idc = el("td", "mono", q.id); if (q.group) idc.appendChild(el("div", "note", q.group)); tr.appendChild(idc);
+      tr.appendChild(el("td", "wide", q.question)); tr.appendChild(el("td", "wide", q.why));
+      tr.appendChild(el("td", "mono", q.asked_on || ""));
+      var st = el("td"); st.appendChild(pill(q.status || "Not answered", cls(q.status))); tr.appendChild(st);
+      var ans = el("td", "wide");
+      if (editingQ === q.id) ans.appendChild(answerEditor(q));
+      else {
+        if (q.answer) ans.appendChild(el("div", "pre", q.answer));
+        if (db && canWrite) { var b = el("button", "btn", q.answer ? "Edit answer" : "Answer"); b.addEventListener("click", function () { editingQ = q.id; renderQuestions() }); ans.appendChild(b) }
+      }
+      tr.appendChild(ans);
+      tr.appendChild(el("td", "mono", q.answered_on || "")); tr.appendChild(el("td", "mid", q.unblocks));
+      tb.appendChild(tr);
+    });
+  }
+  function answerEditor(q) {
+    var box = el("div", "form");
+    var ta = el("textarea"); ta.id = "ans-" + q.id; ta.value = q.answer || ""; ta.setAttribute("aria-label", "Answer to " + q.id); box.appendChild(ta);
+    var row = el("div", "dactions");
+    var sel = el("select"); sel.id = "ans-status-" + q.id; sel.setAttribute("aria-label", "Status");
+    ["Answered", "Follow up", "Not answered"].forEach(function (s) { sel.appendChild(new Option(s, s)) });
+    sel.value = q.status === "Follow up" ? "Follow up" : "Answered";
+    var save = el("button", "btn primary", "Save answer"); var cancel = el("button", "btn", "Cancel"); var msg = el("span", "note");
+    row.appendChild(sel); row.appendChild(save); row.appendChild(cancel); row.appendChild(msg); box.appendChild(row);
+    cancel.addEventListener("click", function () { editingQ = null; renderQuestions() });
+    save.addEventListener("click", function () {
+      var text = ta.value.trim(); var status = sel.value;
+      if (status !== "Not answered" && !text) { msg.textContent = "Type an answer first, or set the status to Not answered."; return }
+      save.disabled = true; msg.textContent = "Saving";
+      db.collection("questions").doc(q._id).update({ answer: text, status: status, answered_on: status === "Not answered" ? "" : today() }).then(function () {
+        return addLog({ type: "question", summary: q.id + " set to " + status + " in the page", detail: text });
+      }).then(function () { editingQ = null; renderQuestions() }).catch(function (e) { save.disabled = false; msg.textContent = errText(e) });
+    });
+    setTimeout(function () { ta.focus() }, 0);
+    return box;
+  }
+
+  // ---------- Mind map: tree drawn from meta, plan, tasks, questions, decisions
+  var mm = { open: null, zoom: 1 };
+  try { var saved = JSON.parse(localStorage.getItem("mm-open") || "null"); if (Array.isArray(saved)) mm.open = new Set(saved) } catch (e) {}
+  function mmSave() { try { localStorage.setItem("mm-open", JSON.stringify(Array.from(mm.open))) } catch (e) {} }
+  function stClass(s) { s = (s || "").toLowerCase(); if (s === "done" || s === "answered" || s === "outline agreed") return "st-done"; if (s === "failed" || s === "blocked") return "st-bad"; if (s === "in progress" || s === "follow up" || s === "draft") return "st-warn"; if (s === "cancelled") return "st-muted"; return "" }
+  function buildTree() {
+    var m = state.meta || {};
+    var root = { key: "root", label: m.project_name || document.title, kind: "root", children: [] };
+    var ph = Array.isArray(m.phases) ? m.phases : [];
+    if (ph.length) root.children.push({ key: "b-process", label: "Process", kind: "branch", children: ph.map(function (p) { return { key: "ph-" + p.id, label: p.id + " " + p.name, status: p.status } }) });
+    var plan = state.plan.slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0) });
+    var placed = new Set();
+    var planKids = plan.map(function (ms) {
+      var ts = msTasks(ms); ts.forEach(function (t) { placed.add(t._id) });
+      return { key: "ms-" + ms.id, label: ms.id + " " + ms.name, status: ms.status, children: ts.map(taskNode) };
+    });
+    var loose = state.tasks.filter(function (t) { return !placed.has(t._id) }).sort(function (a, b) { return natural(a.id, b.id) });
+    if (loose.length) planKids.push({ key: "ms-none", label: "Not in a milestone", children: loose.map(taskNode) });
+    if (planKids.length) root.children.push({ key: "b-plan", label: "Plan", kind: "branch", children: planKids });
+    var open = state.questions.filter(function (q) { return q.status !== "Answered" }).sort(function (a, b) { return natural(a.id, b.id) });
+    var groups = {}; open.forEach(function (q) { var g = q.group || "Other"; (groups[g] = groups[g] || []).push(q) });
+    var qKids = Object.keys(groups).sort().map(function (g) { return { key: "qg-" + g, label: g, badge: String(groups[g].length), children: groups[g].map(function (q) { return { key: "q-" + q.id, label: q.id + " " + q.question, status: q.status, q: q.id } }) } });
+    var answered = state.questions.length - open.length;
+    if (answered) qKids.push({ key: "q-answered", label: "Answered", badge: String(answered), status: "Answered" });
+    if (qKids.length) root.children.push({ key: "b-questions", label: "Open questions", kind: "branch", badge: String(open.length), children: qKids });
+    var dec = state.logs.filter(function (l) { return l.type === "decision" }).sort(function (a, b) { return natural(b.ts, a.ts) }).slice(0, 15);
+    if (dec.length) root.children.push({ key: "b-decisions", label: "Decisions", kind: "branch", children: dec.map(function (l) { return { key: "d-" + l._id, label: l.summary, status: "Done" } }) });
+    var bl = Array.isArray(m.blockers) ? m.blockers : [];
+    if (bl.length) root.children.push({ key: "b-blockers", label: "Blockers", kind: "branch", children: bl.map(function (b, i) { return { key: "bl-" + i, label: b, status: "Blocked" } }) });
+    return root;
+  }
+  function taskNode(t) { return { key: "t-" + t._id, label: (ICON[t.status] || "") + " " + t.id + " " + t.task, status: t.status, task: t._id } }
+  function wrap(text, n, max) {
+    var words = String(text || "").split(/\s+/), lines = [], cur = "";
+    words.forEach(function (w) { if ((cur + " " + w).trim().length > n && cur) { lines.push(cur); cur = w } else cur = (cur + " " + w).trim() });
+    if (cur) lines.push(cur);
+    if (lines.length > max) { lines = lines.slice(0, max); lines[max - 1] = lines[max - 1].slice(0, n - 3) + "..." }
+    return lines;
+  }
+  function renderMap() {
+    var box = $("mapbox"); if ($("p-mindmap").hidden) return;
+    var root = buildTree();
+    if (!mm.open) { mm.open = new Set(["root"]); root.children.forEach(function (c) { mm.open.add(c.key) }) }
+    var W = 230, GAPX = 56, GAPY = 10, LH = 15, NS = "http://www.w3.org/2000/svg";
+    function measure(n, depth) {
+      n.depth = depth; n.lines = wrap(n.label, n.kind === "root" ? 26 : 32, 3); n.h = n.lines.length * LH + 14;
+      n.kids = (n.children && n.children.length && mm.open.has(n.key)) ? n.children : [];
+      n.kids.forEach(function (c) { measure(c, depth + 1) });
+      var kidsH = n.kids.reduce(function (s, c) { return s + c.total }, 0) + Math.max(0, n.kids.length - 1) * GAPY;
+      n.total = Math.max(n.h, kidsH);
+    }
+    function place(n, top) {
+      n.x = 16 + n.depth * (W + GAPX);
+      var kidsH = n.kids.reduce(function (s, c) { return s + c.total }, 0) + Math.max(0, n.kids.length - 1) * GAPY;
+      var y = top + (n.total - kidsH) / 2;
+      n.kids.forEach(function (c) { place(c, y); y += c.total + GAPY });
+      n.y = top + n.total / 2 - n.h / 2;
+    }
+    measure(root, 0); place(root, 16);
+    var maxDepth = 0, nodes = [];
+    (function walk(n) { nodes.push(n); maxDepth = Math.max(maxDepth, n.depth); n.kids.forEach(walk) })(root);
+    var width = 32 + (maxDepth + 1) * W + maxDepth * GAPX, height = root.total + 32;
+    var svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", "0 0 " + width + " " + height); svg.setAttribute("width", Math.round(width * mm.zoom)); svg.setAttribute("height", Math.round(height * mm.zoom));
+    svg.setAttribute("role", "img"); svg.setAttribute("aria-label", "Project mind map");
+    nodes.forEach(function (n) { n.kids.forEach(function (c) {
+      var p = document.createElementNS(NS, "path"); var x1 = n.x + W, y1 = n.y + n.h / 2, x2 = c.x, y2 = c.y + c.h / 2, mx = (x1 + x2) / 2;
+      p.setAttribute("d", "M" + x1 + "," + y1 + " C" + mx + "," + y1 + " " + mx + "," + y2 + " " + x2 + "," + y2); p.setAttribute("class", "mm-edge"); svg.appendChild(p);
+    }) });
+    nodes.forEach(function (n) {
+      var g = document.createElementNS(NS, "g");
+      g.setAttribute("class", "mm-node " + (n.kind || "") + " " + stClass(n.status)); g.setAttribute("transform", "translate(" + n.x + "," + n.y + ")");
+      g.setAttribute("tabindex", "0"); g.setAttribute("role", "button");
+      var hasKids = n.children && n.children.length;
+      g.setAttribute("aria-label", n.label + (hasKids ? (mm.open.has(n.key) ? ", open" : ", closed") : ""));
+      var r = document.createElementNS(NS, "rect"); r.setAttribute("width", W); r.setAttribute("height", n.h); r.setAttribute("rx", 6); g.appendChild(r);
+      n.lines.forEach(function (line, i) { var tx = document.createElementNS(NS, "text"); tx.setAttribute("x", 10); tx.setAttribute("y", 19 + i * LH); tx.textContent = line; g.appendChild(tx) });
+      var tag = n.badge || (hasKids ? (mm.open.has(n.key) ? "-" : "+" + n.children.length) : "");
+      if (tag) { var b = document.createElementNS(NS, "text"); b.setAttribute("class", "badge"); b.setAttribute("x", W - 8); b.setAttribute("y", 19); b.setAttribute("text-anchor", "end"); b.textContent = tag; g.appendChild(b) }
+      var t = document.createElementNS(NS, "title"); t.textContent = n.label + (n.status ? " (" + n.status + ")" : ""); g.appendChild(t);
+      function act() {
+        if (n.task) { openDrawer(n.task, "view"); return }
+        if (n.q) { show("questions"); $("q-search").value = n.q; f.qText = n.q.toLowerCase(); renderQuestions(); return }
+        if (hasKids) { if (mm.open.has(n.key)) mm.open.delete(n.key); else mm.open.add(n.key); mmSave(); renderMap() }
+      }
+      g.addEventListener("click", act); g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); act() } });
+      svg.appendChild(g);
+    });
+    box.textContent = ""; box.appendChild(svg);
+    $("mm-zoom").textContent = Math.round(mm.zoom * 100) + "%";
+  }
+  $("mm-expand").addEventListener("click", function () { var all = new Set(); (function walk(n) { all.add(n.key); (n.children || []).forEach(walk) })(buildTree()); mm.open = all; mmSave(); renderMap() });
+  $("mm-collapse").addEventListener("click", function () { mm.open = new Set(["root"]); buildTree().children.forEach(function (c) { mm.open.add(c.key) }); mmSave(); renderMap() });
+  $("mm-in").addEventListener("click", function () { mm.zoom = Math.min(2, mm.zoom + .1); renderMap() });
+  $("mm-out").addEventListener("click", function () { mm.zoom = Math.max(.4, mm.zoom - .1); renderMap() });
+
+  // ---------- Logs
+  function renderLogs() {
+    var rows = state.logs.filter(function (l) {
+      var d = String(l.ts || "").slice(0, 10);
+      return (!f.lType.size || f.lType.has(l.type)) && (!f.lFrom || d >= f.lFrom) && (!f.lTo || d <= f.lTo) && (!f.lText || hay(l, ["ts", "type", "summary", "detail", "files", "task"]).indexOf(f.lText) >= 0);
+    }).sort(function (a, b) { return natural(b.ts + b._id, a.ts + a._id) });
+    $("c-logs").textContent = state.logs.length ? String(state.logs.length) : "";
+    var tb = $("logs");
+    if (!state.logs.length) return;
+    tb.textContent = "";
+    if (!rows.length) { emptyRow(tb, 5, "No log entry matches these filters."); return }
+    rows.forEach(function (l) {
+      var tr = el("tr");
+      tr.appendChild(el("td", "mono", l.ts));
+      var ty = el("td"); ty.appendChild(pill(l.type || "action", "t-" + (l.type || "action"))); tr.appendChild(ty);
+      var sm = el("td", "wide");
+      if (l.task && taskById(l.task)) { var b = el("button", "linkbtn mono", l.task + " "); b.addEventListener("click", function () { openDrawer(taskById(l.task)._id, "view") }); sm.appendChild(b) }
+      sm.appendChild(document.createTextNode(l.summary || "")); tr.appendChild(sm);
+      tr.appendChild(el("td", "wide pre", l.detail)); tr.appendChild(el("td", "mid mono pre", l.files));
+      tb.appendChild(tr);
+    });
+  }
+
+  function renderAll() { renderOverview(); renderPlan(); renderTasks(); renderQuestions(); renderLogs(); renderMap(); renderDrawer() }
+  function toRows(snap) { return snap.docs.map(function (d) { var o = Object.assign({}, d.data()); o._id = d.id; return o }) }
+  function note(text) { var n = $("dbnote"); n.textContent = text; n.hidden = !text }
+
+  renderAll();
+  if (!window.claude || !window.claude.use) { note("Live data is not available in this view. Open the page on claude.ai while signed in."); return }
+  window.claude.use("user").then(function (user) {
+    if (user && user.can) return Promise.resolve(user.can("data.write")).then(function (c) { if (c === false) { canWrite = false; renderAll() } });
+  }).catch(function () {});
+  window.claude.use("sample").then(function (s) { sample = s || null; renderDrawer() }).catch(function () {});
+  window.claude.use("db").then(function (d) {
+    if (!d) { note("Live data is not available in this view. Open the page on claude.ai while signed in."); return }
+    db = d; $("t-new").hidden = !canWrite;
+    function fail(e) { if (e && e.code === "revoked") note("Access to this page's data has ended for this view."); else note("Live updates stopped. Reload the page to reconnect.") }
+    db.doc("meta/project").onSnapshot(function (s) { state.meta = s.exists ? s.data() : null; renderOverview(); renderMap() }, fail);
+    db.collection("plan").onSnapshot(function (s) { state.plan = toRows(s); renderPlan(); renderMap() }, fail);
+    db.collection("tasks").onSnapshot(function (s) {
+      state.tasks = toRows(s); renderOverview(); renderPlan(); renderTasks(); renderMap(); if (drawer.mode === "view") renderDrawer();
+      if (pendingTask) { var t = taskById(pendingTask.toUpperCase()); if (t) openDrawer(t._id, "view"); pendingTask = null }
+    }, fail);
+    db.collection("questions").onSnapshot(function (s) { state.questions = toRows(s); renderOverview(); if (!editingQ) renderQuestions(); renderMap(); if (drawer.mode === "view") renderDrawer() }, fail);
+    db.collection("logs").onSnapshot(function (s) { state.logs = toRows(s); renderOverview(); renderLogs(); renderMap(); if (drawer.mode === "view") renderDrawer() }, fail);
+    db.collection("chats").onSnapshot(function (s) {
+      var c = {}; s.docs.forEach(function (d) { c[d.id] = d.data() }); state.chats = c;
+      if (drawer.mode === "view" && !drawer.chatBusy) renderDrawer();
+    }, fail);
+  });
+})();
+</script>

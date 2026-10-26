@@ -76,7 +76,8 @@
         "amir_humanized",
         "btw",
         "validate_project",
-        "amir_cursor_subagent"
+        "amir_cursor_subagent",
+        "amir_project_artifact"
       ],
       "skills": [
         "create_project",
@@ -92,7 +93,8 @@
         "create-project-doc",
         "no-slop",
         "amir-project-cleanup",
-        "amir_cursor_subagent"
+        "amir_cursor_subagent",
+        "amir_project_artifact"
       ],
       "mcp_servers": []
     },

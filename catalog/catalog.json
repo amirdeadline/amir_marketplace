@@ -792,6 +792,54 @@
       "mcp_servers": []
     },
     {
+      "id": "saselab",
+      "plugin": "amir_project",
+      "version": "1.0.0",
+      "scope": "project",
+      "description": "Prisma SASE lab platform expert (lab_expert): troubleshoot any lab pod, reach every GNS3 VM, overlay device and SCM tenant, and rebuild a lab's golden snapshot with Terraform. Only for the Prisma SASE lab repo (PaloAlto_SASE_LAB).",
+      "official_source": "internal",
+      "license": "Proprietary (personal use)",
+      "supported_hosts": [
+        "claude-code",
+        "cursor"
+      ],
+      "supported_operating_systems": [
+        "windows"
+      ],
+      "installation_mode": "project-plugin-or-render",
+      "dependencies": [],
+      "optional_dependencies": [],
+      "conflicts_with": [],
+      "required_executables": [
+        "python",
+        "ssh",
+        "gcloud"
+      ],
+      "required_credentials": [],
+      "network_access": "required",
+      "secret_access": "optional",
+      "filesystem_access": "project",
+      "write_capabilities": [
+        "external_service:gcp (Terraform apply/destroy, snapshots \u2014 owner-approved, one lab)",
+        "external_service:lab_vms (SSH fixes on the target lab's GNS3 VMs \u2014 owner-approved)",
+        "project_files (.ai/changes CHG records, discovery/runs evidence)"
+      ],
+      "destructive_capabilities": [
+        "terraform destroy of one lab workspace (owner-approved, after cleanup or when Day0 never ran)",
+        "golden snapshot replace (archives the old set first)"
+      ],
+      "resource_requirements": {},
+      "health_check": "python -c \"import pathlib,sys; sys.exit(0 if pathlib.Path('labs/labs.json').is_file() else 1)\"",
+      "uninstall_method": "Deselect via /amir:configure_project then /amir:repair_project; full removal via /amir:remove_project_config.",
+      "commands": [
+        "lab_expert"
+      ],
+      "skills": [
+        "lab_expert"
+      ],
+      "mcp_servers": []
+    },
+    {
       "id": "qradar",
       "plugin": "amir_project",
       "version": "1.0.0",

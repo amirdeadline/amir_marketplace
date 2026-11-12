@@ -63,6 +63,13 @@ installed at user scope under
 `/amir_critical`, `/amir_handoff`, `/amir_doc_review`, `/amir_humanized`,
 `/amir-project-cleanup`, `/amir_agent_notification`).
 
+
+### Palo Alto KB read / add
+
+palo-kb-read (short routing for palo-alto-knowledge-base/, prisma-sdwan/, pan-dev/) and
+palo-kb-add (ingest Markdown into the KB, including writer-pool topic-queue waves) are user-scope
+skills. Install junctions with scripts\install-user-skills.ps1 (defaults include both).
+
 ### Prisma SD-WAN SME and official documentation pair
 
 `amir_prisma_sdwan` (evidence-first Prisma SD-WAN answers from the local Palo Alto KB) and

@@ -5,7 +5,7 @@
 #   powershell -File scripts\install-user-skills.ps1 -Skills amir_critical,amir_handoff
 param(
   [string[]]$Skills = @("amir_prisma_sdwan", "amir_prisma_sdwan_sme", "amir_prisma_sdwan_training", "amir_official_doc",
-                      "amir_md_artifact", "amir_md_to_words"),
+                      "amir_md_artifact", "amir_md_to_words", "palo-kb-read", "palo-kb-add"),
   [switch]$Verify
 )
 $ErrorActionPreference = "Stop"
